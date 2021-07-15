@@ -1,0 +1,356 @@
+<template>
+  <div class="app-container">
+    <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="68px">
+      <el-form-item label="函数中文名" prop="selfFunctionNameCn">
+        <el-input
+          v-model="queryParams.selfFunctionNameCn"
+          placeholder="请输入函数中文名"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="模板类型" prop="moduleType">
+        <el-select v-model="queryParams.moduleType" placeholder="请选择模板类型" clearable size="small">
+          <el-option
+            v-for="dict in moduleTypeOptions"
+            :key="dict.dictValue"
+            :label="dict.dictLabel"
+            :value="dict.dictValue"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="函数名" prop="functionName">
+        <el-input
+          v-model="queryParams.functionName"
+          placeholder="请输入函数名"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="函数描述" prop="selfFunctionDesc">
+        <el-input
+          v-model="queryParams.selfFunctionDesc"
+          placeholder="请输入函数描述"
+          clearable
+          size="small"
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+          v-hasPermi="['system:function:add']"
+        >新增</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="success"
+          icon="el-icon-edit"
+          size="mini"
+          :disabled="single"
+          @click="handleUpdate"
+          v-hasPermi="['system:function:edit']"
+        >修改</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+          v-hasPermi="['system:function:remove']"
+        >删除</el-button>
+      </el-col>
+    </el-row>
+
+    <el-table v-loading="loading" :data="functionList" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="主键" align="center" prop="selfFunctionId" />
+      <el-table-column label="函数中文名" align="center" prop="selfFunctionNameCn" />
+      <el-table-column label="模板类型" align="center" prop="moduleType" :formatter="moduleTypeFormat" />
+      <el-table-column label="函数名" align="center" prop="functionName" />
+      <el-table-column label="函数路径" align="center" prop="functionPackagePath" />
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['system:function:edit']"
+          >修改</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+            v-hasPermi="['system:function:remove']"
+          >删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="getList"
+    />
+
+    <!-- 添加或修改自定义函数对话框 -->
+    <el-dialog :title="title" :visible.sync="open" width="750px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+        <el-form-item label="函数中文名" prop="selfFunctionNameCn"  class="el-col-12">
+          <el-input v-model="form.selfFunctionNameCn" placeholder="请输入函数中文名" />
+        </el-form-item>
+        <el-form-item label="模板类型"  class="el-col-12">
+          <el-select v-model="form.moduleType" placeholder="请选择模板类型" clearable  style="width: 255px">
+            <el-option
+              v-for="dict in moduleTypeOptions"
+              :key="dict.dictValue"
+              :label="dict.dictLabel"
+              :value="dict.dictValue"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="函数名" prop="functionName"  class="el-col-12">
+          <el-input v-model="form.functionName" placeholder="请输入函数名" />
+        </el-form-item>
+        <el-form-item label="函数路径" prop="functionPackagePath"  class="el-col-12">
+          <el-input v-model="form.functionPackagePath" placeholder="请输入函数路径" />
+        </el-form-item>
+<!--        <el-form-item label="函数包路径" prop="filePath"  class="el-col-12">-->
+<!--          <el-input v-model="form.filePath" placeholder="请输入函数包路径" />-->
+<!--        </el-form-item>-->
+        <el-upload
+          class="upload-demo"
+          ref="upload"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :file-list="fileList"
+          :auto-upload="false">
+          <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+          <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+          <div slot="tip" class="el-upload__tip" >只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import { listFunction, getFunction, delFunction, addFunction, updateFunction, exportFunction } from "@/api/taskdevelop/function.js";
+
+export default {
+  name: "Function",
+  data() {
+    return {
+      // 遮罩层
+      loading: true,
+      // 选中数组
+      ids: [],
+      // 非单个禁用
+      single: true,
+      // 非多个禁用
+      multiple: true,
+      // 总条数
+      total: 0,
+      // 自定义函数表格数据
+      functionList: [],
+      // 弹出层标题
+      title: "",
+      // 是否显示弹出层
+      open: false,
+      // 模板类型字典
+      moduleTypeOptions: [],
+      fileList:[],
+      // 查询参数
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        selfFunctionNameCn: undefined,
+        moduleType: undefined,
+        functionName: undefined,
+        selfFunctionDesc: undefined
+      },
+      // 表单参数
+      form: {},
+      // 表单校验
+      rules: {
+        selfFunctionNameCn: [
+          { required: true, message: "函数中文名不能为空", trigger: "blur" }
+        ],
+        moduleType: [
+          { required: true, message: "模板类型不能为空", trigger: "blur" }
+        ],
+        functionName: [
+          { required: true, message: "函数名不能为空", trigger: "blur" }
+        ],
+        functionPackagePath: [
+          { required: true, message: "函数路径不能为空", trigger: "blur" }
+        ],
+        filePath: [
+          { required: true, message: "函数包路径不能为空", trigger: "blur" }
+        ],
+      }
+    };
+  },
+  created() {
+    this.getList();
+    this.getDicts("self_func_module_type").then(response => {
+      this.moduleTypeOptions = response.data;
+    });
+  },
+  methods: {
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+
+    /** 查询自定义函数列表 */
+    getList() {
+      this.loading = true;
+      listFunction(this.queryParams).then(response => {
+        this.functionList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
+    },
+    // 模板类型字典翻译
+    moduleTypeFormat(row, column) {
+      return this.selectDictLabel(this.moduleTypeOptions, row.moduleType);
+    },
+    // 取消按钮
+    cancel() {
+      this.open = false;
+      this.reset();
+    },
+    // 表单重置
+    reset() {
+      this.form = {
+        selfFunctionId: undefined,
+        selfFunctionNameCn: undefined,
+        moduleType: undefined,
+        functionName: undefined,
+        functionPackagePath: undefined,
+        filePath: undefined,
+        functionParams: undefined,
+        selfFunctionDesc: undefined
+      };
+      this.resetForm("form");
+    },
+    /** 搜索按钮操作 */
+    handleQuery() {
+      this.queryParams.pageNum = 1;
+      this.getList();
+    },
+    /** 重置按钮操作 */
+    resetQuery() {
+      this.resetForm("queryForm");
+      this.handleQuery();
+    },
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.selfFunctionId)
+      this.single = selection.length!=1
+      this.multiple = !selection.length
+    },
+    /** 新增按钮操作 */
+    handleAdd() {
+      this.reset();
+      this.open = true;
+      this.title = "添加自定义函数";
+    },
+    /** 修改按钮操作 */
+    handleUpdate(row) {
+      this.reset();
+      const selfFunctionId = row.selfFunctionId || this.ids
+      getFunction(selfFunctionId).then(response => {
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改自定义函数";
+      });
+    },
+    /** 提交按钮 */
+    submitForm: function() {
+      this.$refs["form"].validate(valid => {
+        if (valid) {
+          if (this.form.selfFunctionId != undefined) {
+            updateFunction(this.form).then(response => {
+              if (response.code === 200) {
+                this.msgSuccess("修改成功");
+                this.open = false;
+                this.getList();
+              } else {
+                this.msgError(response.msg);
+              }
+            });
+          } else {
+            addFunction(this.form).then(response => {
+              if (response.code === 200) {
+                this.msgSuccess("新增成功");
+                this.open = false;
+                this.getList();
+              } else {
+                this.msgError(response.msg);
+              }
+            });
+          }
+        }
+      });
+    },
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const selfFunctionIds = row.selfFunctionId || this.ids;
+      this.$confirm('是否确认删除自定义函数编号为"' + selfFunctionIds + '"的数据项?', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(function() {
+          return delFunction(selfFunctionIds);
+        }).then(() => {
+          this.getList();
+          this.msgSuccess("删除成功");
+        }).catch(function() {});
+    },
+    /** 导出按钮操作 */
+    handleExport() {
+      const queryParams = this.queryParams;
+      this.$confirm('是否确认导出所有自定义函数数据项?', "警告", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }).then(function() {
+          return exportFunction(queryParams);
+        }).then(response => {
+          this.download(response.msg);
+        }).catch(function() {});
+    }
+  }
+};
+</script>

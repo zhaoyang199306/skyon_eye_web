@@ -1,0 +1,53 @@
+import request from '@/utils/request'
+
+// 查询自定义函数列表
+export function listFunction(query) {
+  return request({
+    url: '/taskdevelop/funcdevelop/list',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询自定义函数详细
+export function getFunction(selfFunctionId) {
+  return request({
+    url: '/taskdevelop/funcdevelop/' + selfFunctionId,
+    method: 'get'
+  })
+}
+
+// 新增自定义函数
+export function addFunction(data) {
+  return request({
+    url: '/taskdevelop/funcdevelop',
+    method: 'post',
+    data: data
+  })
+}
+
+// 修改自定义函数
+export function updateFunction(data) {
+  return request({
+    url: '/taskdevelop/funcdevelop',
+    method: 'put',
+    data: data
+  })
+}
+
+// 删除自定义函数
+export function delFunction(selfFunctionId) {
+  return request({
+    url: '/taskdevelop/funcdevelop/' + selfFunctionId,
+    method: 'delete'
+  })
+}
+
+// 导出自定义函数
+export function exportFunction(query) {
+  return request({
+    url: '/taskdevelop/funcdevelop/export',
+    method: 'get',
+    params: query
+  })
+}
