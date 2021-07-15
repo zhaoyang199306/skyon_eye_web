@@ -7,7 +7,7 @@
           <p class="context_module_title_p">风险提示</p>
         </div>
       </div>
-      <div class="el-col-24">
+      <div class="el-col-24" style="display: flex;justify-content: space-around;height: 150px;margin-top: 10px;">
         <div class="risk_Context_left">
           <p class="risk_Context_title">1.负债到期情况</p>
           <div style="font-size: 14px;padding-left: 20px">
@@ -25,7 +25,7 @@
               万元。</p>
           </div>
         </div>
-        <div class="risk_Context_right">
+        <div class="risk_Context_middle">
           <p class="risk_Context_title">2.当前账户异常状况</p>
           <div style="font-size: 14px;padding-left: 20px">
             <p>当前展期账户
@@ -43,9 +43,8 @@
               万元。</p>
           </div>
         </div>
-      </div>
-      <div class="el-col-24">
-        <div class="risk_Context_left">
+
+        <div class="risk_Context_right">
           <p class="risk_Context_title">3.负债情况明显变化</p>
           <div style="font-size: 14px;padding-left: 20px">
             <p> 当前时点较上期借贷余额变动 <span>{{form.dtTyDpApLiabSituChangeW==null?'--':form.dtTyDpApLiabSituChangeW.debitCrdtBalChangeCnt==null?'--':form.dtTyDpApLiabSituChangeW.debitCrdtBalChangeCnt}}</span>
@@ -56,16 +55,16 @@
               %。</p>
           </div>
         </div>
-        <div class="risk_Context_right">
+      </div>
+      <div class="el-col-24" style="display: flex;justify-content: space-around;height: 200px;margin-top: 20px;margin-bottom: 10px;">
+        <div class="risk_Context_left">
           <p class="risk_Context_title">4.相关还款责任概要（含担保）</p>
           <div style="font-size: 14px;padding-left: 20px">
             <p>当前时点其他借贷交易较上期新增关注类金额 <span>120</span> 万元，新增不良类金额 <span>100</span> 万元；</p>
             <p>当前时点担保交易较上期新增关注类金额 <span>200</span> 万元，新增不良类金额 <span>150</span> 万元。</p>
           </div>
         </div>
-      </div>
-      <div class="el-col-24">
-        <div class="risk_Context_left">
+        <div class="risk_Context_middle">
           <p class="risk_Context_title">5.征信评分及变化</p>
           <div style="font-size: 14px;padding-left: 20px">
             <p>当前征信评分分数 <span>{{form.dtCrdtcScoreAndChangeW==null?'--':form.dtCrdtcScoreAndChangeW.currCrdtcScoreScore==null?'--':form.dtCrdtcScoreAndChangeW.currCrdtcScoreScore}}</span>
@@ -139,17 +138,17 @@
         </div>
       </div>
     <!--  负债融资变化历史    -->
-      <div class="el-col-24" style="margin-top: 20px">
+      <div class="el-col-8" style="margin-top: 20px">
         <div style="width: 90%;height: 300px" id="financingHistory">
         </div>
       </div>
     <!--    相关还款责任概要  -->
-      <div class="el-col-12" style="margin-top: 20px">
+      <div class="el-col-8" style="margin-top: 20px">
         <div style="width: 90%;height: 300px" id="repayment">
         </div>
       </div>
     <!--未结清非正常类贷款历史变化-->
-      <div class="el-col-12" style="margin-top: 20px">
+      <div class="el-col-8" style="margin-top: 20px">
         <div style="width: 90%;height: 300px" id="noLoanHistory">
         </div>
       </div>
@@ -488,22 +487,23 @@
   }
 
   .risk_Context_right {
-    width: 36%;
-    height: 150px;
+    width: 30%;
+    height: 100%;
     border: 2px solid rgb(187, 187, 187);
-    float: right;
-    margin-right: 8%;
-    margin-top: 20px;
     margin-bottom: 20px;
   }
 
   .risk_Context_left {
-    width: 36%;
-    height: 150px;
+    width: 30%;
+    height: 100%;
     border: 2px solid rgb(187, 187, 187);
-    float: left;
-    margin-left: 8%;
-    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .risk_Context_middle {
+    width: 30%;
+    height: 100%;
+    border: 2px solid rgb(187, 187, 187);
     margin-bottom: 20px;
   }
 

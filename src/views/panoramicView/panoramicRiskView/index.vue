@@ -21,8 +21,8 @@
           <span>我行授信情况（万元）</span>
         </div>
         <div class="risk_context_right_div">
-          <P style="font-size: 18px; font-weight: bold">我行授信余额</P>
-          <P style="font-size: 18px; color: rgba(50, 145, 248, 1)">{{form.dtCustFinanceInfoW === null?
+          <P style="font-size: 15px; font-weight: bold">我行授信余额</P>
+          <P style="font-size: 15px; color: rgba(50, 145, 248, 1)">{{form.dtCustFinanceInfoW === null?
             '--':form.dtCustFinanceInfoW.totalSum}}万</P>
         </div>
         <div class="risk_context_right_div">
@@ -87,7 +87,7 @@
       <div class="context_module_title" style="height: 40px;background-color: rgb(247, 247, 247)">
         <p class="context_module_title_p">我行评级信息</p>
       </div>
-      <div class="el-col-24" style="padding-left: 20px;">
+      <div class="el-col-24 context_module_body">
         <div class="el-col-24">
           <div class="el-col-2"><p>去年评级等级</p></div>
           <div class="el-col-6">
@@ -112,7 +112,7 @@
     </div>
     <!--    司法诉讼-->
     <div class="el-col-24 context_module" style="">
-      <div>
+      <div class="context_module_title" style="height: 40px;background-color: rgb(247, 247, 247)">
         <p class="context_module_title_p">司法诉讼</p>
       </div>
 
@@ -379,6 +379,18 @@
     font-size: 14px
   }
 
+  .context_module_body {
+    padding-left: 20px;
+    margin-top: 10px;
+  }
+
+  .context_module_body p {
+    margin: 0;
+    padding: 0;
+    margin: 7px 0;
+    font-size: 14px;
+  }
+
   .context_module {
 
   }
@@ -391,16 +403,21 @@
 
   .risk_context_right_div ul {
     list-style: none;
-    line-height: 35px;
+    /* line-height: 35px; */
+    font-size: 15px;
     font-weight: bold
   }
 
+  .risk_context_right_div ul li {
+    height: 35px;
+  }
+
   .risk_Context_right {
-    width: 44%;
-    height: 200px;
+    width: 49%;
+    height: 180px;
     border: 1px solid rgb(187, 187, 187);
     float: right;
-    margin-right: 4%
+    margin-right: 0;
   }
 
   .risk_Context_right li span {
@@ -408,46 +425,51 @@
   }
 
   .risk_Context_left {
-    width: 44%;
-    height: 200px;
+    width: 49%;
+    height: 180px;
     border: 1px solid rgb(187, 187, 187);
     float: left;
-    margin-left: 4%
+    margin-left: 0;
   }
 
   .risk_context_tag {
     width: 100px;
-    height: 40px;
+    height: 30px;
     /*background-color: rgb(254, 237, 166);*/
     border: none;
-    border-radius: 9px;
-    font-size: 16px;
+    border-radius: 5px;
+    font-size: 14px;
     padding: 0px;
     margin-left: 10%;
     margin-top: 15px;
     text-align: center;
-    line-height: 10px;
+    line-height: 30px;
+    letter-spacing: 2px;
+    text-indent: 2px;
     font-weight: normal;
     font-style: normal;
     opacity: 1;
     color: black;
+  }
 
+  .risk_context_tag p{
+    padding: 0;
+    margin: 0;
   }
 
   .riskTitle {
-    width: 180px;
-    height: 35px;
+    width: 150px;
+    height: 30px;
     left: 70px;
     top: 241px;
     z-index: 311;
     background-color: rgb(50, 145, 248);
     border: none;
     color: rgb(255, 255, 255);
-    border-radius: 0px 0px 30px;
-    font-size: 18px;
+    border-radius: 0px 0px 20px;
     padding: 0px;
     text-align: center;
-    line-height: 26px;
+    line-height: 30px;
     font-weight: normal;
     font-style: normal;
     opacity: 1;
@@ -455,11 +477,11 @@
 
   .riskTitle span {
     font-weight: 700;
-    font-size: 16px;
+    font-size: 13px;
     color: rgb(255, 255, 255);
     font-style: normal;
-    letter-spacing: 0px;
-    line-height: 35px;
+    letter-spacing: 1px;
+    line-height: 30px;
     text-decoration: none;
   }
 

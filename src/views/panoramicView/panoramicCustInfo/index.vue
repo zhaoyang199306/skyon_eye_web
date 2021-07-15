@@ -12,7 +12,7 @@
               </div>
             </div>
           </div>
-          <div style="padding-left: 20px">
+          <div style="padding-left: 20px;">
             <el-form-item label="客户名称" class="el-col-8">
               <el-input v-model="form.custName" readonly="readonly"/>
             </el-form-item>
@@ -319,9 +319,10 @@
     float: left;
     font-size: 14px;
     color: #606266;
-    line-height: 40px;
     padding: 0 12px 0 0;
     box-sizing: border-box;
+    height: 30px;
+    line-height: 30px;
   }
   .el-form-item {
     margin-bottom: 0px;
@@ -342,4 +343,13 @@
     border: 0px;
     color: rgb(74, 138, 215);
   }
+
+  .panoramic-cust-info-context >>> .el-form-item__content {
+    line-height: 30px;
+  }
+
+</style>
+
+<style>
+
 </style>
