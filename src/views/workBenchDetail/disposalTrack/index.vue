@@ -1,5 +1,22 @@
 <template>
   <div style="padding: 0 1%;margin: 6px 0 0 0px">
+
+    <!-- 标签 -->
+    <div class="tag-panel" v-if="!detailShow">
+      <div @click="isProprietary = true" class="tag-box" :class="{'tag-is-active': isProprietary}">
+        <el-badge :value="(disposalTrackList.length === 0 ? '' : disposalTrackList.length)" class="tag-box-badge">
+          自营业务
+        </el-badge>
+      </div>
+
+      <div :class="{'tag-is-active': !isProprietary}" class="tag-box" @click="isProprietary = false">
+        <el-badge :value="(unProprietaryList.length === 0 ? '' : unProprietaryList.length)" class="tag-box-badge">
+          非自营业务
+        </el-badge>
+      </div>
+    </div>
+
+
     <div class="title">
       <span class="fz_icon"/>
       <div class="title_text">
@@ -21,7 +38,7 @@
           <el-form-item prop="description">
             <el-input
               v-model="queryParams.description"
-              placeholder="客户名称"
+              :placeholder="(isProprietary ? '客户名称' : '渠道名称')"
               clearable
               size="small"
               @keyup.enter.native="handleQuery"
@@ -52,12 +69,12 @@
         </el-form>
       </div>
     </div>
-    <div></div>
+
 
     <!--    展示列表  -->
     <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
               header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-              :cell-style="{padding:'0px'}" :data="disposalTrackList" v-show="detailListShow">
+              :cell-style="{padding:'0px'}" :data="disposalTrackList" v-show="detailListShow" v-if="isProprietary">
       <el-table-column label="客户编号" align="center" prop="custNo"/>
       <el-table-column label="客户名称" align="center" prop="custName"/>
       <el-table-column label="队列ID" align="center"  prop="queueId"/>
@@ -84,9 +101,36 @@
 
     </el-table>
 
-    <!--      详情-->
+    <el-table v-else width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
+              header-cell-style="font-size:12px" :row-style="{height:'32px'}"
+              :cell-style="{padding:'0px'}" :data="unProprietaryList" v-show="detailListShow">
+      <el-table-column label="任务编号" align="center" prop="taskInfoNo"/>
+      <el-table-column label="渠道名称" align="center" prop="custName"/>
+      <el-table-column label="风险客户数" align="center"  prop="riskCustNum"/>
+      <el-table-column label="所属支行" align="center" prop="branch"/>
+      <el-table-column label="所属分行" align="center" prop="nextBranch"/>
+      <el-table-column label="任务生成日期" align="center">2021-02-03</el-table-column>
+      <el-table-column label="任务截止日期" align="center">2021-04-01</el-table-column>
+      <el-table-column label="风险认定方式" align="center" prop="riskLevel"/>
+      <el-table-column label="跟踪状态" align="center">处理中</el-table-column>
+      <el-table-column label="审批权限" align="center" prop="limits"/>
+      <el-table-column label="操作" align="center">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-view"
+            @click="handleDetail(scope.row)"
+          >处理
+          </el-button>
+        </template>
+      </el-table-column>
 
-    <div v-show="detailShow">
+    </el-table>
+
+    <!--      自营业务详情-->
+
+    <div v-show="detailShow" v-if="isProprietary">
       <div class="cl_title" style="margin-bottom:5px;">
         <div class="radioball lt"></div>
         <p class="lt" style="margin: 0 0">原信息</p>
@@ -328,6 +372,148 @@
         <el-button type="primary" class="btn" @click="cancel">取 消</el-button>
       </div>
     </div>
+
+    <div v-show="detailShow" v-else>
+      <div class="cl_title" style="margin-bottom:5px;">
+        <div class="radioball lt"></div>
+        <p class="lt" style="margin: 0 0">原信息</p>
+      </div>
+      <div style="margin-top: 10px" class="el-col-24">
+        <!--    详情基本信息    -->
+        <el-form ref="form" label-width="120px" class="el-col-24">
+          <el-form-item label="渠道：" class="el-col-4">
+            <el-input value="京东合作" readonly="readonly"/>
+          </el-form-item>
+          <el-form-item label="产品:" class="el-col-4">
+            <el-input value="XX款" readonly="readonly"/>
+          </el-form-item>
+          <el-form-item label="认定完成日期:" class="el-col-4">
+            <el-input value="2021-07-14" readonly="readonly"/>
+          </el-form-item>
+          <el-form-item label="风险客户数量:" class="el-col-4">
+            <el-input value="500" readonly="readonly"/>
+          </el-form-item>
+          <el-form-item label="认定方式：" label-width="140px" class="el-col-4">
+            <el-input value="系统认定" readonly="readonly"/>
+          </el-form-item>
+        </el-form>
+      </div>
+
+      <!--    详情 - 客户历史认定列表    -->
+      <div class="el-col-24" style="margin-top: 15px">
+        <div class="cl_title" style="margin-bottom:5px;">
+          <div class="radioball lt"></div>
+          <p class="lt" style="margin: 0 0">客户历史认定列表</p>
+        </div>
+        <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
+                  header-cell-style="font-size:12px" :row-style="{height:'32px'}"
+                  :cell-style="{padding:'0px'}" :data="onWayTaskList">
+          <el-table-column label="任务编号" align="center" prop="q"/>
+          <el-table-column label="认定完成期限" align="center" prop="w"/>
+          <el-table-column label="渠道" align="center" prop="e"/>
+          <el-table-column label="风险客户数量" align="center" prop="r"/>
+          <el-table-column label="触发预警日期" align="center" prop="y"/>
+          <el-table-column label="认定状态" align="u"/>
+        </el-table>
+      </div>
+
+      <!--    详情 - 客户历史跟踪处置记录    -->
+      <div class="el-col-24" style="margin-top: 15px">
+        <div class="cl_title" style="margin-bottom:5px;">
+          <div class="radioball lt"></div>
+          <p class="lt" style="margin: 0 0">客户历史跟踪处置记录</p>
+        </div>
+        <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
+                  header-cell-style="font-size:12px" :row-style="{height:'32px'}"
+                  :cell-style="{padding:'0px'}" :data="onWayTaskList">
+          <el-table-column label="任务编号" align="center" prop="q"/>
+          <el-table-column label="跟踪完成日期" align="center" prop="w"/>
+          <el-table-column label="渠道" align="center" prop="e"/>
+          <el-table-column label="风险客户数量" align="center" prop="r"/>
+          <el-table-column label="详情" align="center" prop="y"/>
+        </el-table>
+      </div>
+
+      <!--    详情 - 反馈信息    -->
+      <div class="el-col-24" style="margin-top: 15px">
+        <div class="cl_title" style="margin-bottom:5px;">
+          <div class="radioball lt"></div>
+          <p class="lt" style="margin: 0 0">反馈信息</p>
+        </div>
+        <div class="cl_body">
+          <el-form label-width="100px">
+            <el-form-item label="是否处置完成" prop="name">
+                <select style="width: 100px;">
+                  <option>是</option>
+                  <option>否</option>
+                </select>
+            </el-form-item>
+
+            <el-form-item label="反馈结果" prop="name">
+                <el-input
+                  type="textarea"
+                  v-model="textarea"
+                  maxlength="100"
+                  show-word-limit
+                  resize="none"
+                  :autosize="{ minRows: 6, maxRows: 6 }"
+                >
+                </el-input>
+            </el-form-item>
+            <el-form-item label="上传附件">
+              <i class="el-icon-upload" style="font-size: 20px;"></i>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+
+      <!--    详情 - 审核意见（审批环节可看）    -->
+      <div class="el-col-24" style="margin-top: 15px">
+        <div class="cl_title" style="margin-bottom:5px;">
+          <div class="radioball lt"></div>
+          <p class="lt" style="margin: 0 0">审核意见（审批环节可看）</p>
+        </div>
+        <div class="cl_body">
+          <el-form label-width="100px">
+            <el-form-item label="是否同意" prop="name">
+                <el-radio v-model="radio" label="1">是</el-radio>
+                <el-radio v-model="radio" label="2">否</el-radio>
+            </el-form-item>
+
+            <el-form-item label="审核意见" prop="name">
+                <el-input
+                  type="textarea"
+                  v-model="textarea"
+                  maxlength="100"
+                  show-word-limit
+                  resize="none"
+                  :autosize="{ minRows: 6, maxRows: 6 }"
+                >
+                </el-input>
+            </el-form-item>
+          </el-form>
+
+          <div slot="footer" class="el-col-24" style="margin: 20px 40% 0 40%">
+            <el-button type="primary" class="btn" style="width: 80px" @click="linkClick">流程信息</el-button>
+            <el-button type="primary" class="btn">暂 存</el-button>
+            <el-button type="primary" class="btn" @click="submit">提 交</el-button>
+            <el-button type="primary" class="btn" @click="cancel">取 消</el-button>
+          </div>
+        </div>
+
+        <!--      流程信息    -->
+        <div>
+          <template>
+            <el-dialog title="流程信息" :visible.sync="open" customClass="customWidth" :close-on-click-modal="false"
+                       width="500px">
+              <link-log v-bind:taskInfoNo="taskInfoNo"/>
+            </el-dialog>
+          </template>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 </template>
 
@@ -345,6 +531,8 @@
     components: {LinkLog},
     data() {
       return {
+        // 自营业务
+        isProprietary: true,
         riskLevelSelect:"",
         //  true 标志
         trueFlag: true,
@@ -354,8 +542,10 @@
         onWayTaskDialog: false,
         open: false,
         detailListShow: true,
-        //  处理跟踪集合
+        //  自营处理跟踪集合
         disposalTrackList: [],
+        // 非自营处理跟踪集合
+        unProprietaryList: [],
         enclosureList: [],
         // 审核意见
         examinValue: "",
@@ -464,7 +654,16 @@
           console.log("---getList");
           console.log(res);
           if (res.code === 200) {
-            this.disposalTrackList = res.data;
+            let temp_1 = [];
+            let temp_2 = [];
+            res.data.forEach(item => {
+              if(item.isProprietary || item.isProprietary === '1') 
+                temp_1.push(item);
+              else
+                temp_2.push(item);
+            })
+            this.unProprietaryList = temp_1;
+            this.disposalTrackList = temp_2;
           }
           loading.close();
         }).catch(() => {
@@ -482,6 +681,35 @@
 </script>
 
 <style scoped>
+  .tag-panel {
+    width: 200px;
+    height: 30px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .tag-box {
+    width: 45%;
+    height: 100%;
+    background-color: #E5E5EA;
+    cursor: pointer;
+  }
+
+  .tag-box-badge {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+  }
+
+  .tag-is-active {
+    background-color: #70A6E9;
+    color: white;
+  }
+
   .btnTask {
     padding: 0px 10px;
     color: #fff;
@@ -559,6 +787,17 @@
     font-size: 14px;
     height: 20px;
     line-height: 20px;
+  }
+
+  .cl_body {
+    width: 100%;
+    height: auto;
+    padding: 20px 40px;
+    background-color: #F9F9F9;
+  }
+
+  .cl_body >>> .el-form-item {
+    margin: 20px 0;
   }
 
   .lt {
