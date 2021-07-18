@@ -130,7 +130,7 @@
 
     <!--      自营业务详情-->
 
-    <div v-show="detailShow" v-if="isProprietary">
+    <div v-if="isProprietary && detailShow">
       <div class="cl_title" style="margin-bottom:5px;">
         <div class="radioball lt"></div>
         <p class="lt" style="margin: 0 0">原信息</p>
@@ -139,10 +139,10 @@
         <!--    详情基本信息    -->
         <el-form ref="form" label-width="120px" class="el-col-24">
           <el-form-item label="客户编号：" class="el-col-4">
-            <el-input value="3000110584" readonly="readonly"/>
+            <el-input :value="detailInfo.custNo" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="客户名称:" class="el-col-4">
-            <el-input value="李13" readonly="readonly"/>
+            <el-input :value="detailInfo.custName" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="证件号码:" class="el-col-4">
             <el-input value="113002199602162223" readonly="readonly"/>
@@ -151,10 +151,10 @@
             <el-input value="13956785619" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="跟踪完成日期：" label-width="140px" class="el-col-4">
-            <el-input value="2021-01-05" readonly="readonly"/>
+            <el-input :value="detailInfo.doneDate" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="风险等级：" class="el-col-4">
-            <el-input value="黄色" readonly="readonly"/>
+            <el-input :value="detailInfo.riskLevel" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="管控措施：" class="el-col-18">
             <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 5}" value="按常规实施授信后管理和检查" readonly="readonly"/>
@@ -373,7 +373,7 @@
       </div>
     </div>
 
-    <div v-show="detailShow" v-else>
+    <div v-else-if="!isProprietary && detailShow">
       <div class="cl_title" style="margin-bottom:5px;">
         <div class="radioball lt"></div>
         <p class="lt" style="margin: 0 0">原信息</p>
@@ -382,16 +382,16 @@
         <!--    详情基本信息    -->
         <el-form ref="form" label-width="120px" class="el-col-24">
           <el-form-item label="渠道：" class="el-col-4">
-            <el-input value="京东合作" readonly="readonly"/>
+            <el-input :value="detailInfo.custName" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="产品:" class="el-col-4">
             <el-input value="XX款" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="认定完成日期:" class="el-col-4">
-            <el-input value="2021-07-14" readonly="readonly"/>
+            <el-input :value="detailInfo.doneDate" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="风险客户数量:" class="el-col-4">
-            <el-input value="500" readonly="readonly"/>
+            <el-input :value="detailInfo.riskCustNum" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="认定方式：" label-width="140px" class="el-col-4">
             <el-input value="系统认定" readonly="readonly"/>
@@ -407,13 +407,22 @@
         </div>
         <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
                   header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                  :cell-style="{padding:'0px'}" :data="onWayTaskList">
-          <el-table-column label="任务编号" align="center" prop="q"/>
-          <el-table-column label="认定完成期限" align="center" prop="w"/>
-          <el-table-column label="渠道" align="center" prop="e"/>
-          <el-table-column label="风险客户数量" align="center" prop="r"/>
-          <el-table-column label="触发预警日期" align="center" prop="y"/>
-          <el-table-column label="认定状态" align="u"/>
+                  :cell-style="{padding:'0px'}" :data="custHistoryList">
+          <el-table-column label="任务编号" align="center" prop="custNo"/>
+          <el-table-column label="认定完成期限" align="center" prop="doneDate"/>
+          <el-table-column label="渠道" align="center" prop="custName"/>
+          <el-table-column label="风险客户数量" align="center" prop="riskCustNum"/>
+          <el-table-column label="触发预警日期" align="center" prop="createTime"/>
+          <el-table-column label="认定状态" align="center">
+            <template slot-scope="scope">
+              <span>{{scope.row.state}}</span>
+             <el-button
+                size="mini"
+                type="text"
+              >查看风险客户清单
+              </el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
 
@@ -425,12 +434,20 @@
         </div>
         <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
                   header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                  :cell-style="{padding:'0px'}" :data="onWayTaskList">
-          <el-table-column label="任务编号" align="center" prop="q"/>
-          <el-table-column label="跟踪完成日期" align="center" prop="w"/>
-          <el-table-column label="渠道" align="center" prop="e"/>
-          <el-table-column label="风险客户数量" align="center" prop="r"/>
-          <el-table-column label="详情" align="center" prop="y"/>
+                  :cell-style="{padding:'0px'}" :data="custHistoryDisposalList">
+          <el-table-column label="任务编号" align="center" prop="custNo"/>
+          <el-table-column label="跟踪完成日期" align="center" prop="doneDate"/>
+          <el-table-column label="渠道" align="center" prop="custName"/>
+          <el-table-column label="风险客户数量" align="center" prop="riskCustNum"/>
+          <el-table-column label="详情" align="center">
+            <template slot-scope="scope">
+             <el-button
+                size="mini"
+                type="text"
+              >查看反馈清单
+              </el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
 
@@ -560,6 +577,8 @@
         blueImg:blueimgpng,
         greenImg:greenimgpng,
         yellowImg:yellowimgpng,
+        // 详情
+        detailInfo: null,
         // 在途任务列表
         onWayTaskList: [],
         dealProcessOptions: [{
@@ -582,7 +601,8 @@
           pageSize: 10,
           dataSourceId: undefined,
         },
-
+        custHistoryList: [],
+        custHistoryDisposalList: []
       }
     },
     created() {
@@ -633,6 +653,23 @@
         this.detailShow = true;
         this.detailListShow = false;
         this.taskInfoNo = scope.taskInfoNo;
+        this.detailInfo = scope;
+        this.custHistoryList = [];
+        this.custHistoryDisposalList = [];
+        this.custHistoryList.push({
+          custNo: "3190164965",
+          doneDate: "2021-07-14",
+          custName: scope.custName,
+          riskCustNum: 500,
+          createTime: "2021-07-16",
+          state: "已完成"
+        })
+        this.custHistoryDisposalList.push({
+          custNo: "3190162363",
+          doneDate: "2021-07-11",
+          custName: scope.custName,
+          riskCustNum: 139
+        })
         // 赋值
         getDisposalTrackDetail(this.taskInfoNo).then(res => {
           console.log("---res");
