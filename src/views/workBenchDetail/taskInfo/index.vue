@@ -138,24 +138,24 @@
       </div>
       <div style="margin-top: 10px" class="el-col-24">
         <!--    详情基本信息    -->
-        <el-form ref="form" label-width="120px" class="el-col-24">
+        <el-form ref="detailInfo" :model="detailInfo" label-width="120px" class="el-col-24">
           <el-form-item label="客户编号：" class="el-col-4">
-            <el-input value="3000110584" readonly="readonly"/>
+            <el-input v-model="detailInfo.custNo" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="客户名称:" class="el-col-4">
-            <el-input value="李10" readonly="readonly"/>
+            <el-input v-model="detailInfo.custName" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="证件号码:" class="el-col-4">
-            <el-input value="113002199602154855" readonly="readonly"/>
+            <el-input v-model="detailInfo.cardNum" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="手机号码:" class="el-col-4">
-            <el-input value="13956785619" readonly="readonly"/>
+            <el-input v-model="detailInfo.custTel" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="跟踪完成日期：" label-width="140px" class="el-col-4">
             <el-input value="2021-01-05"  readonly="readonly"/>
           </el-form-item>
           <el-form-item label="风险等级：" class="el-col-4">
-            <el-input value="黄色" readonly="readonly"/>
+            <el-input v-model="detailInfo.riskLevel" readonly="readonly"/>
           </el-form-item>
         </el-form>
       </div>
@@ -169,13 +169,13 @@
         <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
                   header-cell-style="font-size:12px" :row-style="{height:'32px'}"
                   :cell-style="{padding:'0px'}" :data="warnSignalList">
-          <el-table-column label="任务信息" align="center" prop="q"/>
-          <el-table-column label="当前处理岗" align="center" prop="w"/>
-          <el-table-column label="信号名称" align="center" prop="e"/>
-          <el-table-column label="信号等级" align="center" prop="r"/>
-          <el-table-column label="预警原因" align="center" prop="t"/>
-          <el-table-column label="触发日期" align="center" prop="y"/>
-          <el-table-column label="下放时间" align="center" prop="u"/>
+          <el-table-column label="任务编号" align="center" prop="taskNum"/>
+          <el-table-column label="当前处理岗" align="center" prop="nowDealRole"/>
+          <el-table-column label="信号名称" align="center" prop="singleName"/>
+          <el-table-column label="信号等级" align="center" prop="singleLevel"/>
+          <el-table-column label="预警原因" align="center" prop="warmResson"/>
+          <el-table-column label="触发日期" align="center" prop="touchDate"/>
+          <el-table-column label="下放时间" align="center" prop="devolutionDate"/>
           <el-table-column label="认定状态" align="center" >
             <template slot-scope="scope">
               <el-select v-model="scope.row.i" style="width: 90px">
@@ -479,6 +479,8 @@
         radio: undefined,
         radioExamine: undefined,
         otherCheck: undefined,
+        //
+        detailInfo:{},
         examinValue: "",
         taskInfoNo: "",
         // 查询参数
@@ -561,12 +563,13 @@
         this.detailShow = true;
         this.detailListShow = false;
         this.taskInfoNo = scope.taskInfoNo;
+        this.detailInfo = scope;
         // 赋值
         getTaskInfoDetail(scope.taskInfoNo).then(res => {
-          console.log("---res");
+          console.log("---res==============");
           console.log(res);
           if (200 === res.code) {
-            this.warnSignalList = res.data;
+            this.warnSignalList = res.data.warnSignals;
           }
         })
 
