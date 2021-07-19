@@ -7,7 +7,7 @@
           <p class="context_module_title_p">风险提示</p>
         </div>
       </div>
-      <div class="el-col-24" style="display: flex;justify-content: space-around;height: 150px;margin-top: 10px;">
+      <div class="el-col-24" style="display: flex;justify-content: space-around;height: 180px;margin-top: 10px;">
         <div class="risk_Context_left">
           <p class="risk_Context_title">1.负债到期情况</p>
           <div style="font-size: 14px;padding-left: 20px">

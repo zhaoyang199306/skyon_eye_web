@@ -649,82 +649,20 @@
 <!--</style>-->
 
 <template>
-    <div>
-
-      <iframe id="iframeId" :src="url"  width="100%" height="100%" frameborder="no" border="0"
-              marginwidth="0" marginheight="0">
-      </iframe>
-
-    </div>
+  <div>
+    <ferghana-common :redirect="redirect"/>
+  </div>
 </template>
 
 <script>
-  import {getSSOParams} from "@/api/ferghana/ssoFerghana.js"
+  import FerghanaCommon from '../../ferghana/common/index'
   export default {
-    name: 'Manage',
-    data () {
-      return {
-        url: 'https://www.baidu.com/',
-        token:undefined,
-        redirect:undefined,
-        alreadySSO:undefined,
-        userAccount:undefined,
+    components: { FerghanaCommon },
+    data(){
+      return{
+        redirect:"/source/manage",
       }
-    },
-    created() {
-
-      getSSOParams().then(res =>{
-        if (res.code === 200){
-          console.log("==2======");
-          console.log(res);
-          this.token = res.data.token;
-          this.redirect = res.data.redirect;
-          this.token = res.data.token;
-          this.userAccount = res.data.userAccount;
-
-          this.getSource();
-        }
-      });
-
-
-      console.log("==============s=");
-
-    },
-    methods:{
-
-      getSource(){
-
-        let flag = true;
-        if (this.alreadySSO !== null && this.alreadySSO === "1") {
-          // document.getElementById("reportFrame").src = "http://192.168.4.95:8083" + redirect;
-          this.url = "http://localhost:8082" + this.redirect;
-          flag = false;
-        }
-        if (this.token !== null && this.token !== "" && flag === true) {
-          // document.getElementById("reportFrame").src = "http://192.168.4.95:8083/sso/login?userAccount=" + userAccount + "&redirect=" + redirect + "&loginToken=" + token;
-          this.url = "http://localhost:8082/sso/login?userAccount=" + this.userAccount +
-            "&redirect=" + this.redirect + "&loginToken=" + this.token;
-        }
-        console.log(this.url);
-      },
-
-
-
     }
   }
 </script>
 
-<style scoped>
-  .iframe {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    background: #fff;
-    overflow-y: hidden;
-  }
-
-</style>

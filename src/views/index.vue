@@ -9,68 +9,68 @@
     <div style="width:100%;position:absolute;top:0; left:0;overflow:auto;height:100%">
       <div class="radar">
         <div class="radarleft">
-          <div class="radarleftbox">
-            <div class="textlist">
-              <div class="title">
-                <span class="fz_icon rwcl_icon"></span>
-                <div class="title_text  lt">
-                  <p>未分配列表任务</p>
-                </div>
-              </div>
-            </div>
-            <div class="task_list">
-              <ul class="ul_this">
-                <li>
-<!--                  <router-link to="/workBenchDetail/taskInfo">-->
-                    <div>
-                      <p>预警认定</p>
-                      <p class="tasknum">{{taskInfoCount}}</p>
-                    </div>
-<!--                  </router-link>-->
-                </li>
-                <li>
-<!--                  <router-link to="/workBenchDetail/disposalTrack">-->
-                    <div>
-                      <p>处置跟踪</p>
-                      <p class="tasknum">{{disposalTrackCount}}</p>
-                    </div>
-<!--                  </router-link>-->
-                </li>
-                <li>
-<!--                  <router-link to="/workBenchDetail/removeRisk">-->
-                    <div>
-                      <p>预警解除</p>
-                      <p class="tasknum">{{removeRiskCount}}</p>
-                    </div>
-<!--                  </router-link>-->
-                </li>
-                <li>
-<!--                  <router-link to="/workBenchDetail/signalManual">-->
-                    <div>
-                      <p>人工信号</p>
-                      <p class="tasknum">{{signalManualCount}}</p>
-                    </div>
-<!--                  </router-link>-->
-                </li>
-                <li>
-<!--                  <router-link to="/workBenchDetail/manageFlow">-->
-                    <div>
-                      <p>客户名单</p>
-                      <p class="tasknum">{{manageFlowCount}}</p>
-                    </div>
-<!--                  </router-link>-->
-                </li>
-                <li>
-<!--                  <router-link to="/workBenchDetail/reassignTask">-->
-                    <div>
-                      <p>改派任务</p>
-                      <p class="tasknum">{{reassignTaskCount}}</p>
-                    </div>
-<!--                  </router-link>-->
-                </li>
-              </ul>
-            </div>
-          </div>
+<!--          <div class="radarleftbox">-->
+<!--            <div class="textlist">-->
+<!--              <div class="title">-->
+<!--                <span class="fz_icon rwcl_icon"></span>-->
+<!--                <div class="title_text  lt">-->
+<!--                  <p>未分配列表任务</p>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="task_list">-->
+<!--              <ul class="ul_this">-->
+<!--                <li>-->
+<!--&lt;!&ndash;                  <router-link to="/workBenchDetail/taskInfo">&ndash;&gt;-->
+<!--                    <div>-->
+<!--                      <p>预警认定</p>-->
+<!--                      <p class="tasknum">{{taskInfoCount}}</p>-->
+<!--                    </div>-->
+<!--&lt;!&ndash;                  </router-link>&ndash;&gt;-->
+<!--                </li>-->
+<!--                <li>-->
+<!--&lt;!&ndash;                  <router-link to="/workBenchDetail/disposalTrack">&ndash;&gt;-->
+<!--                    <div>-->
+<!--                      <p>处置跟踪</p>-->
+<!--                      <p class="tasknum">{{disposalTrackCount}}</p>-->
+<!--                    </div>-->
+<!--&lt;!&ndash;                  </router-link>&ndash;&gt;-->
+<!--                </li>-->
+<!--                <li>-->
+<!--&lt;!&ndash;                  <router-link to="/workBenchDetail/removeRisk">&ndash;&gt;-->
+<!--                    <div>-->
+<!--                      <p>预警解除</p>-->
+<!--                      <p class="tasknum">{{removeRiskCount}}</p>-->
+<!--                    </div>-->
+<!--&lt;!&ndash;                  </router-link>&ndash;&gt;-->
+<!--                </li>-->
+<!--                <li>-->
+<!--&lt;!&ndash;                  <router-link to="/workBenchDetail/signalManual">&ndash;&gt;-->
+<!--                    <div>-->
+<!--                      <p>人工信号</p>-->
+<!--                      <p class="tasknum">{{signalManualCount}}</p>-->
+<!--                    </div>-->
+<!--&lt;!&ndash;                  </router-link>&ndash;&gt;-->
+<!--                </li>-->
+<!--                <li>-->
+<!--&lt;!&ndash;                  <router-link to="/workBenchDetail/manageFlow">&ndash;&gt;-->
+<!--                    <div>-->
+<!--                      <p>客户名单</p>-->
+<!--                      <p class="tasknum">{{manageFlowCount}}</p>-->
+<!--                    </div>-->
+<!--&lt;!&ndash;                  </router-link>&ndash;&gt;-->
+<!--                </li>-->
+<!--                <li>-->
+<!--&lt;!&ndash;                  <router-link to="/workBenchDetail/reassignTask">&ndash;&gt;-->
+<!--                    <div>-->
+<!--                      <p>改派任务</p>-->
+<!--                      <p class="tasknum">{{reassignTaskCount}}</p>-->
+<!--                    </div>-->
+<!--&lt;!&ndash;                  </router-link>&ndash;&gt;-->
+<!--                </li>-->
+<!--              </ul>-->
+<!--            </div>-->
+<!--          </div>-->
 
           <div class="radarleftbox">
             <div class="textlist">

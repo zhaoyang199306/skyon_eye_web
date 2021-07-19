@@ -1,8 +1,8 @@
 {
-  "name": "ruoyi",
+  "name": "skyon",
   "version": "2.2.0",
   "description": "天眼风险预警系统",
-  "author": "若依",
+  "author": "诺祺",
   "license": "MIT",
   "scripts": {
     "dev": "vue-cli-service serve",
