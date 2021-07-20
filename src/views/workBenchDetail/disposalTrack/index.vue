@@ -696,10 +696,8 @@
             let temp_1 = [];
             let temp_2 = [];
             res.data.forEach(item => {
-              if(item.isProprietary || item.isProprietary === '1'){
+              if(item.isProprietary || item.isProprietary === '1')
                 temp_1.push(item);
-                temp_2.push(item)
-              }
               else
                 temp_2.push(item);
             })
