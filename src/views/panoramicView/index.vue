@@ -75,10 +75,12 @@
     </div>
 
     <!--      详情-->
-    <div v-if="detailShow" style="min-height: calc(100vh - 80px);margin-top: 5px;margin-left: 10px;
+    <transition name = "fade">
+      <div v-show = "fadeShow" >
+        <div v-if="detailShow" style="min-height: calc(100vh - 80px);margin-top: 5px;margin-left: 10px;
     border-left: 1px solid #0068B9; ">
 
-      <div style="margin-left: 15px">
+          <div style="margin-left: 15px">
 
         <div class="cl_title" style="margin-bottom:5px;">
           <p class="lt" style="margin: 0 0;">{{custName}}</p>
@@ -116,7 +118,9 @@
           </el-tab-pane>
         </el-tabs>
       </div>
-    </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -139,6 +143,7 @@
     },
     data() {
       return {
+        fadeShow:false,
         //  true 标志
         trueFlag: true,
         //  详情展示控制
@@ -187,6 +192,7 @@
       // 清除信息
       restInfo() {
         this.activeName = 'riskView';
+        this.fadeShow = false;
       },
       // 查询全景视图列表
       getList() {
@@ -205,6 +211,10 @@
         this.custName = row.CUSTNAME;
         this.custNo = row.CUSTNO;
         this.custType = row.CUSTTYPE;
+
+        setTimeout(()=>{
+          this.fadeShow = true;
+        },500);
       },
       handleClick(tab, event) {
         if (tab.name === 'riskView') {
@@ -218,6 +228,12 @@
 </script>
 
 <style scoped>
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity 2s
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active, 2.1.8 版本以下 */ {
+    opacity: 0
+  }
 
   .panoramic-view-context >>> .el-tabs--card>.el-tabs__header .el-tabs__item.is-active{
     background-color: #FFFFFF !important;

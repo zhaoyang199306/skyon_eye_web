@@ -1,4 +1,6 @@
 <template>
+  <transition name = "fade">
+    <div v-show = "fadeShow" >
   <div v-model="form">
     <!--    风险提示-->
     <div>
@@ -154,6 +156,8 @@
       </div>
     </div>
   </div>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -167,6 +171,7 @@
     },
     data() {
       return {
+        fadeShow:false,
         // 页面form
         form: {
           dtTyDpApLiabMatureSituW: {
@@ -464,6 +469,7 @@
             this.tranToLoanTable();
             this.tranCreditTable();
           }
+          this.fadeShow = true;
         })
       }
     }
@@ -471,6 +477,13 @@
 </script>
 
 <style scoped>
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity 2s
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active, 2.1.8 版本以下 */ {
+    opacity: 0
+  }
+
 
   .statistics-warning-row{
     background-color: yellow;
@@ -482,6 +495,10 @@
   }
 
   .risk_Context_right span {
+    color: blue;
+    font-weight: bold;
+  }
+  .risk_Context_middle span {
     color: blue;
     font-weight: bold;
   }
