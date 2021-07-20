@@ -40,9 +40,62 @@
             text: this.custName, // 节点名
             color:'#FFC9A6',
           }
+          // ,{
+          //   id: '1', //
+          //   text: "A公司", // 节点名
+          //   color:'#6AECFF',
+          // },{
+          //   id: '2', //
+          //   text: "B公司", // 节点名
+          //   color:'#6AECFF',
+          // },{
+          //   id: '3', //
+          //   text: "C公司", // 节点名
+          //   color:'#6AECFF',
+          // },{
+          //   id: '4', //
+          //   text: "张某", // 节点名
+          //   color:'#FEEDA6',
+          // },{
+          //   id: '5', //
+          //   text: "D公司", // 节点名
+          //   color:'#6AECFF',
+          // }
         ],
         // 连接线
-        links: [],
+        links: [
+        //   {
+        //   from: 'id',
+        //   to: "1",
+        //   text: "成员企业",
+        //   isHideArrow: 'false',
+        //   fontColor: '#000000'
+        // },{
+        //   from: 'id',
+        //   to: "2",
+        //   text: "成员企业",
+        //   isHideArrow: 'false',
+        //   fontColor: '#000000'
+        // },{
+        //   from: 'id',
+        //   to: "3",
+        //   text: "成员企业",
+        //   isHideArrow: 'false',
+        //   fontColor: '#000000'
+        // },{
+        //   from: 'id',
+        //   to: "4",
+        //   text: "法人",
+        //   isHideArrow: 'false',
+        //   fontColor: '#000000'
+        // },{
+        //   from: '4',
+        //   to: "5",
+        //   text: "法人",
+        //   isHideArrow: 'false',
+        //   fontColor: '#000000'
+        // }
+        ],
         //
         graphOptions: {
           allowSwitchLineShape: true, // 是否在工具栏中显示切换线条形状的按钮
@@ -83,18 +136,37 @@
       getList() {
         getPanoramicRelation(this.custNo, this.custType).then(res => {
           if (res.code === 200) {
-            console.log("-----getPanoramicRelation-----")
+            console.log("-----getPanoramicRelationsssssss-----")
             console.log(res)
             this.relationList = res.data;
 
             if (this.relationList.dtTyDpApCustIncidRelaW){
               for (let i = 0; i < this.relationList.dtTyDpApCustIncidRelaW.length; i++) {
                 let relation = this.relationList.dtTyDpApCustIncidRelaW[i];
+                // 存量贷款的
+                //"innerHTML": "<div style=\"background-color: yellow\"><div style='color:red'>存量贷款</div></div><p>d</p>",
                 // 节点颜色
                 if (relation.relaType === '关联人'){
-                  this.nodes = this.nodes.concat({id: relation.custNo + i, text: relation.relaParty,color:'#FEEDA6',disableDefaultClickEffect:true});
+                  if (relation.riskFlag === '存量贷款'){
+                    this.nodes = this.nodes.concat(
+                        {id: relation.custNo + i,
+                        text: relation.relaParty,
+                        innerHTML:"<div style='background-color: rgb(255, 114, 114);margin-left: 20px'><div style='color: white'>存量贷款</div></div><p>"+relation.relaParty+"</p>",
+                        color:'#FEEDA6',disableDefaultClickEffect:true});
+                  } else {
+                    this.nodes = this.nodes.concat({id: relation.custNo + i, text: relation.relaParty,color:'#FEEDA6',disableDefaultClickEffect:true});
+                  }
                 } else if (relation.relaType === '关联企业'){
-                  this.nodes = this.nodes.concat({id: relation.custNo + i, text: relation.relaParty,color:'#6AECFF',disableDefaultClickEffect:true});
+                  if (relation.riskFlag === '财务风险'){
+                    this.nodes = this.nodes.concat(
+                      {id: relation.custNo + i,
+                        text: relation.relaParty,
+                        innerHTML:"<div style='background-color: red;margin-left: 20px'><div style='color: white'>财务风险</div></div><p>"+relation.relaParty+"</p>",
+                        color:'#6AECFF',disableDefaultClickEffect:true});
+                  } else {
+                    this.nodes = this.nodes.concat({id: relation.custNo + i, text: relation.relaParty,color:'#6AECFF',disableDefaultClickEffect:true});
+                  }
+
                 }
                 //
                 this.links = this.links.concat({

@@ -1,4 +1,6 @@
 <template>
+  <transition name = "fade">
+    <div v-show = "fadeShow" >
   <div class="panoramic-cust-info-context">
 
     <!--    小微企业板块  -->
@@ -266,6 +268,8 @@
     </div>
 
   </div>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -282,6 +286,7 @@
     },
     data() {
       return {
+        fadeShow:false,
         // 是否小微企业板块
         companyPlate: false,
         form: {},
@@ -305,6 +310,7 @@
             this.companyPlate = this.custType === "小微企业";
             this.form = res.data;
           }
+          this.fadeShow = true;
         })
       }
     }
@@ -312,6 +318,14 @@
 </script>
 
 <style scoped>
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity 2s
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active, 2.1.8 版本以下 */ {
+    opacity: 0
+  }
+
 
   .panoramic-cust-info-context >>> .el-form-item__label {
     text-align: left;
