@@ -3,15 +3,16 @@
 
     <!-- 标签 -->
     <div class="tag-panel" v-if="!detailShow">
-      <div @click="isProprietary = true" class="tag-box" :class="{'tag-is-active': isProprietary}">
-        <el-badge :value="(disposalTrackList.length === 0 ? '' : disposalTrackList.length)" class="tag-box-badge">
-          自营业务
-        </el-badge>
-      </div>
 
       <div :class="{'tag-is-active': !isProprietary}" class="tag-box" @click="isProprietary = false">
         <el-badge :value="(unProprietaryList.length === 0 ? '' : unProprietaryList.length)" class="tag-box-badge">
           非自营业务
+        </el-badge>
+      </div>
+
+      <div @click="isProprietary = true" class="tag-box" :class="{'tag-is-active': isProprietary}">
+        <el-badge :value="(disposalTrackList.length === 0 ? '' : disposalTrackList.length)" class="tag-box-badge">
+          自营业务
         </el-badge>
       </div>
     </div>
@@ -145,10 +146,10 @@
             <el-input :value="detailInfo.custName" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="证件号码:" class="el-col-4">
-            <el-input value="113002199602162223" readonly="readonly"/>
+            <el-input :value="detailInfo.cardNum" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="手机号码:" class="el-col-4">
-            <el-input value="13956785619" readonly="readonly"/>
+            <el-input :value="detailInfo.custTel" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="跟踪完成日期：" label-width="140px" class="el-col-4">
             <el-input :value="detailInfo.doneDate" readonly="readonly"/>
@@ -366,6 +367,7 @@
       <!--        </div>-->
 
       <div slot="footer" class="el-col-24" style="margin: 20px 40% 0 40%">
+        <el-button type="primary" class="btn" style="width: 100px" @click="synchronize">风险信息同步</el-button>
         <el-button type="primary" class="btn" style="width: 80px" @click="linkClick">流程信息</el-button>
         <el-button type="primary" class="btn">暂 存</el-button>
         <el-button type="primary" class="btn" @click="submit">提 交</el-button>
@@ -382,7 +384,7 @@
         <!--    详情基本信息    -->
         <el-form ref="form" label-width="120px" class="el-col-24">
           <el-form-item label="渠道：" class="el-col-4">
-            <el-input :value="detailInfo.custName" readonly="readonly"/>
+            <el-input :value="detailInfo.channel" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="产品:" class="el-col-4">
             <el-input value="XX款" readonly="readonly"/>
@@ -549,7 +551,7 @@
     data() {
       return {
         // 自营业务
-        isProprietary: true,
+        isProprietary: false,
         riskLevelSelect:"",
         //  true 标志
         trueFlag: true,
@@ -694,8 +696,10 @@
             let temp_1 = [];
             let temp_2 = [];
             res.data.forEach(item => {
-              if(item.isProprietary || item.isProprietary === '1') 
+              if(item.isProprietary || item.isProprietary === '1'){
                 temp_1.push(item);
+                temp_2.push(item)
+              }
               else
                 temp_2.push(item);
             })
@@ -713,6 +717,19 @@
         this.queryParams.pageNum = 1;
         this.getList();
       },
+      /** 风险信息同步按钮 */
+      synchronize() {
+        let loading = this.$loading({
+          lock: true,
+          text: '.......',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.2)'
+        });
+        setTimeout(() => {
+          loading.close();
+          this.msgSuccess("同步成功");
+        },1000)
+      }
     }
   }
 </script>
@@ -727,7 +744,7 @@
   }
 
   .tag-box {
-    width: 45%;
+    width: 47%;
     height: 100%;
     background-color: #E5E5EA;
     cursor: pointer;
