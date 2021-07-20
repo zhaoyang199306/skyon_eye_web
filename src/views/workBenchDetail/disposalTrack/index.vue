@@ -106,13 +106,13 @@
               header-cell-style="font-size:12px" :row-style="{height:'32px'}"
               :cell-style="{padding:'0px'}" :data="unProprietaryList" v-show="detailListShow">
       <el-table-column label="任务编号" align="center" prop="taskInfoNo"/>
-      <el-table-column label="渠道名称" align="center" prop="custName"/>
+      <el-table-column label="渠道名称" align="center" prop="channel"/>
       <el-table-column label="风险客户数" align="center"  prop="riskCustNum"/>
       <el-table-column label="所属支行" align="center" prop="branch"/>
       <el-table-column label="所属分行" align="center" prop="nextBranch"/>
       <el-table-column label="任务生成日期" align="center">2021-02-03</el-table-column>
       <el-table-column label="任务截止日期" align="center">2021-04-01</el-table-column>
-      <el-table-column label="风险认定方式" align="center" prop="riskLevel"/>
+      <el-table-column label="风险认定方式" align="center" prop="riskComfType"/>
       <el-table-column label="跟踪状态" align="center">处理中</el-table-column>
       <el-table-column label="审批权限" align="center" prop="limits"/>
       <el-table-column label="操作" align="center">
@@ -412,7 +412,7 @@
                   :cell-style="{padding:'0px'}" :data="custHistoryList">
           <el-table-column label="任务编号" align="center" prop="custNo"/>
           <el-table-column label="认定完成期限" align="center" prop="doneDate"/>
-          <el-table-column label="渠道" align="center" prop="custName"/>
+          <el-table-column label="渠道" align="center" prop="channel"/>
           <el-table-column label="风险客户数量" align="center" prop="riskCustNum"/>
           <el-table-column label="触发预警日期" align="center" prop="createTime"/>
           <el-table-column label="认定状态" align="center">
@@ -439,7 +439,7 @@
                   :cell-style="{padding:'0px'}" :data="custHistoryDisposalList">
           <el-table-column label="任务编号" align="center" prop="custNo"/>
           <el-table-column label="跟踪完成日期" align="center" prop="doneDate"/>
-          <el-table-column label="渠道" align="center" prop="custName"/>
+          <el-table-column label="渠道" align="center" prop="channel"/>
           <el-table-column label="风险客户数量" align="center" prop="riskCustNum"/>
           <el-table-column label="详情" align="center">
             <template slot-scope="scope">
@@ -652,6 +652,7 @@
       //  详情
       handleDetail(scope) {
         console.log(scope);
+        console.log("}}}}}}}}}}}}}}}}");
         this.detailShow = true;
         this.detailListShow = false;
         this.taskInfoNo = scope.taskInfoNo;
@@ -659,18 +660,18 @@
         this.custHistoryList = [];
         this.custHistoryDisposalList = [];
         this.custHistoryList.push({
-          custNo: "3190164965",
-          doneDate: "2021-07-14",
-          custName: scope.custName,
-          riskCustNum: 500,
-          createTime: "2021-07-16",
-          state: "已完成"
-        })
+          custNo: scope.custNo,
+          doneDate: scope.doneDate,
+          channel: scope.channel,
+          riskCustNum: scope.riskCustNum,
+          createTime: '2021-03-02',
+          state: scope.state,
+        }),
         this.custHistoryDisposalList.push({
-          custNo: "3190162363",
-          doneDate: "2021-07-11",
-          custName: scope.custName,
-          riskCustNum: 139
+          custNo: scope.custNo,
+          doneDate: scope.doneDate,
+          channel: scope.channel,
+          riskCustNum: scope.riskCustNum,
         })
         // 赋值
         getDisposalTrackDetail(this.taskInfoNo).then(res => {

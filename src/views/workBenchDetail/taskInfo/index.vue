@@ -152,7 +152,7 @@
             <el-input v-model="detailInfo.custTel" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="跟踪完成日期：" label-width="140px" class="el-col-4">
-            <el-input value="2021-01-05"  readonly="readonly"/>
+            <el-input value="2021-09-05"  readonly="readonly"/>
           </el-form-item>
           <el-form-item label="风险等级：" class="el-col-4">
             <el-input v-model="detailInfo.riskLevel" readonly="readonly"/>
