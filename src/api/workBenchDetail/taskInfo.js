@@ -18,15 +18,24 @@ export function getTaskInfoDetail(taskInfoNo) {
 }
 
 // 提交预警单
-export function submitTaskInfo(taskInfoNo, riskValue, radio, examinValue) {
+export function submitTaskInfo(taskInfoNo, riskValue, radio,
+                               examinValue,personalRiskLevel,checkResult,warnSignalList) {
+
+  var pojo = {
+    taskInfoNo: taskInfoNo,
+    riskValue: riskValue,
+    radio: radio,
+    examinValue: examinValue,
+    personalRiskLevel: personalRiskLevel,
+    checkResult: checkResult,
+    warnSignalList: warnSignalList,
+  }
+
+  console.log(pojo);
+
   return request({
     url: "/taskInfo/submitTask",
-    method: 'get',
-    params: {
-      taskInfoNo: taskInfoNo,
-      riskValue: riskValue,
-      radio: radio,
-      examinValue: examinValue,
-    }
+    method: 'post',
+    data: pojo
   })
 }
