@@ -163,66 +163,112 @@
           <div class="radioball lt"></div>
           <p class="lt" style="margin: 0 0">反馈信息</p>
         </div>
-        <div class="el-col-24">
-          <el-form ref="feedbackForm" label-width="120px" style="margin-left: 40px" class="el-col-24">
-            <el-form-item label="是否处置完成：" class="el-col-6">
-              <el-select v-model="feedbackForm.dealProcess" placeholder="请选择">
-                <el-option v-for="item in dealProcessOptions" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="风险变化情况:" class="el-col-6">
-              <el-select v-model="feedbackForm.riskStatus" placeholder="请选择">
-                <el-option v-for="item in riskStatusOptions" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="风险等级:" class="el-col-12" label-width="100px">
-              <td style="width: 150px">
-                <div class="dropdown">
+<!--        客户经理-->
+        <div v-if="isManager">
+          <div class="el-col-24">
+            <el-form ref="feedbackForm" label-width="120px" style="margin-left: 40px" class="el-col-24">
+              <el-form-item label="是否处置完成：" class="el-col-6">
+                <el-select v-model="feedbackForm.dealProcess" placeholder="请选择">
+                  <el-option v-for="item in dealProcessOptions" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="风险变化情况:" class="el-col-6">
+                <el-select v-model="feedbackForm.riskStatus" placeholder="请选择">
+                  <el-option v-for="item in riskStatusOptions" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="风险等级:" class="el-col-12" label-width="100px">
+                <td style="width: 150px">
+                  <div class="dropdown">
 
-                  <el-select v-model="riskLevelSelect" placeholder="请选择风险等级" style="width: 200px">
-                    <el-option label="红色" value="红色">
-                      <span><img :src="redImg" style="display: inline-block;float: left;margin: 0px 5px;">红色</span>
-                    </el-option>
-                    <el-option label="橙色" value="橙色">
-                      <img :src="orangeImg" style="display: inline-block;float: left;margin: 0px 5px;">
-                      <span>橙色</span>
-                    </el-option>
-                    <el-option label="黄色" value="黄色">
-                      <img :src="yellowImg" style="display: inline-block;float: left;margin: 0px 5px;">
-                      <span>黄色</span>
-                    </el-option>
-                    <el-option label="蓝色" value="蓝色">
-                      <img :src="blueImg" style="display: inline-block;float: left;margin: 0px 5px;">
-                      <span>蓝色</span>
-                    </el-option>
-                    <el-option label="绿色" value="绿色">
-                      <img :src="greenImg" style="display: inline-block;float: left;margin: 0px 5px;">
-                      <span>绿色</span>
-                    </el-option>
-                  </el-select>
-                </div>
+                    <el-select v-model="riskLevelSelect" placeholder="请选择风险等级" style="width: 200px">
+                      <el-option label="红色" value="红色">
+                        <span><img :src="redImg" style="display: inline-block;float: left;margin: 0px 5px;">红色</span>
+                      </el-option>
+                      <el-option label="橙色" value="橙色">
+                        <img :src="orangeImg" style="display: inline-block;float: left;margin: 0px 5px;">
+                        <span>橙色</span>
+                      </el-option>
+                      <el-option label="黄色" value="黄色">
+                        <img :src="yellowImg" style="display: inline-block;float: left;margin: 0px 5px;">
+                        <span>黄色</span>
+                      </el-option>
+                      <el-option label="蓝色" value="蓝色">
+                        <img :src="blueImg" style="display: inline-block;float: left;margin: 0px 5px;">
+                        <span>蓝色</span>
+                      </el-option>
+                      <el-option label="绿色" value="绿色">
+                        <img :src="greenImg" style="display: inline-block;float: left;margin: 0px 5px;">
+                        <span>绿色</span>
+                      </el-option>
+                    </el-select>
+                  </div>
 
-              </td>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div class="el-col-24">
-          <div class="titleTable">
-            <div class="title_table_div">
-              <p class="title_table_p" style="font-size: 14px">
-                反馈结果:
-              </p>
-              <p class="title_table_p_color" style="font-size: 14px">
-                (限制1000字)
-              </p>
-            </div>
-            <div class="title_table_textarea">
-              <el-input type="textarea" v-model="feedbackValue" :autosize="{ minRows: 3, maxRows: 3}" />
+                </td>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="el-col-24">
+            <div class="titleTable">
+              <div class="title_table_div">
+                <p class="title_table_p" style="font-size: 14px">
+                  反馈结果:
+                </p>
+                <p class="title_table_p_color" style="font-size: 14px">
+                  (限制1000字)
+                </p>
+              </div>
+              <div class="title_table_textarea">
+                <el-input type="textarea" v-model="feedbackValue" :autosize="{ minRows: 3, maxRows: 3}" />
+              </div>
             </div>
           </div>
         </div>
+        <!--       非 客户经理-->
+        <div v-else>
+          <div class="el-col-24">
+            <el-form ref="feedbackForm" label-width="120px" style="margin-left: 40px" class="el-col-24">
+              <el-form-item label="是否处置完成：" class="el-col-6">
+                <el-select disabled="disabled" v-model="feedbackForm.dealProcess = '是'" placeholder="请选择">
+                  <el-option value="是" >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="风险变化情况:" class="el-col-6">
+                <el-select disabled="disabled" v-model="feedbackForm.riskStatus = '不变'" placeholder="请选择">
+                  <el-option value="不变" />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="风险等级:" class="el-col-12" label-width="100px">
+                <td style="width: 150px">
+                  <el-select disabled="disabled" v-model="feedbackForm.riskStatus = '橙色'" placeholder="请选择">
+                    <el-option value="橙色" />
+                  </el-select>
+
+                </td>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="el-col-24">
+            <div class="titleTable">
+              <div class="title_table_div">
+                <p class="title_table_p" style="font-size: 14px">
+                  反馈结果:
+                </p>
+                <p class="title_table_p_color" style="font-size: 14px">
+                  (限制1000字)
+                </p>
+              </div>
+              <div class="title_table_textarea">
+                <el-input type="textarea" value="已按要求执行" :autosize="{ minRows: 3, maxRows: 3}" disabled="disabled" >
+                </el-input>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="el-col-24">
           <div style="margin-left: 50px;margin-top:10px;line-height: 20px">
             <span>附件：</span>
@@ -418,18 +464,35 @@
         </div>
         <div class="cl_body">
           <el-form label-width="100px">
-            <el-form-item label="是否处置完成" prop="name">
-              <select style="width: 100px;">
-                <option>是</option>
-                <option>否</option>
-              </select>
-            </el-form-item>
+            <div v-if="isManager">
+              <el-form-item label="是否处置完成" prop="name">
+                <select style="width: 100px;">
+                  <option>是</option>
+                  <option>否</option>
+                </select>
+              </el-form-item>
 
-            <el-form-item label="反馈结果" prop="name">
-              <el-input type="textarea" v-model="feedbackValue" maxlength="100" show-word-limit resize="none"
-                :autosize="{ minRows: 6, maxRows: 6 }">
-              </el-input>
-            </el-form-item>
+              <el-form-item label="反馈结果" prop="name">
+                <el-input type="textarea" v-model="feedbackValue" maxlength="100" show-word-limit resize="none"
+                          :autosize="{ minRows: 6, maxRows: 6 }">
+                </el-input>
+              </el-form-item>
+            </div>
+            <div v-else="!isManager">
+              <el-form-item label="是否处置完成" prop="name">
+                <select disabled="disabled" style="width: 100px;">
+                  <option>是</option>
+                  <option>否</option>
+                </select>
+              </el-form-item>
+
+              <el-form-item label="反馈结果" prop="name">
+                <el-input disabled="disabled" type="textarea"  value="已反馈" maxlength="100" show-word-limit resize="none"
+                          :autosize="{ minRows: 6, maxRows: 6 }">
+                </el-input>
+              </el-form-item>
+            </div>
+
             <el-form-item label="上传附件">
               <i class="el-icon-upload" style="font-size: 20px;cursor: pointer;" @click="$refs.upload.click()"></i>
               <input type="file" ref="upload" id="upload" style="display: none;"
@@ -448,12 +511,14 @@
         <div class="cl_body">
           <el-form label-width="100px">
             <el-form-item label="是否同意" prop="name">
-              <el-radio v-model="radio" label="1">是</el-radio>
-              <el-radio v-model="radio" label="2">否</el-radio>
+              <el-radio-group v-model="radioOn">
+                <el-radio  label="1">是</el-radio>
+                <el-radio  label="2">否</el-radio>
+              </el-radio-group>
             </el-form-item>
 
             <el-form-item label="审核意见" prop="name">
-              <el-input type="textarea" v-model="textarea" maxlength="100" show-word-limit resize="none"
+              <el-input type="textarea" v-model="examinValue" maxlength="100" show-word-limit resize="none"
                 :autosize="{ minRows: 6, maxRows: 6 }">
               </el-input>
             </el-form-item>
@@ -533,6 +598,8 @@
     },
     data() {
       return {
+        radioOn:"1",
+        isManager:true,
         // 自营业务
         isProprietary: true,
         riskLevelSelect: "",
@@ -557,7 +624,7 @@
           dealProcess: undefined,
           riskStatus: undefined,
         },
-        feedbackValue: undefined,
+        feedbackValue: "",
         taskInfoNo: "",
         redImg: redimgpng,
         orangeImg: orangeimgpng,
