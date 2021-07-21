@@ -341,23 +341,27 @@
       <div style="margin-top: 10px" class="el-col-24">
         <!--    详情基本信息    -->
         <el-form ref="form" label-width="120px" class="el-col-24">
-          <el-form-item label="渠道：" class="el-col-4">
+          <el-form-item label="渠道：" label-width="80px" class="el-col-3">
             <el-input :value="detailInfo.channel" readonly="readonly" />
           </el-form-item>
-          <el-form-item label="产品:" class="el-col-4">
+          <el-form-item label="产品:" label-width="80px" class="el-col-3">
             <el-input value="税e融" readonly="readonly" />
           </el-form-item>
-          <el-form-item label="认定完成日期:" class="el-col-4">
+          <el-form-item label="认定完成日期:" label-width="140px" class="el-col-4">
             <el-input :value="detailInfo.doneDate" readonly="readonly" />
           </el-form-item>
-          <el-form-item label="风险客户数量:" class="el-col-4">
+          <el-form-item label="风险客户数量:" label-width="140px" class="el-col-4">
             <el-input :value="detailInfo.riskCustNum" readonly="readonly" />
           </el-form-item>
-          <el-form-item label="认定方式：" label-width="140px" class="el-col-4">
+          <el-form-item label="认定方式：" label-width="100px" class="el-col-3">
             <el-input value="系统认定" readonly="readonly" />
           </el-form-item>
-          <el-form-item label="预览：" label-width="140px" class="el-col-4">
-            <svg-icon icon-class="下载" class-name="download-icon"  @click="riskCustListClick('preview')"/>
+          <el-form-item label="附件：" label-width="80px" class="el-col-3">
+            <el-button size="mini" type="text" @click="riskCustListClick('preview')">风险客户清单
+            </el-button>
+          </el-form-item>
+          <el-form-item label="预览：" label-width="80px" class="el-col-3">
+            <svg-icon icon-class="下载" class-name="download-icon"/>
           </el-form-item>
         </el-form>
       </div>
@@ -469,14 +473,14 @@
             <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
               header-cell-style="font-size:12px" :row-style="{height:'32px'}" :cell-style="{padding:'0px'}"
               :data="riskCustList">
-              <el-table-column label="产品" align="center" prop="product" />
-              <el-table-column label="认定完成日期" align="center" prop="doneDate" />
-              <el-table-column label="客户名称" align="center" prop="custName" />
-              <el-table-column label="证件号" align="center" prop="cardNum" />
-              <el-table-column label="触发规则名称" align="center" prop="ruleName" />
+              <el-table-column label="产品" width="100px" align="center" prop="product" />
+              <el-table-column label="认定完成日期" width="100px" align="center" prop="doneDate" />
+              <el-table-column label="客户名称" width="100px" align="center" prop="custName" />
+              <el-table-column label="证件号" width="160px" align="center" prop="cardNum" />
+              <el-table-column label="触发规则名称" width="120px" align="center" prop="ruleName" />
               <el-table-column label="预警原因" align="center" prop="about" />
-              <el-table-column label="建议措施" align="center" prop="advice" />
-              <el-table-column label="反馈结果" align="center" prop="result" />
+              <el-table-column label="建议措施" width="100px" align="center" prop="advice" />
+              <el-table-column label="反馈结果" width="100px" align="center" prop="result" />
             </el-table>
           </el-dialog>
         </template>
@@ -522,6 +526,7 @@
   import {
     mapGetters
   } from "vuex";
+  import riskCustListData from './data.json';
 
   export default {
     name: "disposalTrack",
@@ -732,60 +737,15 @@
       },
       /** 查看风险客户清单、预览按钮 */
       riskCustListClick(type) {
-        let riskCustList = [{
-          product: "税e融",
-          doneDate: "2021-07-12",
-          custName: "张三",
-          cardNum: "511062199604129853",
-          ruleName: "借款人行内信用评分等级降低",
-          about: "借款人在我信用评分等级下降，上次评级时间2020-02-02；等级A，本次评级时间2020-08-02；等级B",
-          advice: "建议降额",
-          result: ""
-        },{
-          product: "税e融",
-          doneDate: "2021-07-12",
-          custName: "周卓浩",
-          cardNum: "511062199308110394",
-          ruleName: "借款人行内保证金账户被冻结、扣划",
-          about: "监测到借款人行内保证金账户状态变为冻结，冻结时间2020-02-02",
-          advice: "建议降额",
-          result: ""
-        },{
-          product: "税e融",
-          doneDate: "2021-07-13",
-          custName: "弘方",
-          cardNum: "511602199703267843",
-          ruleName: "人行征信贷款连续逾期",
-          about: "根据借款人最新征信信息统计，借款人有x笔未结清贷款，其中XX行XX贷款，贷款金额30万，余额15万，连续逾期2期，逾期金额XXX",
-          advice: "冻结额度",
-          result: ""
-        },{
-          product: "税e融",
-          doneDate: "2021-07-15",
-          custName: "王生安",
-          cardNum: "511602189701224829",
-          ruleName: "人行征信用卡逾期期数过高",
-          about: "根据借款人最新征信信息统计，借款人有x张激活信用卡，其中XX行XX信用卡，额度5万，余额1万，连续逾期2期，逾期金额XXX",
-          advice: "冻结额度",
-          result: ""
-        },{
-          product: "税e融",
-          doneDate: "2021-07-19",
-          custName: "陈国柏",
-          cardNum: "511602199411248364",
-          ruleName: "人行征信用卡金额过高",
-          about: "根据借款人最新征信信息统计，借款人有x张激活信用卡，总计逾期金额6万",
-          advice: "冻结额度",
-          result: ""
-        }]
+        let riskCustList = riskCustListData;
         this.riskCustList = [];
         if(type && type === 'preview') {
-          for(let i=0;i<3;i++) {
-            this.riskCustList.push(riskCustList[i]);
-          }
+          this.riskCustList = riskCustList;
         }
         else {
-          this.riskCustList = riskCustList;
+          for(let i=0;i<7;i++) {
+            this.riskCustList.push(riskCustList[i]);
+          }
         }
         this.riskCustListShow = true;
       }
