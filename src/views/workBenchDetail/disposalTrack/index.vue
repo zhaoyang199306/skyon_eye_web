@@ -128,12 +128,11 @@
             <el-input :value="detailInfo.riskLevel" readonly="readonly" />
           </el-form-item>
           <el-form-item label="管控措施：" class="el-col-18">
-            <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 5}"
-                      value="按常规实施授信后管理和检查；列为重点关注对象，加大对客户的监控力度" readonly="readonly" />
+            <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 5}" value="按常规实施授信后管理和检查" readonly="readonly" />
           </el-form-item>
 
           <el-form-item label="检查结论：" class="el-col-18">
-            <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 5}" value="信号属实" readonly="readonly" />
+            <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 5}" value="贷款额度较大" readonly="readonly" />
           </el-form-item>
         </el-form>
 
@@ -178,7 +177,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item class="el-col-12" label-width="0px">
+            <el-form-item label="风险等级:" class="el-col-12" label-width="0px">
               <td style="width: 150px">
                 <div class="dropdown">
 
@@ -699,7 +698,7 @@
             let temp_1 = [];
             let temp_2 = [];
             res.data.forEach(item => {
-              if ((item.isProprietary && item.isProprietary === '1') )
+              if (item.isProprietary && item.isProprietary === '1')
                 temp_1.push(item);
               else
                 temp_2.push(item);
