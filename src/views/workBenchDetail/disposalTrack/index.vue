@@ -359,8 +359,6 @@
           <el-form-item label="附件：" label-width="80px" class="el-col-3">
             <el-button size="mini" type="text" @click="riskCustListClick('preview')">风险客户清单
             </el-button>
-          </el-form-item>
-          <el-form-item label="预览：" label-width="80px" class="el-col-3">
             <svg-icon icon-class="下载" class-name="download-icon"/>
           </el-form-item>
         </el-form>
@@ -469,7 +467,7 @@
       <div>
         <template>
           <el-dialog title="风险客户清单" :visible.sync="riskCustListShow" customClass="customWidth" :close-on-click-modal="false"
-            width="1200px">
+            width="1400px">
             <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
               header-cell-style="font-size:12px" :row-style="{height:'32px'}" :cell-style="{padding:'0px'}"
               :data="riskCustList">
@@ -477,7 +475,7 @@
               <el-table-column label="认定完成日期" width="100px" align="center" prop="doneDate" />
               <el-table-column label="客户名称" width="100px" align="center" prop="custName" />
               <el-table-column label="证件号" width="160px" align="center" prop="cardNum" />
-              <el-table-column label="触发规则名称" width="120px" align="center" prop="ruleName" />
+              <el-table-column label="触发规则名称" width="200px" align="center" prop="ruleName" />
               <el-table-column label="预警原因" align="center" prop="about" />
               <el-table-column label="建议措施" width="100px" align="center" prop="advice" />
               <el-table-column label="反馈结果" width="100px" align="center" prop="result" />
@@ -720,14 +718,8 @@
       },
       /** 风险信息同步按钮 */
       synchronize() {
-        let loading = this.$loading({
-          lock: true,
-          text: '.......',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.2)'
-        });
+
         setTimeout(() => {
-          loading.close();
           this.msgSuccess("同步成功");
         }, 1000)
       },
@@ -926,5 +918,6 @@
     fill: #0069BA;
     width: 16px;
     height: 16px;
+    margin-left: 10px;
   }
 </style>
