@@ -364,7 +364,7 @@
     background: #FFB3B3;
   }
   .ss3 {
-    background: #A6ECFF;
+    background: red;
   }
   .ss4{
     background: #A6ECFF;

@@ -353,25 +353,25 @@
             </p>
           </div>
           <div class="title_table_textarea">
-            <el-checkbox-group v-model="checkList" style="line-height: 20px">
+            <el-checkbox-group v-model="checkList" :disabled="!isManager" style="line-height: 20px">
               <div style="float: left">
                 <div style="width: 300px;float: left">
-                  <el-checkbox label="继续加大力度支持"/>
-                  <el-checkbox label="按常规实施授信后管理和检查"/>
-                  <el-checkbox label="列为重点关注对象，加大对客户的监控力度"/>
-                  <el-checkbox label="增加风险缓释措施"/>
-                  <el-checkbox label="收回授信后不再给予续贷"/>
-                  <el-checkbox label="“三定原则”落实清收"/>
-                  <el-checkbox label="依法处置授信抵/质押物"/>
+                  <el-checkbox label="a">继续加大力度支持</el-checkbox>
+                  <el-checkbox label="b">按常规实施授信后管理和检查</el-checkbox>
+                  <el-checkbox label="c">列为重点关注对象，加大对客户的监控力度</el-checkbox>
+                  <el-checkbox label="d">增加风险缓释措施</el-checkbox>
+                  <el-checkbox label="e">收回授信后不再给予续贷</el-checkbox>
+                  <el-checkbox label="f">“三定原则”落实清收</el-checkbox>
+                  <el-checkbox label="g">依法处置授信抵/质押物</el-checkbox>
                 </div>
                 <div style="width: 280px;float: left;margin-left: 40px">
-                  <el-checkbox label="逐步退出"/>
-                  <el-checkbox label="要求借款人提出更详细的还款计划"/>
-                  <el-checkbox label="停止发放新授信"/>
-                  <el-checkbox label="提前收回该客户未使用的授信"/>
-                  <el-checkbox label="追索保证人连带责任"/>
-                  <el-checkbox label="与客户协商以物抵贷"/>
-                  <el-checkbox label="依法提起诉讼"/>
+                  <el-checkbox label="h">逐步退出</el-checkbox>
+                  <el-checkbox label="i">要求借款人提出更详细的还款计划</el-checkbox>
+                  <el-checkbox label="j">停止发放新授信</el-checkbox>
+                  <el-checkbox label="k">提前收回该客户未使用的授信</el-checkbox>
+                  <el-checkbox label="l">追索保证人连带责任</el-checkbox>
+                  <el-checkbox label="m">与客户协商以物抵贷</el-checkbox>
+                  <el-checkbox label="n">依法提起诉讼</el-checkbox>
                 </div>
                 <div>
                   <el-checkbox label="其他"/>
@@ -383,8 +383,8 @@
         </div>
       </div>
 
-      <!--      风险提示单设置    -->
-      <div class="el-col-24" style="margin-top: 15px">
+      <!--      审核意见    -->
+      <div v-show="!isManager" class="el-col-24" style="margin-top: 15px">
         <div class="cl_title" style="margin-bottom:5px;">
           <div class="radioball lt"></div>
           <p class="lt" style="margin: 0 0">审核意见</p>
@@ -425,9 +425,10 @@
 
 
 
-      <div slot="footer" class="el-col-24" style="margin: 20px 40% 0 40%">
+      <div slot="footer" class="el-col-24" style="margin: 20px 40% 0 40%;padding-bottom: 30px" >
         <el-button type="primary" class="btn" style="width: 80px" @click="linkClick">流程信息</el-button>
         <el-button type="primary" class="btn">暂 存</el-button>
+        <el-button type="primary" v-show="!isManager" class="btn">退 回</el-button>
         <el-button type="primary" class="btn" @click="submit">提 交</el-button>
         <el-button type="primary" class="btn" @click="cancel">取 消</el-button>
       </div>
@@ -443,12 +444,14 @@
   import blueimgpng from "@/assets/png/bluecircle.png"
   import greenimgpng from "@/assets/png/greencircle.png"
   import yellowimgpng from "@/assets/png/yellowcircle.png"
+  import {mapGetters} from "vuex";
 
   export default {
     name: "taskInfo",
     components: {LinkLog},
     data() {
       return {
+        isManager:true,
         sysRiskLevelSelect:"红色",
         custRiskLevelSelect:"",
         trackTime:"2021-04-25",
@@ -476,7 +479,7 @@
         onWayTaskDialog: false,
         logShow: false,
         detailListShow: true,
-        radio: undefined,
+        radio: '1',
         radioExamine: undefined,
         otherCheck: undefined,
         //
@@ -496,8 +499,23 @@
     },
     created() {
       this.getList();
+      this.managerDetail();
+    },
+    computed:{
+      ...mapGetters([
+        'roles',
+      ]),
     },
     methods: {
+
+      // 针对客户经理，不显示审核意见
+      managerDetail(){
+        if (this.roles.indexOf("客户经理")>-1)
+          this.isManager = true;
+        else
+          this.isManager = false;
+      },
+
 
       onWayTaskShow(){
         this.onWayTaskDialog = true;
@@ -528,7 +546,7 @@
         for (let i = 0; i < this.checkList.length; i++) {
           riskValue = riskValue + this.checkList[i] + ";";
         }
-        submitTaskInfo(this.taskInfoNo, riskValue, "1", this.examinValue).then(res => {
+        submitTaskInfo(this.taskInfoNo, riskValue.length>0?riskValue.substr(0,riskValue.length-1):"", "1", this.examinValue).then(res => {
           console.log("---submitTaskInfo");
           console.log(res);
           if (res.code === 200) {
@@ -559,11 +577,15 @@
       },
       //  详情
       handleDetail(scope) {
+        console.log("wwwwwwwww");
         console.log(scope);
         this.detailShow = true;
         this.detailListShow = false;
         this.taskInfoNo = scope.taskInfoNo;
         this.detailInfo = scope;
+        // checkBox返显
+        this.checkList = scope.riskValue.split(";");
+
         // 赋值
         getTaskInfoDetail(scope.taskInfoNo).then(res => {
           console.log("---res==============");
@@ -606,6 +628,20 @@
 
 
 <style scoped>
+
+  .title_table_textarea >>>.el-checkbox{
+    padding-top: 5px
+  }
+
+  .title_table_textarea >>>.el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after{
+    border-color: black;
+  }
+
+  .title_table_textarea >>>.el-checkbox__input.is-disabled+span.el-checkbox__label{
+    color: black;
+  }
+
+
 
   .btnTask {
     padding: 0px 10px;

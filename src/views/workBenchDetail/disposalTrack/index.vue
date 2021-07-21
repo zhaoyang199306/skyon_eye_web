@@ -276,7 +276,7 @@
 
       </div>
       <!--      审核意见    -->
-      <div class="el-col-24" style="margin-top: 15px">
+      <div class="el-col-24" v-show="!isManager" style="margin-top: 15px">
         <div class="cl_title" style="margin-bottom:5px;">
           <div class="radioball lt"></div>
           <p class="lt" style="margin: 0 0">审核意见</p>
@@ -366,10 +366,11 @@
       <!--          </el-table>-->
       <!--        </div>-->
 
-      <div slot="footer" class="el-col-24" style="margin: 20px 40% 0 40%">
+      <div slot="footer" class="el-col-24" style="margin: 20px 45% 0 35%;padding-bottom: 30px">
         <el-button type="primary" class="btn" style="width: 100px" @click="synchronize">风险信息同步</el-button>
         <el-button type="primary" class="btn" style="width: 80px" @click="linkClick">流程信息</el-button>
         <el-button type="primary" class="btn">暂 存</el-button>
+        <el-button type="primary" v-show="!isManager" class="btn">退 回</el-button>
         <el-button type="primary" class="btn" @click="submit">提 交</el-button>
         <el-button type="primary" class="btn" @click="cancel">取 消</el-button>
       </div>
@@ -387,7 +388,7 @@
             <el-input :value="detailInfo.channel" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="产品:" class="el-col-4">
-            <el-input value="XX款" readonly="readonly"/>
+            <el-input value="税e融" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="认定完成日期:" class="el-col-4">
             <el-input :value="detailInfo.doneDate" readonly="readonly"/>
@@ -487,7 +488,7 @@
       </div>
 
       <!--    详情 - 审核意见（审批环节可看）    -->
-      <div class="el-col-24" style="margin-top: 15px">
+      <div class="el-col-24" v-show="!isManager" style="margin-top: 15px">
         <div class="cl_title" style="margin-bottom:5px;">
           <div class="radioball lt"></div>
           <p class="lt" style="margin: 0 0">审核意见（审批环节可看）</p>
@@ -511,24 +512,27 @@
                 </el-input>
             </el-form-item>
           </el-form>
-
-          <div slot="footer" class="el-col-24" style="margin: 20px 40% 0 40%">
-            <el-button type="primary" class="btn" style="width: 80px" @click="linkClick">流程信息</el-button>
-            <el-button type="primary" class="btn">暂 存</el-button>
-            <el-button type="primary" class="btn" @click="submit">提 交</el-button>
-            <el-button type="primary" class="btn" @click="cancel">取 消</el-button>
-          </div>
         </div>
 
-        <!--      流程信息    -->
-        <div>
-          <template>
-            <el-dialog title="流程信息" :visible.sync="open" customClass="customWidth" :close-on-click-modal="false"
-                       width="500px">
-              <link-log v-bind:taskInfoNo="taskInfoNo"/>
-            </el-dialog>
-          </template>
-        </div>
+
+      </div>
+
+      <div slot="footer" class="el-col-24" style="margin: 20px 40% 0 40%;padding-bottom: 30px">
+        <el-button type="primary" class="btn" style="width: 80px" @click="linkClick">流程信息</el-button>
+        <el-button type="primary" class="btn">暂 存</el-button>
+        <el-button type="primary" v-show="!isManager" class="btn">退 回</el-button>
+        <el-button type="primary" class="btn" @click="submit">提 交</el-button>
+        <el-button type="primary" class="btn" @click="cancel">取 消</el-button>
+      </div>
+
+      <!--      流程信息    -->
+      <div>
+        <template>
+          <el-dialog title="流程信息" :visible.sync="open" customClass="customWidth" :close-on-click-modal="false"
+                     width="500px">
+            <link-log v-bind:taskInfoNo="taskInfoNo"/>
+          </el-dialog>
+        </template>
       </div>
 
     </div>
@@ -544,12 +548,14 @@
   import blueimgpng from "@/assets/png/bluecircle.png"
   import greenimgpng from "@/assets/png/greencircle.png"
   import yellowimgpng from "@/assets/png/yellowcircle.png"
+  import {mapGetters} from "vuex";
 
   export default {
     name: "disposalTrack",
     components: {LinkLog},
     data() {
       return {
+        isManager:true,
         // 自营业务
         isProprietary: false,
         riskLevelSelect:"",
@@ -609,8 +615,23 @@
     },
     created() {
       this.getList();
+      this.managerDetail();
     },
+    computed:{
+      ...mapGetters([
+        'roles',
+      ]),
+    },
+
     methods: {
+      // 针对客户经理，不显示审核意见
+      managerDetail(){
+        if (this.roles.indexOf("客户经理")>-1)
+          this.isManager = true;
+        else
+          this.isManager = false;
+      },
+
       onWayTaskShow(){
         this.onWayTaskDialog = true;
       },
@@ -697,7 +718,7 @@
             let temp_1 = [];
             let temp_2 = [];
             res.data.forEach(item => {
-              if(item.isProprietary || item.isProprietary === '1')
+              if(item.isProprietary && item.isProprietary === '1')
                 temp_1.push(item);
               else
                 temp_2.push(item);
