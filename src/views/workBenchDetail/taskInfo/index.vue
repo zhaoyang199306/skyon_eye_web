@@ -173,12 +173,12 @@
           <el-table-column label="当前处理岗" align="center" prop="nowDealRole"/>
           <el-table-column label="信号名称" align="center" prop="singleName"/>
           <el-table-column label="信号等级" align="center" prop="singleLevel"/>
-          <el-table-column label="预警原因" align="center" prop="warmResson"/>
+          <el-table-column label="预警原因" width="400px" align="center" prop="warmResson"/>
           <el-table-column label="触发日期" align="center" prop="touchDate"/>
           <el-table-column label="下放时间" align="center" prop="devolutionDate"/>
-          <el-table-column label="认定状态" align="center" >
+          <el-table-column label="认定状态" align="center">
             <template slot-scope="scope">
-              <el-select v-model="scope.row.i" style="width: 90px">
+              <el-select v-model="scope.row.comfStatus" :disabled="!isManager" style="width: 90px">
                 <el-option label="属实" value="01">属实</el-option>
                 <el-option label="不属实" value="02">不属实</el-option>
               </el-select>
@@ -266,7 +266,7 @@
               </td>
               <td width="10%">
                 <div class="dropdown">
-                  <el-select v-model="custRiskLevelSelect" @change="riskLevelChange">
+                  <el-select v-model="personalRiskLevel" :disabled="!isManager"  @change="riskLevelChange">
                     <el-option label="红色" value="红色">
                       <span><img :src="redImg" style="display: inline-block;float: left;margin: 0px 5px;">红色</span>
                     </el-option>
@@ -325,7 +325,7 @@
               </td>
               <td colspan="5" class="tdsec" style="height:223px">
 
-                <el-input type="textarea" v-model="textareaResult" :autosize="{ minRows: 7, maxRows: 7}">属实高风险</el-input>
+                <el-input type="textarea" :disabled="!isManager" v-model="checkResult" :autosize="{ minRows: 7, maxRows: 7}">属实高风险</el-input>
               </td>
             </tr>
 
@@ -453,9 +453,9 @@
       return {
         isManager:true,
         sysRiskLevelSelect:"红色",
-        custRiskLevelSelect:"",
+        personalRiskLevel:"",
         trackTime:"2021-08-01",
-        textareaResult:"",
+        checkResult:"",
         //  true 标志
         trueFlag: true,
         tableHeader:false,
@@ -535,6 +535,7 @@
       },
       //  提交
       submit() {
+        console.log(this.warnSignalList);
         // 没出结果，一直等待
         let loading = this.$loading({
           lock: true,
@@ -546,7 +547,8 @@
         for (let i = 0; i < this.checkList.length; i++) {
           riskValue = riskValue + this.checkList[i] + ";";
         }
-        submitTaskInfo(this.taskInfoNo, riskValue.length>0?riskValue.substr(0,riskValue.length-1):"", "1", this.examinValue).then(res => {
+        submitTaskInfo(this.taskInfoNo, riskValue.length>0?riskValue.substr(0,riskValue.length-1):"",
+          "1", this.examinValue,this.personalRiskLevel,this.checkResult,this.warnSignalList).then(res => {
           console.log("---submitTaskInfo");
           console.log(res);
           if (res.code === 200) {
@@ -557,11 +559,10 @@
           }
           this.restParam();
           loading.close();
-        }).catch(function () {
-            this.restParam();
-            loading.close();
-          }
-        )
+        }).catch(res=>{
+          this.restParam();
+          loading.close();
+          })
       },
       cancel() {
         this.detailShow = false;
@@ -571,7 +572,7 @@
       // 重置参数
       restParam() {
         this.taskInfoNo = "";
-        this.radio = undefined;
+        this.radio = 1;
         this.riskValue = "";
         this.checkList = [];
       },
@@ -585,6 +586,10 @@
         this.detailInfo = scope;
         // checkBox返显
         this.checkList = scope.riskValue === null?[]:scope.riskValue.split(";");
+        // 个人认定风险等级返显
+        this.personalRiskLevel = scope.personalRiskLevel
+        // 检查结论返显
+        this.checkResult = scope.checkResult
 
         // 赋值
         getTaskInfoDetail(scope.taskInfoNo).then(res => {
