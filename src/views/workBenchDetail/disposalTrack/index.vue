@@ -177,7 +177,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="风险等级:" class="el-col-12" label-width="0px">
+            <el-form-item label="风险等级:" class="el-col-12" label-width="100px">
               <td style="width: 150px">
                 <div class="dropdown">
 
