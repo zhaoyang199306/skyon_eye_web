@@ -23,6 +23,13 @@
       custName: String,
       // 参数:
       custType: String,
+      // 当前图谱层级
+      currentIndex: Number
+    },
+    watch: {
+      currentIndex(newVal) {
+        this.changeData();
+      }
     },
     data() {
       return {
@@ -33,7 +40,8 @@
           dtTyDpApCustIncidRelaW: [],
         },
         // 节点
-        nodes: [
+        nodes: [],
+        datas: [
           // 先确定一个主节点
           {
             id: 'id', // id
@@ -70,10 +78,27 @@
             id: '7', //
             text: "李梅", // 节点名
             color:'#FEEDA6',
+          },{
+            id: '8', //
+            text: "H公司", // 节点名
+            color:'#6AECFF',
+          },{
+            id: '9', //
+            text: "Z公司", // 节点名
+            color:'#6AECFF',
+          },{
+            id: '10', //
+            text: "F公司", // 节点名
+            color:'#6AECFF',
+          },{
+            id: '11', //
+            text: "李某", // 节点名
+            color:'#FEEDA6',
           }
         ],
         // 连接线
-        links: [
+        links: [],
+        link_datas: [
           {
           from: 'id',
           to: "1",
@@ -105,19 +130,48 @@
           isHideArrow: 'false',
           fontColor: '#000000'
         },{
-            from: 'id',
-            to: "6",
-            text: "实际控制人",
-            isHideArrow: 'false',
-            fontColor: '#000000'
-          },{
-            from: '7',
-            to: "5",
-            text: "配偶",
-            isHideArrow: 'false',
-            fontColor: '#000000'
-          }
-        ],
+          from: 'id',
+          to: "6",
+          text: "实际控制人",
+          isHideArrow: 'false',
+          fontColor: '#000000'
+        },{
+          from: '7',
+          to: "5",
+          text: "配偶",
+          isHideArrow: 'false',
+          fontColor: '#000000'
+        },{
+          from: '8',
+          to: "7",
+          text: "法定代表人",
+          isHideArrow: 'false',
+          fontColor: '#000000'
+        },{
+          from: '3',
+          to: "10",
+          text: "持股30%",
+          isHideArrow: 'false',
+          fontColor: '#000000'
+        },{
+          from: '2',
+          to: "9",
+          text: "持股15%",
+          isHideArrow: 'false',
+          fontColor: '#000000'
+        },{
+          from: '2',
+          to: "3",
+          text: "持股10%",
+          isHideArrow: 'false',
+          fontColor: '#000000'
+        },{
+          from: '9',
+          to: "11",
+          text: "法定代表人",
+          isHideArrow: 'false',
+          fontColor: '#000000'
+        }],
         //
         graphOptions: {
           allowSwitchLineShape: true, // 是否在工具栏中显示切换线条形状的按钮
@@ -152,6 +206,7 @@
       // 主节点 赋值
       // this.showSeeksGraph();
       this.getList();
+      this.changeData();
     },
     methods: {
       // 查询关联关系图谱
@@ -202,7 +257,7 @@
             console.log(this.nodes);
             console.log(this.links);
 
-            this.showSeeksGraph();
+            // this.showSeeksGraph();
           }
         });
       },
@@ -215,6 +270,7 @@
           nodes: this.nodes,
           links: this.links
         }
+        console.log(__graph_json_data)
         // 以上数据中的node和link可以参考"Node节点"和"Link关系"中的参数进行配置
         this.$refs.seeksRelationGraph.setJsonData(__graph_json_data, (seeksRGGraph) => {
           // Called when the relation-graph is completed
@@ -225,6 +281,59 @@
       },
       onLineClick(lineObject, $event) {
         console.log('onLineClick:', lineObject)
+      },
+      getNodesList(arr) {
+        let data = arr;
+        arr.forEach(id => {
+          this.link_datas.forEach(item => {
+            if(item.from === id || item.to === id) {
+              if(data.indexOf(item.from) === -1) {
+                data.push(item.from)
+              }
+              else if(data.indexOf(item.to) === -1) {
+                data.push(item.to)
+              }
+            }
+          })
+        })
+        return data;
+      },
+      // 根据图谱层级切换图谱数据
+      changeData() {
+        let arr = [];
+        arr.push(this.rootId);
+        if(this.currentIndex === 1) {
+          arr = this.getNodesList(arr);
+        }
+        else if(this.currentIndex === 2) {
+          arr = this.getNodesList(arr);
+          arr = this.getNodesList(arr);
+        }
+        else if(this.currentIndex === 3) {
+          this.datas.forEach(item => {
+            if(arr.indexOf(item.id) === -1) {
+              arr.push(item.id);
+            }
+          })
+        }
+        console.log(arr);
+        this.nodes = [];
+        this.datas.forEach(item => {
+          if(arr.indexOf(item.id) !== -1) {
+            this.nodes.push(item);
+          }
+        })
+        let list = [];
+        this.link_datas.forEach(item => {
+          if(arr.indexOf(item.from) !== -1 && arr.indexOf(item.to) !== -1) {
+            list.push(item);
+          }
+        })
+        this.links = list;
+        console.log("===================")
+        console.log(this.nodes);
+        console.log(this.links);
+        this.showSeeksGraph();
       }
     }
   }

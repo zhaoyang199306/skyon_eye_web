@@ -18,15 +18,15 @@
           placeholder="选择日期"
           default-value="new Date()">
         </el-date-picker>
-        <el-button type="primary" @click="getAllDate">查询</el-button>
-        <el-button type="primary" @click="getAllDate(1)">重置</el-button>
+        <el-button type="primary" @click="getAllDate" size="mini">查询</el-button>
+        <el-button type="primary" @click="getAllDate(1)" size="mini">重置</el-button>
       </div>
       <!--      radio列表-->
       <div>
-        <el-radio-group v-model="tabPosition" style="margin-bottom: 30px;">
+        <el-radio-group v-model="tabPosition" style="margin-bottom: 10px;margin-top: 10px;">
           <el-radio-button label="warnOverview">预警情况概览</el-radio-button>
           <el-radio-button style="margin-left: 5px" label="sysWorking">系统运行分析</el-radio-button>
-          <el-radio-button style="margin-left: 5px" label="signalDimension">信号维度分析</el-radio-button>
+          <el-radio-button style="margin-left: 5px" label="signalDimension" v-if="false">信号维度分析</el-radio-button>
         </el-radio-group>
 
         <template v-if="tabPosition === 'warnOverview' && returnFlag === true ">

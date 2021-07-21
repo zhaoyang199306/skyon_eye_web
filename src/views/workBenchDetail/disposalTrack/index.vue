@@ -426,7 +426,7 @@
             </el-form-item>
 
             <el-form-item label="反馈结果" prop="name">
-              <el-input type="textarea" v-model="textarea" maxlength="100" show-word-limit resize="none"
+              <el-input type="textarea" v-model="feedbackValue" maxlength="100" show-word-limit resize="none"
                 :autosize="{ minRows: 6, maxRows: 6 }">
               </el-input>
             </el-form-item>

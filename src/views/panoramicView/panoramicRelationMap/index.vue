@@ -1,14 +1,26 @@
 <template>
   <div>
-    <div>
-      <ul style="margin-left: 35%">
-        <li><div style="width: 20px;height: 20px;background-color: #FFC9A6;float:left;border-radius: 50%; "></div><span style="float:left;margin-left: 15px">主体</span></li>
-        <li><div style="width: 20px;height: 20px;background-color: #FEEDA6;float:left;border-radius: 50%; "></div><span style="float:left;margin-left: 15px">关联人</span></li>
-        <li><div style="width: 20px;height: 20px;background-color: #6AECFF;float:left;border-radius: 50%; "></div><span style="float:left;margin-left: 15px">关联企业</span></li>
-      </ul>
+    <div style="display: flex;align-items: center;justify-content: center;height: 50px;">
+
+      <div>
+        <ul style="width: 500px;display: flex;">
+          <li><div style="width: 20px;height: 20px;background-color: #FFC9A6;border-radius: 50%; display: inline-block;"></div><div style="margin-left: 15px; display: inline-block;">主体</div></li>
+          <li><div style="width: 20px;height: 20px;background-color: #FEEDA6;border-radius: 50%; display: inline-block; "></div><div style="margin-left: 15px; display: inline-block;">关联人</div></li>
+          <li><div style="width: 20px;height: 20px;background-color: #6AECFF;border-radius: 50%; display: inline-block; "></div><div style="margin-left: 15px; display: inline-block;">关联企业</div></li>
+        </ul>
+      </div>
+
     </div>
-    <template>
-      <relation-map-d3  :custNo="custNo" :custType="custType" :custName = "custName"/>
+
+    <div style="position: absolute;left: 0;top: 0px;height: 50px;display: flex;align-items: center;">层级选择
+     <select style="width: 100px;margin-left: 10px;" v-model="index">
+       <option :value="1">一层</option>
+       <option :value="2">二层</option>
+       <option :value="3">三层</option>
+     </select></div>
+
+    <template v-if="show">
+      <relation-map-d3 :currentIndex="currentIndex"  :custNo="custNo" :custType="custType" :custName = "custName"/>
     </template>
   </div>
 </template>
@@ -28,6 +40,19 @@
       return {
         // 子组件传参
         relationList:{},
+        index: 1,
+        currentIndex: 1,
+        show: true
+      }
+    },
+    watch:{
+      index(newVal) {
+        this.show = false;
+        this.currentIndex = newVal;
+        this.$nextTick(() => {
+        	this.show = true;
+        })
+        
       }
     },
     created() {
@@ -43,7 +68,8 @@
   li{
     width: 150px;
     list-style-type :none;
-    float: left;
+    display: flex;
+    align-items: center;
   }
 
   .liStyle{
