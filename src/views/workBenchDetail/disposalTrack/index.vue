@@ -4,22 +4,22 @@
     <!-- 标签 -->
     <div class="tag-panel" v-if="!detailShow">
 
-      <div :class="{'tag-is-active': !isProprietary}" class="tag-box" @click="isProprietary = false">
-        <el-badge :value="(unProprietaryList.length === 0 ? '' : unProprietaryList.length)" class="tag-box-badge">
-          非自营业务
-        </el-badge>
-      </div>
-
       <div @click="isProprietary = true" class="tag-box" :class="{'tag-is-active': isProprietary}">
         <el-badge :value="(disposalTrackList.length === 0 ? '' : disposalTrackList.length)" class="tag-box-badge">
           自营业务
+        </el-badge>
+      </div>
+
+      <div :class="{'tag-is-active': !isProprietary}" class="tag-box" @click="isProprietary = false">
+        <el-badge :value="(unProprietaryList.length === 0 ? '' : unProprietaryList.length)" class="tag-box-badge">
+          非自营业务
         </el-badge>
       </div>
     </div>
 
 
     <div class="title">
-      <span class="fz_icon"/>
+      <span class="fz_icon" />
       <div class="title_text">
         <p>处置任务跟踪</p>
       </div>
@@ -28,40 +28,20 @@
       <div v-show="detailListShow" class="seaContainer">
         <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="0px">
           <el-form-item prop="dataSourceName">
-            <el-input
-              v-model="queryParams.dataSourceName"
-              placeholder="客户编号"
-              clearable
-              size="small"
-              @keyup.enter.native="handleQuery"
-            />
+            <el-input v-model="queryParams.dataSourceName" placeholder="客户编号" clearable size="small"
+              @keyup.enter.native="handleQuery" />
           </el-form-item>
           <el-form-item prop="description">
-            <el-input
-              v-model="queryParams.description"
-              :placeholder="(isProprietary ? '客户名称' : '渠道名称')"
-              clearable
-              size="small"
-              @keyup.enter.native="handleQuery"
-            />
+            <el-input v-model="queryParams.description" :placeholder="(isProprietary ? '客户名称' : '渠道名称')" clearable
+              size="small" @keyup.enter.native="handleQuery" />
           </el-form-item>
           <el-form-item prop="description">
-            <el-input
-              v-model="queryParams.queueName"
-              placeholder="队列名称"
-              clearable
-              size="small"
-              @keyup.enter.native="handleQuery"
-            />
+            <el-input v-model="queryParams.queueName" placeholder="队列名称" clearable size="small"
+              @keyup.enter.native="handleQuery" />
           </el-form-item>
           <el-form-item prop="description">
-            <el-input
-              v-model="queryParams.ducCreateDepartment"
-              placeholder="产品发行部门"
-              clearable
-              size="small"
-              @keyup.enter.native="handleQuery"
-            />
+            <el-input v-model="queryParams.ducCreateDepartment" placeholder="产品发行部门" clearable size="small"
+              @keyup.enter.native="handleQuery" />
           </el-form-item>
           <el-form-item style="padding-left: 12px">
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -74,28 +54,23 @@
 
     <!--    展示列表  -->
     <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-              header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-              :cell-style="{padding:'0px'}" :data="disposalTrackList" v-show="detailListShow" v-if="isProprietary">
-      <el-table-column label="客户编号" align="center" prop="custNo"/>
-      <el-table-column label="客户名称" align="center" prop="custName"/>
-      <el-table-column label="队列ID" align="center"  prop="queueId"/>
-      <el-table-column label="队列名称" align="center" prop="queueName"/>
-      <el-table-column label="产品发行部门" align="center" prop="publishDepartment"/>
-      <el-table-column label="所属支行" align="center" prop="branch"/>
-      <el-table-column label="所属分行" align="center" prop="nextBranch"/>
-      <el-table-column label="风险等级" align="center" prop="riskLevel"/>
+      header-cell-style="font-size:12px" :row-style="{height:'32px'}" :cell-style="{padding:'0px'}"
+      :data="disposalTrackList" v-show="detailListShow" v-if="isProprietary">
+      <el-table-column label="客户编号" align="center" prop="custNo" />
+      <el-table-column label="客户名称" align="center" prop="custName" />
+      <el-table-column label="队列ID" align="center" prop="queueId" />
+      <el-table-column label="队列名称" align="center" prop="queueName" />
+      <el-table-column label="产品发行部门" align="center" prop="publishDepartment" />
+      <el-table-column label="所属支行" align="center" prop="branch" />
+      <el-table-column label="所属分行" align="center" prop="nextBranch" />
+      <el-table-column label="风险等级" align="center" prop="riskLevel" />
       <el-table-column label="任务生成日期" align="center">2021-02-03</el-table-column>
       <el-table-column label="任务截止日期" align="center">2021-04-01</el-table-column>
       <el-table-column label="跟踪状态" align="center">处理中</el-table-column>
-      <el-table-column label="审批权限" align="center" prop="limits"/>
+      <el-table-column label="审批权限" align="center" prop="limits" />
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-view"
-            @click="handleDetail(scope.row)"
-          >处理
+          <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetail(scope.row)">处理
           </el-button>
         </template>
       </el-table-column>
@@ -103,26 +78,21 @@
     </el-table>
 
     <el-table v-else width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-              header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-              :cell-style="{padding:'0px'}" :data="unProprietaryList" v-show="detailListShow">
-      <el-table-column label="任务编号" align="center" prop="taskInfoNo"/>
-      <el-table-column label="渠道名称" align="center" prop="channel"/>
-      <el-table-column label="风险客户数" align="center"  prop="riskCustNum"/>
-      <el-table-column label="所属支行" align="center" prop="branch"/>
-      <el-table-column label="所属分行" align="center" prop="nextBranch"/>
+      header-cell-style="font-size:12px" :row-style="{height:'32px'}" :cell-style="{padding:'0px'}"
+      :data="unProprietaryList" v-show="detailListShow">
+      <el-table-column label="任务编号" align="center" prop="taskInfoNo" />
+      <el-table-column label="渠道名称" align="center" prop="channel" />
+      <el-table-column label="风险客户数" align="center" prop="riskCustNum" />
+      <el-table-column label="所属支行" align="center" prop="branch" />
+      <el-table-column label="所属分行" align="center" prop="nextBranch" />
       <el-table-column label="任务生成日期" align="center">2021-02-03</el-table-column>
       <el-table-column label="任务截止日期" align="center">2021-04-01</el-table-column>
-      <el-table-column label="风险认定方式" align="center" prop="riskComfType"/>
+      <el-table-column label="风险认定方式" align="center" prop="riskComfType" />
       <el-table-column label="跟踪状态" align="center">处理中</el-table-column>
-      <el-table-column label="审批权限" align="center" prop="limits"/>
+      <el-table-column label="审批权限" align="center" prop="limits" />
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-view"
-            @click="handleDetail(scope.row)"
-          >处理
+          <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetail(scope.row)">处理
           </el-button>
         </template>
       </el-table-column>
@@ -140,29 +110,29 @@
         <!--    详情基本信息    -->
         <el-form ref="form" label-width="120px" class="el-col-24">
           <el-form-item label="客户编号：" class="el-col-4">
-            <el-input :value="detailInfo.custNo" readonly="readonly"/>
+            <el-input :value="detailInfo.custNo" readonly="readonly" />
           </el-form-item>
           <el-form-item label="客户名称:" class="el-col-4">
-            <el-input :value="detailInfo.custName" readonly="readonly"/>
+            <el-input :value="detailInfo.custName" readonly="readonly" />
           </el-form-item>
           <el-form-item label="证件号码:" class="el-col-4">
-            <el-input :value="detailInfo.cardNum" readonly="readonly"/>
+            <el-input :value="detailInfo.cardNum" readonly="readonly" />
           </el-form-item>
           <el-form-item label="手机号码:" class="el-col-4">
-            <el-input :value="detailInfo.custTel" readonly="readonly"/>
+            <el-input :value="detailInfo.custTel" readonly="readonly" />
           </el-form-item>
           <el-form-item label="跟踪完成日期：" label-width="140px" class="el-col-4">
-            <el-input :value="detailInfo.doneDate" readonly="readonly"/>
+            <el-input :value="detailInfo.doneDate" readonly="readonly" />
           </el-form-item>
           <el-form-item label="风险等级：" class="el-col-4">
-            <el-input :value="detailInfo.riskLevel" readonly="readonly"/>
+            <el-input :value="detailInfo.riskLevel" readonly="readonly" />
           </el-form-item>
           <el-form-item label="管控措施：" class="el-col-18">
-            <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 5}" value="按常规实施授信后管理和检查" readonly="readonly"/>
+            <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 5}" value="按常规实施授信后管理和检查" readonly="readonly" />
           </el-form-item>
 
           <el-form-item label="检查结论：" class="el-col-18">
-            <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 5}" value="贷款额度较大" readonly="readonly"/>
+            <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 5}" value="贷款额度较大" readonly="readonly" />
           </el-form-item>
         </el-form>
 
@@ -176,15 +146,15 @@
           <div class="btnTask rt showMoreone" style="float: right" @click="onWayTaskShow">历史跟踪记录</div>
         </div>
         <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-                  header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                  :cell-style="{padding:'0px'}" :data="onWayTaskList">
-          <el-table-column label="认定任务编号" align="center" prop="q"/>
-          <el-table-column label="认定完成期限" align="center" prop="w"/>
-          <el-table-column label="风险等级" align="center" prop="e"/>
-          <el-table-column label="管控措施" align="center" prop="r"/>
-          <el-table-column label="管控结论" align="center" prop="t"/>
-          <el-table-column label="触发预警日期" align="center" prop="y"/>
-          <el-table-column label="认定状态" align="u"/>
+          header-cell-style="font-size:12px" :row-style="{height:'32px'}" :cell-style="{padding:'0px'}"
+          :data="onWayTaskList">
+          <el-table-column label="认定任务编号" align="center" prop="q" />
+          <el-table-column label="认定完成期限" align="center" prop="w" />
+          <el-table-column label="风险等级" align="center" prop="e" />
+          <el-table-column label="管控措施" align="center" prop="r" />
+          <el-table-column label="管控结论" align="center" prop="t" />
+          <el-table-column label="触发预警日期" align="center" prop="y" />
+          <el-table-column label="认定状态" align="u" />
         </el-table>
       </div>
       <div class="el-col-24" style="margin-top: 15px">
@@ -197,21 +167,13 @@
           <el-form ref="feedbackForm" label-width="120px" style="margin-left: 40px" class="el-col-24">
             <el-form-item label="是否处置完成：" class="el-col-6">
               <el-select v-model="feedbackForm.dealProcess" placeholder="请选择">
-                <el-option
-                  v-for="item in dealProcessOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                <el-option v-for="item in dealProcessOptions" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="风险变化情况:" class="el-col-6">
               <el-select v-model="feedbackForm.riskStatus" placeholder="请选择">
-                <el-option
-                  v-for="item in riskStatusOptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                <el-option v-for="item in riskStatusOptions" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -229,7 +191,8 @@
                     </el-option>
                     <el-option label="黄色" value="黄色">
                       <img :src="yellowImg" style="display: inline-block;float: left;margin: 0px 5px;">
-                      <span>黄色</span></el-option>
+                      <span>黄色</span>
+                    </el-option>
                     <el-option label="蓝色" value="蓝色">
                       <img :src="blueImg" style="display: inline-block;float: left;margin: 0px 5px;">
                       <span>蓝色</span>
@@ -256,7 +219,7 @@
               </p>
             </div>
             <div class="title_table_textarea">
-              <el-input type="textarea" v-model="feedbackValue" :autosize="{ minRows: 3, maxRows: 3}"/>
+              <el-input type="textarea" v-model="feedbackValue" :autosize="{ minRows: 3, maxRows: 3}" />
             </div>
           </div>
         </div>
@@ -264,10 +227,10 @@
           <div style="margin-left: 50px;margin-top:10px;line-height: 20px">
             <span>附件：</span>
             <a style="color:#0062bd;position:relative;width: 50px;margin-left: 20px;margin-top: 5px;" @click="updateA">
-              <i style="font-size:20px" title="附件下载" class="fa fa-cloud-download"/>
+              <i style="font-size:20px" title="附件下载" class="fa fa-cloud-download" />
               <span style="color: red;padding-top: -5px">
-                    0
-                  </span>
+                0
+              </span>
             </a>
           </div>
         </div>
@@ -291,7 +254,7 @@
             </p>
           </div>
           <div class="title_table_textarea">
-            <el-input type="textarea" v-model="examinValue" :autosize="{ minRows: 3, maxRows: 3}"/>
+            <el-input type="textarea" v-model="examinValue" :autosize="{ minRows: 3, maxRows: 3}" />
           </div>
         </div>
       </div>
@@ -300,44 +263,39 @@
       <div>
         <template>
           <el-dialog title="流程信息" :visible.sync="open" customClass="customWidth" :close-on-click-modal="false"
-                     width="500px">
-            <link-log v-bind:taskInfoNo="taskInfoNo"/>
+            width="500px">
+            <link-log v-bind:taskInfoNo="taskInfoNo" />
           </el-dialog>
         </template>
       </div>
       <!--历史跟踪记录dialog-->
       <el-dialog :visible.sync="onWayTaskDialog" width="1100px" title="历史详情">
         <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-                  header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                  :cell-style="{padding:'0px'}" :data="enclosureList" >
-          <el-table-column label="任务编号" align="center" prop="custNo"/>
-          <el-table-column label="认定完成时限" align="center" prop="custName"/>
-          <el-table-column label="风险等级" align="center" prop="testSubType"/>
-          <el-table-column label="跟踪完成日期" align="center" prop="oneNum"/>
-          <el-table-column label="风险检查情况" align="center" prop="twoNum"/>
-          <el-table-column label="跟踪反馈情况" align="center"/>
+          header-cell-style="font-size:12px" :row-style="{height:'32px'}" :cell-style="{padding:'0px'}"
+          :data="enclosureList">
+          <el-table-column label="任务编号" align="center" prop="custNo" />
+          <el-table-column label="认定完成时限" align="center" prop="custName" />
+          <el-table-column label="风险等级" align="center" prop="testSubType" />
+          <el-table-column label="跟踪完成日期" align="center" prop="oneNum" />
+          <el-table-column label="风险检查情况" align="center" prop="twoNum" />
+          <el-table-column label="跟踪反馈情况" align="center" />
           <el-table-column label="详情" align="center" />
         </el-table>
       </el-dialog>
 
       <!--附件上传dialog-->
-      <el-dialog :visible.sync="openRiskIntroduce" width="1100px" >
+      <el-dialog :visible.sync="openRiskIntroduce" width="1100px">
         <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-                  header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                  :cell-style="{padding:'0px'}" :data="enclosureList" >
-          <el-table-column label="任务编号" align="center" prop="custNo"/>
-          <el-table-column label="流程节点" align="center" prop="custName"/>
-          <el-table-column label="上传人" align="center" prop="testSubType"/>
-          <el-table-column label="上传时间" align="center" prop="oneNum"/>
-          <el-table-column label="附件" align="center" prop="twoNum"/>
+          header-cell-style="font-size:12px" :row-style="{height:'32px'}" :cell-style="{padding:'0px'}"
+          :data="enclosureList">
+          <el-table-column label="任务编号" align="center" prop="custNo" />
+          <el-table-column label="流程节点" align="center" prop="custName" />
+          <el-table-column label="上传人" align="center" prop="testSubType" />
+          <el-table-column label="上传时间" align="center" prop="oneNum" />
+          <el-table-column label="附件" align="center" prop="twoNum" />
           <el-table-column label="操作" align="center">
             <template slot-scope="scope">
-              <el-button
-                size="mini"
-                type="text"
-                icon="el-icon-view"
-                @click="handleDetail(scope.row)"
-              >处理
+              <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetail(scope.row)">处理
               </el-button>
             </template>
           </el-table-column>
@@ -367,7 +325,6 @@
       <!--        </div>-->
 
       <div slot="footer" class="el-col-24" style="margin: 20px 45% 0 35%;padding-bottom: 30px">
-        <el-button type="primary" class="btn" style="width: 100px" @click="synchronize">风险信息同步</el-button>
         <el-button type="primary" class="btn" style="width: 80px" @click="linkClick">流程信息</el-button>
         <el-button type="primary" class="btn">暂 存</el-button>
         <el-button type="primary" v-show="!isManager" class="btn">退 回</el-button>
@@ -385,19 +342,22 @@
         <!--    详情基本信息    -->
         <el-form ref="form" label-width="120px" class="el-col-24">
           <el-form-item label="渠道：" class="el-col-4">
-            <el-input :value="detailInfo.channel" readonly="readonly"/>
+            <el-input :value="detailInfo.channel" readonly="readonly" />
           </el-form-item>
           <el-form-item label="产品:" class="el-col-4">
-            <el-input value="税e融" readonly="readonly"/>
+            <el-input value="税e融" readonly="readonly" />
           </el-form-item>
           <el-form-item label="认定完成日期:" class="el-col-4">
-            <el-input :value="detailInfo.doneDate" readonly="readonly"/>
+            <el-input :value="detailInfo.doneDate" readonly="readonly" />
           </el-form-item>
           <el-form-item label="风险客户数量:" class="el-col-4">
-            <el-input :value="detailInfo.riskCustNum" readonly="readonly"/>
+            <el-input :value="detailInfo.riskCustNum" readonly="readonly" />
           </el-form-item>
           <el-form-item label="认定方式：" label-width="140px" class="el-col-4">
-            <el-input value="系统认定" readonly="readonly"/>
+            <el-input value="系统认定" readonly="readonly" />
+          </el-form-item>
+          <el-form-item label="预览：" label-width="140px" class="el-col-4">
+            <svg-icon icon-class="下载" class-name="download-icon"  @click="riskCustListClick('preview')"/>
           </el-form-item>
         </el-form>
       </div>
@@ -409,20 +369,17 @@
           <p class="lt" style="margin: 0 0">客户历史认定列表</p>
         </div>
         <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-                  header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                  :cell-style="{padding:'0px'}" :data="custHistoryList">
-          <el-table-column label="任务编号" align="center" prop="custNo"/>
-          <el-table-column label="认定完成期限" align="center" prop="doneDate"/>
-          <el-table-column label="渠道" align="center" prop="channel"/>
-          <el-table-column label="风险客户数量" align="center" prop="riskCustNum"/>
-          <el-table-column label="触发预警日期" align="center" prop="createTime"/>
+          header-cell-style="font-size:12px" :row-style="{height:'32px'}" :cell-style="{padding:'0px'}"
+          :data="custHistoryList">
+          <el-table-column label="任务编号" align="center" prop="custNo" />
+          <el-table-column label="认定完成期限" align="center" prop="doneDate" />
+          <el-table-column label="渠道" align="center" prop="channel" />
+          <el-table-column label="风险客户数量" align="center" prop="riskCustNum" />
+          <el-table-column label="触发预警日期" align="center" prop="createTime" />
           <el-table-column label="认定状态" align="center">
             <template slot-scope="scope">
               <span>{{scope.row.state}}</span>
-             <el-button
-                size="mini"
-                type="text"
-              >查看风险客户清单
+              <el-button size="mini" type="text" @click="riskCustListClick()">查看风险客户清单
               </el-button>
             </template>
           </el-table-column>
@@ -436,18 +393,15 @@
           <p class="lt" style="margin: 0 0">客户历史跟踪处置记录</p>
         </div>
         <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-                  header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                  :cell-style="{padding:'0px'}" :data="custHistoryDisposalList">
-          <el-table-column label="任务编号" align="center" prop="custNo"/>
-          <el-table-column label="跟踪完成日期" align="center" prop="doneDate"/>
-          <el-table-column label="渠道" align="center" prop="channel"/>
-          <el-table-column label="风险客户数量" align="center" prop="riskCustNum"/>
+          header-cell-style="font-size:12px" :row-style="{height:'32px'}" :cell-style="{padding:'0px'}"
+          :data="custHistoryDisposalList">
+          <el-table-column label="任务编号" align="center" prop="custNo" />
+          <el-table-column label="跟踪完成日期" align="center" prop="doneDate" />
+          <el-table-column label="渠道" align="center" prop="channel" />
+          <el-table-column label="风险客户数量" align="center" prop="riskCustNum" />
           <el-table-column label="详情" align="center">
             <template slot-scope="scope">
-             <el-button
-                size="mini"
-                type="text"
-              >查看反馈清单
+              <el-button size="mini" type="text">查看反馈清单
               </el-button>
             </template>
           </el-table-column>
@@ -463,25 +417,21 @@
         <div class="cl_body">
           <el-form label-width="100px">
             <el-form-item label="是否处置完成" prop="name">
-                <select style="width: 100px;">
-                  <option>是</option>
-                  <option>否</option>
-                </select>
+              <select style="width: 100px;">
+                <option>是</option>
+                <option>否</option>
+              </select>
             </el-form-item>
 
             <el-form-item label="反馈结果" prop="name">
-                <el-input
-                  type="textarea"
-                  v-model="textarea"
-                  maxlength="100"
-                  show-word-limit
-                  resize="none"
-                  :autosize="{ minRows: 6, maxRows: 6 }"
-                >
-                </el-input>
+              <el-input type="textarea" v-model="textarea" maxlength="100" show-word-limit resize="none"
+                :autosize="{ minRows: 6, maxRows: 6 }">
+              </el-input>
             </el-form-item>
             <el-form-item label="上传附件">
-              <i class="el-icon-upload" style="font-size: 20px;"></i>
+              <i class="el-icon-upload" style="font-size: 20px;cursor: pointer;" @click="$refs.upload.click()"></i>
+              <input type="file" ref="upload" id="upload" style="display: none;"
+                @change="chooseFile" />{{chooseExcelInfo ? chooseExcelInfo.name : ''}}
             </el-form-item>
           </el-form>
         </div>
@@ -496,20 +446,14 @@
         <div class="cl_body">
           <el-form label-width="100px">
             <el-form-item label="是否同意" prop="name">
-                <el-radio v-model="radio" label="1">是</el-radio>
-                <el-radio v-model="radio" label="2">否</el-radio>
+              <el-radio v-model="radio" label="1">是</el-radio>
+              <el-radio v-model="radio" label="2">否</el-radio>
             </el-form-item>
 
             <el-form-item label="审核意见" prop="name">
-                <el-input
-                  type="textarea"
-                  v-model="textarea"
-                  maxlength="100"
-                  show-word-limit
-                  resize="none"
-                  :autosize="{ minRows: 6, maxRows: 6 }"
-                >
-                </el-input>
+              <el-input type="textarea" v-model="textarea" maxlength="100" show-word-limit resize="none"
+                :autosize="{ minRows: 6, maxRows: 6 }">
+              </el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -517,7 +461,30 @@
 
       </div>
 
+      <!-- 风险客户清单 -->
+      <div>
+        <template>
+          <el-dialog title="风险客户清单" :visible.sync="riskCustListShow" customClass="customWidth" :close-on-click-modal="false"
+            width="1200px">
+            <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
+              header-cell-style="font-size:12px" :row-style="{height:'32px'}" :cell-style="{padding:'0px'}"
+              :data="riskCustList">
+              <el-table-column label="产品" align="center" prop="product" />
+              <el-table-column label="认定完成日期" align="center" prop="doneDate" />
+              <el-table-column label="客户名称" align="center" prop="custName" />
+              <el-table-column label="证件号" align="center" prop="cardNum" />
+              <el-table-column label="触发规则名称" align="center" prop="ruleName" />
+              <el-table-column label="预警原因" align="center" prop="about" />
+              <el-table-column label="建议措施" align="center" prop="advice" />
+              <el-table-column label="反馈结果" align="center" prop="result" />
+            </el-table>
+          </el-dialog>
+        </template>
+      </div>
+
       <div slot="footer" class="el-col-24" style="margin: 20px 40% 0 40%;padding-bottom: 30px">
+        <el-button type="primary" class="btn" style="width: 100px" @click="synchronize" v-if="!isProprietary">风险信息同步
+        </el-button>
         <el-button type="primary" class="btn" style="width: 80px" @click="linkClick">流程信息</el-button>
         <el-button type="primary" class="btn">暂 存</el-button>
         <el-button type="primary" v-show="!isManager" class="btn">退 回</el-button>
@@ -529,8 +496,8 @@
       <div>
         <template>
           <el-dialog title="流程信息" :visible.sync="open" customClass="customWidth" :close-on-click-modal="false"
-                     width="500px">
-            <link-log v-bind:taskInfoNo="taskInfoNo"/>
+            width="500px">
+            <link-log v-bind:taskInfoNo="taskInfoNo" />
           </el-dialog>
         </template>
       </div>
@@ -541,24 +508,31 @@
 </template>
 
 <script>
-  import {listDisposalTrack, getDisposalTrackDetail, submitTrackInfo} from "@/api/workBenchDetail/disposalTrack.js"
+  import {
+    listDisposalTrack,
+    getDisposalTrackDetail,
+    submitTrackInfo
+  } from "@/api/workBenchDetail/disposalTrack.js"
   import LinkLog from "../linkLog/index";
   import redimgpng from "@/assets/png/redcircle.png"
   import orangeimgpng from "@/assets/png/orangecircle.png"
   import blueimgpng from "@/assets/png/bluecircle.png"
   import greenimgpng from "@/assets/png/greencircle.png"
   import yellowimgpng from "@/assets/png/yellowcircle.png"
-  import {mapGetters} from "vuex";
+  import {
+    mapGetters
+  } from "vuex";
 
   export default {
     name: "disposalTrack",
-    components: {LinkLog},
+    components: {
+      LinkLog
+    },
     data() {
       return {
-        isManager:true,
         // 自营业务
-        isProprietary: false,
-        riskLevelSelect:"",
+        isProprietary: true,
+        riskLevelSelect: "",
         //  true 标志
         trueFlag: true,
         //  详情展示控制
@@ -566,6 +540,8 @@
         openRiskIntroduce: false,
         onWayTaskDialog: false,
         open: false,
+        // 风险客户清单弹出框
+        riskCustListShow: false,
         detailListShow: true,
         //  自营处理跟踪集合
         disposalTrackList: [],
@@ -580,11 +556,11 @@
         },
         feedbackValue: undefined,
         taskInfoNo: "",
-        redImg:redimgpng,
-        orangeImg:orangeimgpng,
-        blueImg:blueimgpng,
-        greenImg:greenimgpng,
-        yellowImg:yellowimgpng,
+        redImg: redimgpng,
+        orangeImg: orangeimgpng,
+        blueImg: blueimgpng,
+        greenImg: greenimgpng,
+        yellowImg: yellowimgpng,
         // 详情
         detailInfo: null,
         // 在途任务列表
@@ -610,14 +586,16 @@
           dataSourceId: undefined,
         },
         custHistoryList: [],
-        custHistoryDisposalList: []
+        custHistoryDisposalList: [],
+        chooseExcelInfo: null,
+        riskCustList: []
       }
     },
     created() {
       this.getList();
       this.managerDetail();
     },
-    computed:{
+    computed: {
       ...mapGetters([
         'roles',
       ]),
@@ -625,18 +603,18 @@
 
     methods: {
       // 针对客户经理，不显示审核意见
-      managerDetail(){
-        if (this.roles.indexOf("客户经理")>-1)
+      managerDetail() {
+        if (this.roles.indexOf("客户经理") > -1)
           this.isManager = true;
         else
           this.isManager = false;
       },
 
-      onWayTaskShow(){
+      onWayTaskShow() {
         this.onWayTaskDialog = true;
       },
       // 附件上传
-      updateA(){
+      updateA() {
         this.openRiskIntroduce = true;
       },
       // 流程按钮
@@ -672,8 +650,8 @@
       },
       //  详情
       handleDetail(scope) {
+        this.chooseExcelInfo = null;
         console.log(scope);
-        console.log("}}}}}}}}}}}}}}}}");
         this.detailShow = true;
         this.detailListShow = false;
         this.taskInfoNo = scope.taskInfoNo;
@@ -681,25 +659,24 @@
         this.custHistoryList = [];
         this.custHistoryDisposalList = [];
         this.custHistoryList.push({
-          custNo: scope.custNo,
-          doneDate: scope.doneDate,
-          channel: scope.channel,
-          riskCustNum: scope.riskCustNum,
-          createTime: '2021-03-02',
-          state: scope.state,
-        }),
-        this.custHistoryDisposalList.push({
-          custNo: scope.custNo,
-          doneDate: scope.doneDate,
-          channel: scope.channel,
-          riskCustNum: scope.riskCustNum,
-        })
+            custNo: scope.custNo,
+            doneDate: scope.doneDate,
+            channel: scope.channel,
+            riskCustNum: scope.riskCustNum,
+            createTime: '2021-03-02',
+            state: scope.state,
+          }),
+          this.custHistoryDisposalList.push({
+            custNo: scope.custNo,
+            doneDate: scope.doneDate,
+            channel: scope.channel,
+            riskCustNum: scope.riskCustNum,
+          })
         // 赋值
         getDisposalTrackDetail(this.taskInfoNo).then(res => {
           console.log("---res");
           console.log(res);
-          if (200 === res.code) {
-          }
+          if (200 === res.code) {}
         })
 
       },
@@ -718,7 +695,7 @@
             let temp_1 = [];
             let temp_2 = [];
             res.data.forEach(item => {
-              if(item.isProprietary && item.isProprietary === '1')
+              if (item.isProprietary && item.isProprietary === '1')
                 temp_1.push(item);
               else
                 temp_2.push(item);
@@ -728,9 +705,8 @@
           }
           loading.close();
         }).catch(() => {
-            loading.close();
-          }
-        )
+          loading.close();
+        })
       },
       /** 搜索按钮操作 */
       handleQuery() {
@@ -748,7 +724,70 @@
         setTimeout(() => {
           loading.close();
           this.msgSuccess("同步成功");
-        },1000)
+        }, 1000)
+      },
+      /** 选择Excel文件 */
+      chooseFile() {
+        this.chooseExcelInfo = this.$refs.upload.files[0];
+      },
+      /** 查看风险客户清单、预览按钮 */
+      riskCustListClick(type) {
+        let riskCustList = [{
+          product: "税e融",
+          doneDate: "2021-07-12",
+          custName: "张三",
+          cardNum: "511062199604129853",
+          ruleName: "借款人行内信用评分等级降低",
+          about: "借款人在我信用评分等级下降，上次评级时间2020-02-02；等级A，本次评级时间2020-08-02；等级B",
+          advice: "建议降额",
+          result: ""
+        },{
+          product: "税e融",
+          doneDate: "2021-07-12",
+          custName: "周卓浩",
+          cardNum: "511062199308110394",
+          ruleName: "借款人行内保证金账户被冻结、扣划",
+          about: "监测到借款人行内保证金账户状态变为冻结，冻结时间2020-02-02",
+          advice: "建议降额",
+          result: ""
+        },{
+          product: "税e融",
+          doneDate: "2021-07-13",
+          custName: "弘方",
+          cardNum: "511602199703267843",
+          ruleName: "人行征信贷款连续逾期",
+          about: "根据借款人最新征信信息统计，借款人有x笔未结清贷款，其中XX行XX贷款，贷款金额30万，余额15万，连续逾期2期，逾期金额XXX",
+          advice: "冻结额度",
+          result: ""
+        },{
+          product: "税e融",
+          doneDate: "2021-07-15",
+          custName: "王生安",
+          cardNum: "511602189701224829",
+          ruleName: "人行征信用卡逾期期数过高",
+          about: "根据借款人最新征信信息统计，借款人有x张激活信用卡，其中XX行XX信用卡，额度5万，余额1万，连续逾期2期，逾期金额XXX",
+          advice: "冻结额度",
+          result: ""
+        },{
+          product: "税e融",
+          doneDate: "2021-07-19",
+          custName: "陈国柏",
+          cardNum: "511602199411248364",
+          ruleName: "人行征信用卡金额过高",
+          about: "根据借款人最新征信信息统计，借款人有x张激活信用卡，总计逾期金额6万",
+          advice: "冻结额度",
+          result: ""
+        }]
+        this.riskCustList = [];
+        if(type && type === 'preview') {
+          for(let i=0;i<3;i++) {
+            this.riskCustList.push(riskCustList[i]);
+          }
+        }
+        else {
+          this.riskCustList = riskCustList;
+        }
+        this.riskCustListShow = true;
       }
     }
   }
@@ -795,6 +834,7 @@
     line-height: 30px;
     border-radius: 3px;
   }
+
   .el-select-dropdown__item {
     font-size: 12px;
     padding: 0 10px;
@@ -870,7 +910,7 @@
     background-color: #F9F9F9;
   }
 
-  .cl_body >>> .el-form-item {
+  .cl_body>>>.el-form-item {
     margin: 20px 0;
   }
 
@@ -921,4 +961,10 @@
     margin: 4px 3px 0 0;
   }
 
+  .download-icon {
+    cursor: pointer;
+    fill: #0069BA;
+    width: 16px;
+    height: 16px;
+  }
 </style>
