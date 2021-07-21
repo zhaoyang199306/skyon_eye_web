@@ -152,7 +152,7 @@
             <el-input v-model="detailInfo.custTel" readonly="readonly"/>
           </el-form-item>
           <el-form-item label="跟踪完成日期：" label-width="140px" class="el-col-4">
-            <el-input value="2021-09-05"  readonly="readonly"/>
+            <el-input value="2021-08-01"  readonly="readonly"/>
           </el-form-item>
           <el-form-item label="风险等级：" class="el-col-4">
             <el-input v-model="detailInfo.riskLevel" readonly="readonly"/>
@@ -297,7 +297,7 @@
                   <li>
                     <span style="color: red">*</span>
                     跟踪完成日期
-                    <el-input style="height: 35px;width: 110px;font-size: 12px" v-model="trackTime" value="2021-04-25"/>
+                    <el-input style="height: 35px;width: 110px;font-size: 12px" v-model="trackTime" value="2021-08-01"/>
                   </li>
                   <li style="color:red">
                     注：将原在途跟踪任务归档，并产生新的跟踪任务
@@ -454,7 +454,7 @@
         isManager:true,
         sysRiskLevelSelect:"红色",
         custRiskLevelSelect:"",
-        trackTime:"2021-04-25",
+        trackTime:"2021-08-01",
         textareaResult:"",
         //  true 标志
         trueFlag: true,
@@ -584,7 +584,7 @@
         this.taskInfoNo = scope.taskInfoNo;
         this.detailInfo = scope;
         // checkBox返显
-        this.checkList = scope.riskValue.split(";");
+        this.checkList = scope.riskValue === null?[]:scope.riskValue.split(";");
 
         // 赋值
         getTaskInfoDetail(scope.taskInfoNo).then(res => {

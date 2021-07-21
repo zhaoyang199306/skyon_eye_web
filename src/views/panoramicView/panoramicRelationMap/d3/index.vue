@@ -40,61 +40,83 @@
             text: this.custName, // 节点名
             color:'#FFC9A6',
           }
-          // ,{
-          //   id: '1', //
-          //   text: "A公司", // 节点名
-          //   color:'#6AECFF',
-          // },{
-          //   id: '2', //
-          //   text: "B公司", // 节点名
-          //   color:'#6AECFF',
-          // },{
-          //   id: '3', //
-          //   text: "C公司", // 节点名
-          //   color:'#6AECFF',
-          // },{
-          //   id: '4', //
-          //   text: "张某", // 节点名
-          //   color:'#FEEDA6',
-          // },{
-          //   id: '5', //
-          //   text: "D公司", // 节点名
-          //   color:'#6AECFF',
-          // }
+          ,{
+            id: '1', //
+            text: "B公司", // 节点名
+            innerHTML:"<div style='background-color: rgb(255, 114, 114);margin-left: 20px'><div style='color: white'>财务风险</div></div><p>B公司</p>",
+            color:'#6AECFF',
+          },{
+            id: '2', //
+            text: "C公司", // 节点名
+            color:'#6AECFF',
+          },{
+            id: '3', //
+            text: "D公司", // 节点名
+            color:'#6AECFF',
+          },{
+            id: '4', //
+            text: "张某", // 节点名
+            innerHTML:"<div style='background-color: rgb(255, 114, 114);margin-left: 20px'><div style='color: white'>存量贷款</div></div><p>张某</p>",
+            color:'#FEEDA6',
+          },{
+            id: '6', //
+            text: "张某某", // 节点名
+            color:'#FEEDA6',
+          },{
+            id: '5', //
+            text: "陈某某", // 节点名
+            color:'#FEEDA6',
+          },{
+            id: '7', //
+            text: "李梅", // 节点名
+            color:'#FEEDA6',
+          }
         ],
         // 连接线
         links: [
-        //   {
-        //   from: 'id',
-        //   to: "1",
-        //   text: "成员企业",
-        //   isHideArrow: 'false',
-        //   fontColor: '#000000'
-        // },{
-        //   from: 'id',
-        //   to: "2",
-        //   text: "成员企业",
-        //   isHideArrow: 'false',
-        //   fontColor: '#000000'
-        // },{
-        //   from: 'id',
-        //   to: "3",
-        //   text: "成员企业",
-        //   isHideArrow: 'false',
-        //   fontColor: '#000000'
-        // },{
-        //   from: 'id',
-        //   to: "4",
-        //   text: "法人",
-        //   isHideArrow: 'false',
-        //   fontColor: '#000000'
-        // },{
-        //   from: '4',
-        //   to: "5",
-        //   text: "法人",
-        //   isHideArrow: 'false',
-        //   fontColor: '#000000'
-        // }
+          {
+          from: 'id',
+          to: "1",
+          text: "持股100%",
+          isHideArrow: 'false',
+          fontColor: '#000000'
+        },{
+          from: 'id',
+          to: "2",
+          text: "持股30%",
+          isHideArrow: 'false',
+          fontColor: '#000000'
+        },{
+          from: 'id',
+          to: "3",
+          text: "持股15%",
+          isHideArrow: 'false',
+          fontColor: '#000000'
+        },{
+          from: 'id',
+          to: "4",
+          text: "法定代表人",
+          isHideArrow: 'false',
+          fontColor: '#000000'
+        },{
+          from: 'id',
+          to: "5",
+          text: "提供担保",
+          isHideArrow: 'false',
+          fontColor: '#000000'
+        },{
+            from: 'id',
+            to: "6",
+            text: "实际控制人",
+            isHideArrow: 'false',
+            fontColor: '#000000'
+          },{
+            from: '7',
+            to: "5",
+            text: "配偶",
+            isHideArrow: 'false',
+            fontColor: '#000000'
+          }
         ],
         //
         graphOptions: {
@@ -116,7 +138,7 @@
             defaultNodeColor: '#A6ECFF', // 默认的节点背景颜色
             defaultLineColor: '#A6ECFF', // 默认的线条颜色
             defaultLineShape: 1,
-            'distance_coefficient': 0.5
+            'distance_coefficient': 1
           }]
           // isMoveByParentNode: true, // 是否在拖动节点后让子节点跟随
           // 这里可以参考"Graph 图谱"中的参数进行设置
@@ -140,41 +162,41 @@
             console.log(res)
             this.relationList = res.data;
 
-            if (this.relationList.dtTyDpApCustIncidRelaW){
-              for (let i = 0; i < this.relationList.dtTyDpApCustIncidRelaW.length; i++) {
-                let relation = this.relationList.dtTyDpApCustIncidRelaW[i];
-                // 存量贷款的
-                //"innerHTML": "<div style=\"background-color: yellow\"><div style='color:red'>存量贷款</div></div><p>d</p>",
-                // 节点颜色
-                if (relation.relaType === '关联人'){
-                  if (relation.riskFlag === '存量贷款'){
-                    this.nodes = this.nodes.concat(
-                        {id: relation.custNo + i,
-                        text: relation.relaParty,
-                        innerHTML:"<div style='background-color: rgb(255, 114, 114);margin-left: 20px'><div style='color: white'>存量贷款</div></div><p>"+relation.relaParty+"</p>",
-                        color:'#FEEDA6',disableDefaultClickEffect:true});
-                  } else {
-                    this.nodes = this.nodes.concat({id: relation.custNo + i, text: relation.relaParty,color:'#FEEDA6',disableDefaultClickEffect:true});
-                  }
-                } else if (relation.relaType === '关联企业'){
-                  if (relation.riskFlag === '财务风险'){
-                    this.nodes = this.nodes.concat(
-                      {id: relation.custNo + i,
-                        text: relation.relaParty,
-                        innerHTML:"<div style='background-color: red;margin-left: 20px'><div style='color: white'>财务风险</div></div><p>"+relation.relaParty+"</p>",
-                        color:'#6AECFF',disableDefaultClickEffect:true});
-                  } else {
-                    this.nodes = this.nodes.concat({id: relation.custNo + i, text: relation.relaParty,color:'#6AECFF',disableDefaultClickEffect:true});
-                  }
-
-                }
-                //
-                this.links = this.links.concat({
-                  from: 'id', to: relation.custNo + i,
-                  text: relation.incidRela, isHideArrow: 'false', fontColor: '#000000'
-                });
-              }
-            }
+            // if (this.relationList.dtTyDpApCustIncidRelaW){
+            //   for (let i = 0; i < this.relationList.dtTyDpApCustIncidRelaW.length; i++) {
+            //     let relation = this.relationList.dtTyDpApCustIncidRelaW[i];
+            //     // 存量贷款的
+            //     //"innerHTML": "<div style=\"background-color: yellow\"><div style='color:red'>存量贷款</div></div><p>d</p>",
+            //     // 节点颜色
+            //     if (relation.relaType === '关联人'){
+            //       if (relation.riskFlag === '存量贷款'){
+            //         this.nodes = this.nodes.concat(
+            //             {id: relation.custNo + i,
+            //             text: relation.relaParty,
+            //             innerHTML:"<div style='background-color: rgb(255, 114, 114);margin-left: 20px'><div style='color: white'>存量贷款</div></div><p>"+relation.relaParty+"</p>",
+            //             color:'#FEEDA6',disableDefaultClickEffect:true});
+            //       } else {
+            //         this.nodes = this.nodes.concat({id: relation.custNo + i, text: relation.relaParty,color:'#FEEDA6',disableDefaultClickEffect:true});
+            //       }
+            //     } else if (relation.relaType === '关联企业'){
+            //       if (relation.riskFlag === '财务风险'){
+            //         this.nodes = this.nodes.concat(
+            //           {id: relation.custNo + i,
+            //             text: relation.relaParty,
+            //             innerHTML:"<div style='background-color: red;margin-left: 20px'><div style='color: white'>财务风险</div></div><p>"+relation.relaParty+"</p>",
+            //             color:'#6AECFF',disableDefaultClickEffect:true});
+            //       } else {
+            //         this.nodes = this.nodes.concat({id: relation.custNo + i, text: relation.relaParty,color:'#6AECFF',disableDefaultClickEffect:true});
+            //       }
+            //
+            //     }
+            //     //
+            //     this.links = this.links.concat({
+            //       from: 'id', to: relation.custNo + i,
+            //       text: relation.incidRela, isHideArrow: 'false', fontColor: '#000000'
+            //     });
+            //   }
+            // }
 
             console.log("---------this.node---------");
             console.log(this.nodes);
