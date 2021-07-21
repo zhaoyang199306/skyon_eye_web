@@ -128,11 +128,12 @@
             <el-input :value="detailInfo.riskLevel" readonly="readonly" />
           </el-form-item>
           <el-form-item label="管控措施：" class="el-col-18">
-            <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 5}" value="按常规实施授信后管理和检查" readonly="readonly" />
+            <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 5}"
+                      value="按常规实施授信后管理和检查；列为重点关注对象，加大对客户的监控力度" readonly="readonly" />
           </el-form-item>
 
           <el-form-item label="检查结论：" class="el-col-18">
-            <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 5}" value="贷款额度较大" readonly="readonly" />
+            <el-input type="textarea" :autosize="{ minRows: 5, maxRows: 5}" value="信号属实" readonly="readonly" />
           </el-form-item>
         </el-form>
 
