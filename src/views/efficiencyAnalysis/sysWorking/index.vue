@@ -168,7 +168,7 @@
 
         </div>
         <!--      趋势分析  -->
-        <div>
+        <div class="el-col-24">
           <div>
             <div class="el-col-24 context_module" style="">
               <div class="context_module_title">
@@ -177,8 +177,18 @@
             </div>
           </div>
           <!--          触警率、出险率、命中率-->
-          <div style="padding-left: 20px">
+          <div class="el-col-24" style="padding-left: 20px">
             <div style="width: 90%;height: 300px" id="financingHistory">
+            </div>
+          </div>
+          <!--          人工认定准确率、系统认定准确率-->
+          <div class="el-col-24" style="padding-left: 20px">
+            <div style="width: 90%;height: 300px" id="accuracyEchar">
+            </div>
+          </div>
+          <!--          漏报率、误报率-->
+          <div class="el-col-24" style="padding-left: 20px">
+            <div style="width: 90%;height: 300px" id="errorEchar">
             </div>
           </div>
 
@@ -297,8 +307,8 @@
         underReportSysAffWrgRate:'- -',
 
         // 风险失误  underReport table 垂直表头
-        underReportTableTitle: ['人工认定失误数', '人工认定失误余额', '人工认定失误率',
-          '系统认定失误数', '系统认定失误余额', '系统认定失误率'],
+        underReportTableTitle: ['漏报户数', '漏报余额', '漏报率',
+          '误报户数', '误报余额', '误报率'],
         // 风险失误 riskMiss 表数据
         underReportTableData: [],
         underReportTableOriginData: [],
@@ -314,6 +324,8 @@
     },
     mounted() {
       this.financingEcharts();
+      this.setAccuracyEcharts();
+      this.setErrorEcharts();
     },
     created() {
       console.log("----sysWorking----");
@@ -346,10 +358,149 @@
 
 
     methods: {
+      // 漏报率、误报率
+      setErrorEcharts(){
+        // 基于准备好的dom，初始化 echarts 实例
+        let myFinancingChart = this.$echarts.init(document.getElementById('errorEchar'));
+        console.log("=======s====s========s=================");
+        console.log(this.underReportTableData);
+        let touchArr = [];
+        let riskArr = [];
+        this.underReportTableData.forEach((data,i)=>{
+          if ("漏报率" === data[0] || "误报率" === data[0]){
+            let common = [data[2].replace('%',''),data[3].replace('%',''),data[4].replace('%',''),data[5].replace('%','')];
+            if ("漏报率" === data[0]){
+              touchArr =common;
+            } else if ("误报率" === data[0]){
+              riskArr = common;
+            }
+          }
+        });
+        // 指定图表的配置项和数据
+        let option = {
+          title: {
+            text: '漏报率、误报率',
+            textStyle:{
+              fontSize:16
+            },
+            // 标题padding：上右下左
+            padding: [10, 0, 0, 100],
+          },
+          tooltip: {
+            trigger: 'axis'
+          },
+          // 图例组件
+          legend: {
+            show:true,
+            data:['漏报率','误报率'],
+            top:"5%",
+            textStyle: {
+              fontSize: 14
+            },
+          },
+          xAxis: {
+            data: []
+          },
+          yAxis: {
+            name:'%',
+            type: 'value'
+          },
+          series: [{
+            name: '漏报率',
+            type: 'line',
+            data:touchArr,
+          },{
+            name: '误报率',
+            type: 'line',
+            data: riskArr
+          }]
+        };
+        console.log(option);
+
+        // 使用刚指定的配置项和数据显示图表。
+        myFinancingChart.setOption(option);
+      },
+      // 人工认定准确率、系统认定准确率
+      setAccuracyEcharts(){
+        // 基于准备好的dom，初始化 echarts 实例
+        let myFinancingChart = this.$echarts.init(document.getElementById('accuracyEchar'));
+        console.log("=======s====s========s=================");
+        console.log(this.riskAccuracyTableData);
+        let touchArr = [];
+        let riskArr = [];
+        this.riskAccuracyTableData.forEach((data,i)=>{
+          if ("人工认定准确率" === data[0] || "系统认定准确率" === data[0]){
+            let common = [data[2].replace('%',''),data[3].replace('%',''),data[4].replace('%',''),data[5].replace('%','')];
+            if ("人工认定准确率" === data[0]){
+              touchArr =common;
+            } else if ("系统认定准确率" === data[0]){
+              riskArr = common;
+            }
+          }
+        });
+        // 指定图表的配置项和数据
+        let option = {
+          title: {
+            text: '人工认定准确率、系统认定准确率',
+            textStyle:{
+              fontSize:16
+            },
+            // 标题padding：上右下左
+            padding: [10, 0, 0, 100],
+          },
+          tooltip: {
+            trigger: 'axis'
+          },
+          // 图例组件
+          legend: {
+            show:true,
+            data:['人工认定准确率','系统认定准确率'],
+            top:"5%",
+            textStyle: {
+              fontSize: 14
+            },
+          },
+          xAxis: {
+            data: []
+          },
+          yAxis: {
+            name:'%',
+            type: 'value'
+          },
+          series: [{
+            name: '人工认定准确率',
+            type: 'line',
+            data:touchArr,
+          },{
+            name: '系统认定准确率',
+            type: 'line',
+            data: riskArr
+          }]
+        };
+        console.log(option);
+
+        // 使用刚指定的配置项和数据显示图表。
+        myFinancingChart.setOption(option);
+      },
       // 触警率、出险率、命中率 echarts
       financingEcharts(){
         // 基于准备好的dom，初始化 echarts 实例
         let myFinancingChart = this.$echarts.init(document.getElementById('financingHistory'));
+        let touchArr = [];
+        let riskArr = [];
+        let hitArr= [];
+        this.touchAlarmTableData.forEach((data,i)=>{
+          if ("触警率" === data[0] || "出险率" === data[0] || "命中率" === data[0]){
+            let common = [data[2].replace('%',''),data[3].replace('%',''),data[4].replace('%',''),data[5].replace('%','')];
+            if ("触警率" === data[0]){
+              touchArr =common;
+            } else if ("出险率" === data[0]){
+              riskArr = common;
+            } else if ("命中率" === data[0]){
+              hitArr = common;
+            }
+          }
+        });
         // 指定图表的配置项和数据
         let option = {
           title: {
@@ -382,17 +533,18 @@
           series: [{
             name: '触警率',
             type: 'line',
-            data: [5, 20,24,28, 36, 10, 10, 20]
+            data:touchArr,
           },{
             name: '出险率',
             type: 'line',
-            data: [15, 120,124,128, 326, 130, 104, 240]
+            data: riskArr
           },{
             name: '命中率',
             type: 'line',
-            data: [58, 280,248,288, 736, 810, 810, 820]
+            data: hitArr
           }]
         };
+        console.log(option);
 
         // 使用刚指定的配置项和数据显示图表。
         myFinancingChart.setOption(option);
@@ -575,6 +727,8 @@
                       hitCustNum:element.hitCustNum,hitCustBal:element.hitCustBal,hitCustRate:element.hitCustRate};
             this.touchAlarmTableOriginData = this.touchAlarmTableOriginData.concat(da);
           }
+          console.log("----------s---------s--------");
+          console.log(this.touchAlarmTableOriginData);
           // 总体概述
           this.touchAlarmWarnCustNum = this.form.dpRmMonRuleSysIng[0].warnCustNum;
           this.touchAlarmWarnCustBal = this.form.dpRmMonRuleSysIng[0].warnCustBal;
@@ -584,7 +738,6 @@
           this.touchAlarmAccidCustRate = this.form.dpRmMonRuleSysIng[0].accidCustRate + "%";
           this.touchAlarmHitCustNum = this.form.dpRmMonRuleSysIng[0].hitCustNum;
           this.touchAlarmHitCustRate = this.form.dpRmMonRuleSysIng[0].hitCustRate + "%";
-          console.log(this.touchAlarmTableOriginData);
         }
       },
 

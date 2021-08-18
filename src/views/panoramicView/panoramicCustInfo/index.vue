@@ -168,7 +168,7 @@
           </div>
           <div style="padding-left: 20px">
             <el-form-item label="所属分行" class="el-col-8">
-              <el-input v-model="form.belongBrch" readonly="readonly"/>
+              <el-input v-model="form.nextBranch" readonly="readonly"/>
             </el-form-item>
             <el-form-item label="客户经理" class="el-col-8">
               <el-input v-model="form.custMgr" readonly="readonly"/>
@@ -254,7 +254,7 @@
           </div>
           <div style="padding-left: 20px">
             <el-form-item label="所属分行" class="el-col-8">
-              <el-input v-model="form.belongBrch" readonly="readonly"/>
+              <el-input v-model="form.nextBranch" readonly="readonly"/>
             </el-form-item>
             <el-form-item label="客户经理" class="el-col-8">
               <el-input v-model="form.custMgr" readonly="readonly"/>

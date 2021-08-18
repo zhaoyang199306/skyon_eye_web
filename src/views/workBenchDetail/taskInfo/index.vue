@@ -55,36 +55,45 @@
     <div></div>
 
     <!--    展示列表  -->
-    <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-              header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-              :cell-style="{padding:'0px'}" :data="taskInfoList" v-show="detailListShow">
-      <el-table-column label="客户编号" align="center" prop="custNo"/>
-      <el-table-column label="客户名称" align="center" prop="custName"/>
-      <el-table-column label="队列ID" align="center"  prop="queueId"/>
-      <el-table-column label="队列名称" align="center" prop="queueName"/>
-      <el-table-column label="产品发行部门" align="center" prop="publishDepartment"/>
-      <el-table-column label="监测主体类型" align="center" prop="testSubType"/>
-      <el-table-column label="一级预警信号数量" align="center" prop="oneNum"/>
-      <el-table-column label="二级预警信号数量" align="center" prop="twoNum"/>
-      <el-table-column label="三级预警信号数量" align="center" prop="threeNum"/>
-      <el-table-column label="所属支行" align="center" prop="branch"/>
-      <el-table-column label="所属分行" align="center" prop="nextBranch"/>
-      <el-table-column label="任务完成截止时间" width="160px" align="center" prop="doneDate"/>
-      <el-table-column label="认定状态" align="center" prop="status"></el-table-column>
-      <el-table-column label="审批权限" align="center" prop="limits"/>
-      <el-table-column label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-view"
-            @click="handleDetail(scope.row)"
-          >处理
-          </el-button>
-        </template>
-      </el-table-column>
+    <div v-show="detailListShow">
+      <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
+                header-cell-style="font-size:12px" :row-style="{height:'32px'}"
+                :cell-style="{padding:'0px'}" :data="taskInfoList" >
+        <el-table-column label="任务编号" align="center" prop="TASKINFONO"/>
+        <el-table-column label="客户编号" align="center" prop="CUSTNO"/>
+        <el-table-column label="客户名称" align="center" prop="CUSTNAME"/>
+        <el-table-column label="产品发行部门" align="center" prop="publishDepartment"/>
+        <el-table-column label="监测主体类型" align="center" prop="testSubType"/>
+        <el-table-column label="一级预警信号数量" align="center" prop="ONELEVELCOUNT"/>
+        <el-table-column label="二级预警信号数量" align="center" prop="TWOLEVELCOUNT"/>
+        <el-table-column label="三级预警信号数量" align="center" prop="THREELEVELCOUNT"/>
+        <el-table-column label="所属支行" align="center" prop="BRANCH"/>
+        <el-table-column label="所属分行" align="center" prop="NEXTBRANCH"/>
+        <el-table-column label="任务完成截止时间" width="160px" align="center"/>
+        <el-table-column label="认定状态" align="center"/>
+        <el-table-column label="审批权限" align="center"/>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="text"
+              icon="el-icon-view"
+              @click="handleDetail(scope.row)"
+            >处理
+            </el-button>
+          </template>
+        </el-table-column>
 
-    </el-table>
+      </el-table>
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="getList"
+      />
+    </div>
+
 
     <!--附件上传dialog-->
     <el-dialog :visible.sync="openRiskIntroduce" width="1100px" >
@@ -138,24 +147,18 @@
       </div>
       <div style="margin-top: 10px" class="el-col-24">
         <!--    详情基本信息    -->
-        <el-form ref="detailInfo" :model="detailInfo" label-width="120px" class="el-col-24">
-          <el-form-item label="客户编号：" class="el-col-4">
-            <el-input v-model="detailInfo.custNo" readonly="readonly"/>
+        <el-form ref="detailInfo" :model="taskInfoDetail.dpApCustInfo" label-width="120px" class="el-col-24">
+          <el-form-item label="客户编号：" class="el-col-5">
+            <el-input v-model="taskInfoDetail.dpApCustInfo.custNo" readonly="readonly"/>
           </el-form-item>
-          <el-form-item label="客户名称:" class="el-col-4">
-            <el-input v-model="detailInfo.custName" readonly="readonly"/>
+          <el-form-item label="客户名称:" class="el-col-5">
+            <el-input v-model="taskInfoDetail.dpApCustInfo.custName" readonly="readonly"/>
           </el-form-item>
-          <el-form-item label="证件号码:" class="el-col-4">
-            <el-input v-model="detailInfo.cardNum" readonly="readonly"/>
+          <el-form-item label="证件号码:" class="el-col-5">
+            <el-input v-model="taskInfoDetail.dpApCustInfo.certNo" readonly="readonly"/>
           </el-form-item>
-          <el-form-item label="手机号码:" class="el-col-4">
-            <el-input v-model="detailInfo.custTel" readonly="readonly"/>
-          </el-form-item>
-          <el-form-item label="跟踪完成日期：" label-width="140px" class="el-col-4">
-            <el-input value="2021-08-01"  readonly="readonly"/>
-          </el-form-item>
-          <el-form-item label="风险等级：" class="el-col-4">
-            <el-input v-model="detailInfo.riskLevel" readonly="readonly"/>
+          <el-form-item label="手机号码:" class="el-col-5">
+            <el-input v-model="taskInfoDetail.dpApCustInfo.phone" readonly="readonly"/>
           </el-form-item>
         </el-form>
       </div>
@@ -168,7 +171,7 @@
         </div>
         <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
                   header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                  :cell-style="{padding:'0px'}" :data="warnSignalList">
+                  :cell-style="{padding:'0px'}" :data="taskInfoDetail.warnSignals">
           <el-table-column label="任务编号" align="center" prop="taskNum"/>
           <el-table-column label="当前处理岗" align="center" prop="nowDealRole"/>
           <el-table-column label="信号名称" align="center" prop="singleName"/>
@@ -201,11 +204,11 @@
 
 
 
-        <table class="table" style="font-size: 14px;margin-top: 10px">
+        <table class="table" style="font-size: 14px;margin-top: 10px" v-model="taskInfoDetail">
           <tbody>
             <tr style="background: #f9f9f9;">
               <td rowspan="4" style="width: 120px;border-right: 1px solid #FFF3F3;">
-                <p>RDRG20201227000062</p>
+                <p class="title_table_p">{{taskInfoNo}}</p>
               </td>
             </tr>
             <tr>
@@ -224,28 +227,9 @@
                   <el-button class="tipText">?</el-button>
                 </el-tooltip>
               </td>
-              <td width="10%">
+              <td style="width:10%">
                 <div class="dropdown">
-                  <el-select v-model="sysRiskLevelSelect" @change="riskLevelChange" disabled="disabled">
-                    <el-option label="红色" value="红色">
-                      <span><img :src="redImg" style="display: inline-block;float: left;margin: 0px 5px;">红色</span>
-                    </el-option>
-                    <el-option label="橙色" value="橙色">
-                      <img :src="orangeImg" style="display: inline-block;float: left;margin: 0px 5px;">
-                      <span>橙色</span>
-                    </el-option>
-                    <el-option label="黄色" value="黄色">
-                      <img :src="yellowImg" style="display: inline-block;float: left;margin: 0px 5px;">
-                      <span>黄色</span></el-option>
-                    <el-option label="蓝色" value="蓝色">
-                      <img :src="blueImg" style="display: inline-block;float: left;margin: 0px 5px;">
-                      <span>蓝色</span>
-                    </el-option>
-                    <el-option label="绿色" value="绿色">
-                      <img :src="greenImg" style="display: inline-block;float: left;margin: 0px 5px;">
-                      <span>绿色</span>
-                    </el-option>
-                  </el-select>
+                  <el-input v-model="sysRiskLevel" disabled="disabled"/>
                 </div>
 
               </td>
@@ -266,7 +250,7 @@
               </td>
               <td width="10%">
                 <div class="dropdown">
-                  <el-select v-model="personalRiskLevel" :disabled="!isManager"  @change="riskLevelChange">
+                  <el-select v-model="taskInfoDetail.personalRiskLevel" :disabled="!isManager"  @change="riskLevelChange">
                     <el-option label="红色" value="红色">
                       <span><img :src="redImg" style="display: inline-block;float: left;margin: 0px 5px;">红色</span>
                     </el-option>
@@ -297,7 +281,8 @@
                   <li>
                     <span style="color: red">*</span>
                     跟踪完成日期
-                    <el-input style="height: 35px;width: 110px;font-size: 12px" v-model="trackTime" value="2021-08-01"/>
+                    <el-input style="height: 35px;width: 110px;font-size: 12px" :disabled="!isManager"
+                              v-model="taskInfoDetail.trackTime"/>
                   </li>
                   <li style="color:red">
                     注：将原在途跟踪任务归档，并产生新的跟踪任务
@@ -325,7 +310,8 @@
               </td>
               <td colspan="5" class="tdsec" style="height:223px">
 
-                <el-input type="textarea" :disabled="!isManager" v-model="checkResult" :autosize="{ minRows: 7, maxRows: 7}">属实高风险</el-input>
+                <el-input type="textarea" :disabled="!isManager" v-model="taskInfoDetail.checkResult"
+                          :autosize="{ minRows: 7, maxRows: 7}" />
               </td>
             </tr>
 
@@ -340,20 +326,20 @@
           <p class="lt" style="margin: 0 0">风险管控措施</p>
         </div>
 
-
         <div class="titleTable_check">
           <div class="title_table_div" style="background-color: #f9f9f9">
             <p class="title_table_p">
-              RDRG20201227000062
+              {{taskInfoNo}}
             </p>
           </div>
           <div class="title_table_div">
-            <p class="title_table_p" style="padding-left: 45px">
+            <p class="title_table_p" style="padding-left: 25px">
               风险管控措施:
             </p>
           </div>
-          <div class="title_table_textarea">
-            <el-checkbox-group v-model="checkList" :disabled="!isManager" style="line-height: 20px">
+          <div class="title_table_textarea" style="padding-left: 25px">
+            <el-checkbox-group v-model="taskInfoDetail.riskControlMeasures == null?(taskInfoDetail.riskControlMeasures=[])
+            :taskInfoDetail.riskControlMeasures" :disabled="!isManager" style="line-height: 20px">
               <div style="float: left">
                 <div style="width: 300px;float: left">
                   <el-checkbox label="a">继续加大力度支持</el-checkbox>
@@ -451,11 +437,12 @@
     components: {LinkLog},
     data() {
       return {
+        // 条数
+        total:0,
         isManager:true,
-        sysRiskLevelSelect:"红色",
-        personalRiskLevel:"",
+        // 系统认定风险等级
+        sysRiskLevel:undefined,
         trackTime:"2021-08-01",
-        checkResult:"",
         //  true 标志
         trueFlag: true,
         tableHeader:false,
@@ -469,9 +456,12 @@
         enclosureList: [],
         // 流程信息
         processList: [],
-        warnSignalList: [],
-        // 多选框
-        checkList: [],
+        // 任务详情
+        taskInfoDetail:{
+          dpApCustInfo:{},
+          warnSignals:[],
+          riskControlMeasures:[],
+        },
         //  详情展示控制
         detailShow: false,
         open: false,
@@ -479,7 +469,7 @@
         onWayTaskDialog: false,
         logShow: false,
         detailListShow: true,
-        radio: '1',
+        radio: "",
         radioExamine: undefined,
         otherCheck: undefined,
         //
@@ -535,7 +525,6 @@
       },
       //  提交
       submit() {
-        console.log(this.warnSignalList);
         // 没出结果，一直等待
         let loading = this.$loading({
           lock: true,
@@ -543,12 +532,9 @@
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.2)'
         });
-        var riskValue = "";
-        for (let i = 0; i < this.checkList.length; i++) {
-          riskValue = riskValue + this.checkList[i] + ";";
-        }
-        submitTaskInfo(this.taskInfoNo, riskValue.length>0?riskValue.substr(0,riskValue.length-1):"",
-          "1", this.examinValue,this.personalRiskLevel,this.checkResult,this.warnSignalList).then(res => {
+        submitTaskInfo(this.taskInfoNo, this.taskInfoDetail.riskControlMeasures,
+          this.radio, this.examinValue,this.taskInfoDetail.personalRiskLevel,
+          this.taskInfoDetail.checkResult,this.taskInfoDetail.warnSignals).then(res => {
           console.log("---submitTaskInfo");
           console.log(res);
           if (res.code === 200) {
@@ -572,8 +558,7 @@
       // 重置参数
       restParam() {
         this.taskInfoNo = "";
-        this.radio = 1;
-        this.riskValue = "";
+        this.radio = "";
         this.checkList = [];
       },
       //  详情
@@ -582,24 +567,24 @@
         console.log(scope);
         this.detailShow = true;
         this.detailListShow = false;
-        this.taskInfoNo = scope.taskInfoNo;
-        this.detailInfo = scope;
+        this.taskInfoNo = scope.TASKINFONO;
         // checkBox返显
-        this.checkList = scope.riskValue === null?[]:scope.riskValue.split(";");
+        // this.checkList = scope.riskValue === null?[]:scope.riskValue.split(";");
         // 个人认定风险等级返显
-        this.personalRiskLevel = scope.personalRiskLevel
+        // this.personalRiskLevel = scope.personalRiskLevel
         // 检查结论返显
-        this.checkResult = scope.checkResult
+        // this.checkResult = scope.checkResult
 
         // 赋值
-        getTaskInfoDetail(scope.taskInfoNo).then(res => {
+        getTaskInfoDetail(this.taskInfoNo).then(res => {
           console.log("---res==============");
           console.log(res);
           if (200 === res.code) {
-            this.warnSignalList = res.data.warnSignals;
+            this.taskInfoDetail = res.data;
+            this.sysRiskLevel = this.taskInfoDetail.sysRiskLevel;
+            this.taskInfoDetail.riskControlMeasures = JSON.parse(this.taskInfoDetail.riskControlMeasures);
           }
         })
-
       },
       // 查询所有的值
       getList() {
@@ -613,6 +598,7 @@
         listTaskInfo(this.queryParams).then(res => {
           if (res.code === 200) {
             this.taskInfoList = res.data;
+            this.total= res.data.length;
           }
           console.log("---res");
           console.log(res);
@@ -730,7 +716,6 @@
     margin: auto 0;
     padding-top: 100px;
     padding-left: 5px;
-
   }
 
   .title_table_p1 {
@@ -753,7 +738,6 @@
 
   .title_table_div {
     height: 100%;
-    width: 160px;
     float: left;
   }
 

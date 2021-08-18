@@ -72,6 +72,14 @@
         <el-table-column label="审批权限" align="center">总行</el-table-column>
 
       </el-table>
+
+          <pagination
+            v-show="total>0"
+            :total="total"
+            :page.sync="queryParams.pageNum"
+            :limit.sync="queryParams.pageSize"
+            @pagination="getList"
+          />
     </div>
 
     <!--      详情-->
@@ -143,6 +151,7 @@
     },
     data() {
       return {
+        total: 0,
         fadeShow:false,
         //  true 标志
         trueFlag: true,
@@ -196,10 +205,11 @@
       },
       // 查询全景视图列表
       getList() {
-        getPanoramicViewList().then(res => {
+        getPanoramicViewList(this.queryParams).then(res => {
           console.log(res);
           if (res.code === 200) {
             this.panoramicViewList = res.data;
+            this.total = res.data.length;
           }
 
         })

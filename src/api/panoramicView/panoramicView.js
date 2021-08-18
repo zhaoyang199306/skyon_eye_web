@@ -1,8 +1,9 @@
 import request from '@/utils/request'
 // 查询信息
-export function getPanoramicViewList() {
+export function getPanoramicViewList(data) {
   return request({
     url: '/panoramicView/list/',
-    method: 'get'
+    method: 'get',
+    params: data,
   })
 }

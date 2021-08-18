@@ -26,7 +26,7 @@
         <el-radio-group v-model="tabPosition" style="margin-bottom: 10px;margin-top: 10px;">
           <el-radio-button label="warnOverview">预警情况概览</el-radio-button>
           <el-radio-button style="margin-left: 5px" label="sysWorking">系统运行分析</el-radio-button>
-          <el-radio-button style="margin-left: 5px" label="signalDimension" v-if="false">信号维度分析</el-radio-button>
+          <el-radio-button style="margin-left: 5px" label="signalDimension">信号维度分析</el-radio-button>
         </el-radio-group>
 
         <template v-if="tabPosition === 'warnOverview' && returnFlag === true ">
@@ -36,7 +36,7 @@
           <sys-working :form="form" :queryDate="queryDate"/>
         </template>
         <template v-else-if="tabPosition === 'signalDimension'">
-          <signal-dimension/>
+          <signal-dimension :form="form" :queryDate="queryDate"/>
         </template>
 
       </div>

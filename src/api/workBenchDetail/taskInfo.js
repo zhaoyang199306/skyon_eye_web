@@ -18,12 +18,12 @@ export function getTaskInfoDetail(taskInfoNo) {
 }
 
 // 提交预警单
-export function submitTaskInfo(taskInfoNo, riskValue, radio,
+export function submitTaskInfo(taskInfoNo, riskControlMeasures, radio,
                                examinValue,personalRiskLevel,checkResult,warnSignalList) {
 
   var pojo = {
     taskInfoNo: taskInfoNo,
-    riskValue: riskValue,
+    riskControlMeasures: riskControlMeasures,
     radio: radio,
     examinValue: examinValue,
     personalRiskLevel: personalRiskLevel,
