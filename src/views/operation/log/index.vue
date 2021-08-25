@@ -71,7 +71,7 @@
           axios({
             method: 'get',
             url: baseUrl + '/taskdevelop/operation/logname',
-            headers: {'Authorization': 'Bearer ' + getToken()},
+            headers: {'AuthorizationEye': 'Bearer ' + getToken()},
             responseType: 'json',
             params: {
               applicationId: row.applicationId,
@@ -92,7 +92,7 @@
             axios({
               method: 'get',
               url: baseUrl + '/taskdevelop/operation/stdout',
-              headers: {'Authorization': 'Bearer ' + getToken()},
+              headers: {'AuthorizationEye': 'Bearer ' + getToken()},
               responseType: 'json',
               params: {
                 applicationId: this.functionList[0].applicationId,

@@ -881,7 +881,7 @@
 <!--          axios({-->
 <!--            method: 'get',-->
 <!--            url: baseUrl + '/source/manage/querySchema',-->
-<!--            headers: {'Authorization': 'Bearer ' + getToken()},-->
+<!--            headers: {'AuthorizationEye': 'Bearer ' + getToken()},-->
 <!--            responseType: 'json',-->
 <!--            params: {-->
 <!--              dataSourceName: value-->
@@ -915,7 +915,7 @@
 <!--          axios({-->
 <!--            method: 'get',-->
 <!--            url: baseUrl + '/variable/manager/listGroup',-->
-<!--            headers: {'Authorization': 'Bearer ' + getToken()},-->
+<!--            headers: {'AuthorizationEye': 'Bearer ' + getToken()},-->
 <!--            responseType: 'json',-->
 <!--            params: {-->
 <!--              variableClassification: value,-->
@@ -1148,7 +1148,7 @@
 <!--        axios({-->
 <!--          method: 'get',-->
 <!--          url: baseUrl + '/source/result/list',-->
-<!--          headers: {'Authorization': 'Bearer ' + getToken()},-->
+<!--          headers: {'AuthorizationEye': 'Bearer ' + getToken()},-->
 <!--          responseType: 'json'-->
 <!--        }).then(function (resp) {-->
 <!--          for (let i = 0; i < resp.data.rows.length; i++) {-->
@@ -1175,7 +1175,7 @@
 <!--        axios({-->
 <!--          method: 'get',-->
 <!--          url: baseUrl + '/system/Dimension/querySchema',-->
-<!--          headers: {'Authorization': 'Bearer ' + getToken()},-->
+<!--          headers: {'AuthorizationEye': 'Bearer ' + getToken()},-->
 <!--          responseType: 'json',-->
 <!--          params: {-->
 <!--            dimensionNames: param.substr(0, param.length - 1)-->
@@ -1230,7 +1230,7 @@
 <!--        axios({-->
 <!--          method: 'get',-->
 <!--          url: baseUrl + '/variable/classification/list',-->
-<!--          headers: {'Authorization': 'Bearer ' + getToken()},-->
+<!--          headers: {'AuthorizationEye': 'Bearer ' + getToken()},-->
 <!--          responseType: 'json'-->
 <!--        }).then(function (resp) {-->
 <!--          for (let i = 0; i < resp.data.rows.length; i++) {-->

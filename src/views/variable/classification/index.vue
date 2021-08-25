@@ -256,7 +256,7 @@
 <!--          axios({-->
 <!--            method: 'get',-->
 <!--            url: baseUrl + '/source/manage/querySchema',-->
-<!--            headers: {'Authorization': 'Bearer ' + getToken()},-->
+<!--            headers: {'AuthorizationEye': 'Bearer ' + getToken()},-->
 <!--            responseType: 'json',-->
 <!--            params: {-->
 <!--              dataSourceName: value-->
@@ -284,7 +284,7 @@
 <!--        axios({-->
 <!--          method: 'get',-->
 <!--          url: baseUrl + '/system/Dimension/list',-->
-<!--          headers: {'Authorization': 'Bearer ' + getToken()},-->
+<!--          headers: {'AuthorizationEye': 'Bearer ' + getToken()},-->
 <!--          responseType: 'json'-->
 <!--        }).then(function (resp) {-->
 <!--          for (let i = 0; i < resp.data.rows.length; i++) {-->
@@ -308,7 +308,7 @@
 <!--        axios({-->
 <!--          method: 'get',-->
 <!--          url: baseUrl + '/source/manage/list',-->
-<!--          headers: {'Authorization': 'Bearer ' + getToken()},-->
+<!--          headers: {'AuthorizationEye': 'Bearer ' + getToken()},-->
 <!--          responseType: 'json'-->
 <!--        }).then(function (resp) {-->
 <!--          for (let i = 0; i < resp.data.rows.length; i++) {-->
@@ -419,7 +419,7 @@
 <!--          axios({-->
 <!--            method: 'get',-->
 <!--            url: baseUrl + '/source/manage/querySchema',-->
-<!--            headers: {'Authorization': 'Bearer ' + getToken()},-->
+<!--            headers: {'AuthorizationEye': 'Bearer ' + getToken()},-->
 <!--            responseType: 'json',-->
 <!--            params: {-->
 <!--              dataSourceName: that.form.sourceDabRelation-->
