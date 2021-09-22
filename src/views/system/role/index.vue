@@ -148,15 +148,15 @@
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="form.roleName" placeholder="请输入角色名称" :disabled="detailViem"/>
         </el-form-item>
-        <el-form-item label="状态">
-          <el-radio-group v-model="form.status" :disabled="detailViem">
-            <el-radio
-              v-for="dict in statusOptions"
-              :key="dict.dictValue"
-              :label="dict.dictValue"
-            >{{dict.dictLabel}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
+<!--        <el-form-item label="状态">-->
+<!--          <el-radio-group v-model="form.status" :disabled="detailViem">-->
+<!--            <el-radio-->
+<!--              v-for="dict in statusOptions"-->
+<!--              :key="dict.dictValue"-->
+<!--              :label="dict.dictValue"-->
+<!--            >{{dict.dictLabel}}</el-radio>-->
+<!--          </el-radio-group>-->
+<!--        </el-form-item>-->
         <el-form-item label="菜单权限" >
           <el-tree
             :disabled="detailViem"

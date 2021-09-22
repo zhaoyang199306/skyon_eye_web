@@ -162,7 +162,7 @@
         axios({
           method: 'get',
           url: baseUrl + '/taskdevelop/operation/vertices',
-          headers: {'Authorization': 'Bearer ' + getToken()},
+          headers: {'AuthorizationEye': 'Bearer ' + getToken()},
           responseType: 'json',
           params: {
             applicationId: row.applicationId,
