@@ -84,9 +84,9 @@
             <div class="task_list">
               <ul class="ul_this">
                 <li>
-                  <router-link to="/workBenchDetail/taskInfo">
+                  <router-link to="/workBenchDetail/warningTasks">
                     <div>
-                      <p>预警认定</p>
+                      <p>预警任务</p>
                       <p class="tasknum">{{taskInfoSelfCount}}</p>
                     </div>
                   </router-link>

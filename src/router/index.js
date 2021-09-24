@@ -130,6 +130,20 @@ export const constantRoutes = [
       }
     ]
   },
+  // 预警任务路由
+  {
+    path: '',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'workBenchDetail/warningTasks',
+        component: () => import('@/views/workBenchDetail/warningTasks'),
+        name: 'warningTasks',
+        meta: { title: 'log', icon: '' }
+      }
+    ]
+  },
   // 预警认定路由
   {
     path: '',
