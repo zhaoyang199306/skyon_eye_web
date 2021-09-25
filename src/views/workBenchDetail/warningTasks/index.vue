@@ -9,42 +9,86 @@
       <!--        搜索框-->
       <div v-show="detailListShow" class="seaContainer">
         <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="0px">
-          <el-form-item prop="dataSourceName">
+          <el-form-item prop="taskNo">
             <el-input
-              v-model="queryParams.dataSourceName"
+              v-model="queryParams.taskNo"
               placeholder="任务编号"
               clearable
               size="small"
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
-          <el-form-item prop="description">
+          <el-form-item prop="warningObjectName">
             <el-input
-              v-model="queryParams.description"
+              v-model="queryParams.warningObjectName"
               placeholder="客户名称"
               clearable
               size="small"
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
-          <el-form-item prop="description">
-            <el-select placeholder="所属分行" :disabled="!isManager">
+          <el-form-item prop="adBra">
+            <el-select
+              v-model="queryParams.adBra"
+              placeholder="所属分行"
+              clearable
+              size="small"
+            >
+              <el-option
+                v-for="dictSource in adBraOptions"
+                :key="dictSource.dictValue"
+                :label="dictSource.dictLabel"
+                :value="dictSource.dictValue"
+              />
             </el-select>
           </el-form-item>
-          <el-form-item prop="description">
-            <el-select placeholder="所属支行" :disabled="!isManager">
+          <el-form-item prop="adSubBra">
+            <el-select
+              v-model="queryParams.adSubBra"
+              placeholder="所属支行"
+              clearable
+              size="small"
+            >
+              <el-option
+                v-for="dictSource in adSubBraOptions"
+                :key="dictSource.dictValue"
+                :label="dictSource.dictLabel"
+                :value="dictSource.dictValue"
+              />
             </el-select>
           </el-form-item>
           <el-form-item prop="description">
             <el-select placeholder="审批权限" :disabled="!isManager">
             </el-select>
           </el-form-item>
-          <el-form-item prop="description">
-            <el-select placeholder="任务类型" :disabled="!isManager">
+          <el-form-item prop="taskType">
+            <el-select
+              v-model="queryParams.taskType"
+              placeholder="任务类型"
+              clearable
+              size="small"
+            >
+              <el-option
+                v-for="dictSource in taskTypeOptions"
+                :key="dictSource.dictValue"
+                :label="dictSource.dictLabel"
+                :value="dictSource.dictValue"
+              />
             </el-select>
           </el-form-item>
-          <el-form-item prop="description">
-            <el-select placeholder="任务状态" :disabled="!isManager">
+          <el-form-item prop="taskStatus">
+            <el-select
+              v-model="queryParams.taskStatus"
+              placeholder="任务状态"
+              clearable
+              size="small"
+            >
+              <el-option
+                v-for="dictSource in taskStatusOptions"
+                :key="dictSource.dictValue"
+                :label="dictSource.dictLabel"
+                :value="dictSource.dictValue"
+              />
             </el-select>
           </el-form-item>
           <el-form-item style="padding-left: 12px">
@@ -63,17 +107,25 @@
                 :cell-style="{padding:'0px'}" :data="taskInfoList" >
         <el-table-column label="任务编号" width="220px" align="center" prop="TASK_NO"/>
         <el-table-column label="客户名称" align="center" prop="WARNING_OBJECT_NAME"/>
-        <el-table-column label="客户类型" align="center" prop="WARNING_OBJECT_CATEGORY"/>
-        <el-table-column label="任务类型" align="center" prop="TASK_STATUS"/>
-        <el-table-column label="风险等级" align="center" prop="SYS_RISK_LEVEL"/>
+        <el-table-column label="客户类型" align="center" prop="WARNING_OBJECT_CATEGORY" :formatter="custTypeMatter"/>
+        <el-table-column label="任务类型" align="center" prop="TASK_TYPE" :formatter="taskTypeMatter"/>
+        <el-table-column label="风险等级" align="center" prop="SYS_RISK_LEVEL" :formatter="riskLevelMatter"/>
         <el-table-column label="一级信号" align="center" prop="ONELEVELCOUNT"/>
         <el-table-column label="二级信号" align="center" prop="TWOLEVELCOUNT"/>
         <el-table-column label="三级信号" align="center" prop="THREELEVELCOUNT"/>
-        <el-table-column label="所属分行" align="center" prop="AD_BRA"/>
-        <el-table-column label="所属支行" align="center" prop="AD_SUB_BRA"/>
-        <el-table-column label="任务生成日期" width="160px" align="center" prop="TASK_START_TIME"/>
-        <el-table-column label="任务截止日期" align="center" prop="TASK_DEADLINE"/>
-        <el-table-column label="任务状态" align="center" prop="TASK_STATUS"/>
+        <el-table-column label="所属分行" align="center" width="150px" prop="AD_BRA" :formatter="adBraMatter"/>
+        <el-table-column label="所属支行" align="center" width="150px" prop="AD_SUB_BRA" :formatter="adSubBraMatter"/>
+        <el-table-column label="任务生成日期" align="center" prop="TASK_START_TIME" width="150px">
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.TASK_START_TIME) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="任务截止日期" align="center" prop="TASK_DEADLINE" width="150px">
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.TASK_DEADLINE) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="任务状态" align="center" prop="TASK_STATUS" :formatter="taskStatusMatter"/>
         <el-table-column label="审批权限" align="center"/>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -89,10 +141,11 @@
               :visible.sync="centerDialogVisible"
               width="20%"
               center>
-              <span>确定处理该任务吗？</span>
+              <div class="messager-icon messager-question"></div>
+              <span style="font-size: 15px">确定处理该任务吗？</span>
               <span slot="footer" class="dialog-footer">
-    <el-button @click="centerDialogVisible = false" >取 消</el-button>
     <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+    <el-button @click="centerDialogVisible = false" >取 消</el-button>
   </span>
             </el-dialog>
           </template>
@@ -469,6 +522,18 @@
         enclosureList: [],
         // 流程信息
         processList: [],
+        // 风险等级
+        riskLevelOptions:[],
+        // 客户类型
+        custTypeOptions:[],
+        // 任务类型
+        taskTypeOptions:[],
+        // 任务状态
+        taskStatusOptions:[],
+        // 所属分行
+        adBraOptions:[],
+        // 所属支行
+        adSubBraOptions:[],
         // 任务详情
         taskInfoDetail:{
           dpApCustInfo:{},
@@ -493,9 +558,12 @@
         queryParams: {
           pageNum: 1,
           pageSize: 10,
-          dataSourceId: undefined,
-          queueName: undefined,
-          ducCreateDepartment: undefined,
+          taskNo: undefined,
+          warningObjectName:undefined,
+          adBra: undefined,
+          adSubBra: undefined,
+          taskType: undefined,
+          taskStatus: undefined
         },
         centerDialogVisible: false
       }
@@ -503,6 +571,25 @@
     created() {
       this.getList();
       this.managerDetail();
+      this.getDicts("sys_risk_level").then(response => {
+        this.riskLevelOptions = response.data;
+      });
+      this.getDicts("sys_cust_type").then(response => {
+        this.custTypeOptions = response.data;
+      });
+      this.getDicts("sys_task_type").then(response => {
+        this.taskTypeOptions = response.data;
+      });
+      this.getDicts("sys_task_status").then(response => {
+        this.taskStatusOptions = response.data;
+      });
+      this.getDicts("sys_sub_branch").then(response => {
+        this.adSubBraOptions = response.data;
+      });
+      this.getDicts("sys_branch_org").then(response => {
+        this.adBraOptions = response.data;
+      });
+
     },
     computed:{
       ...mapGetters([
@@ -540,7 +627,7 @@
         // 没出结果，一直等待
         let loading = this.$loading({
           lock: true,
-          text: '.......',
+          // text: '.......',
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.2)'
         });
@@ -620,10 +707,39 @@
           }
         )
       },
+      // 风险等级字典翻译
+      riskLevelMatter(row, column) {
+        return this.selectDictLabel(this.riskLevelOptions, row.SYS_RISK_LEVEL);
+      },
+      // 客户类型字典翻译
+      custTypeMatter(row, column) {
+        return this.selectDictLabel(this.custTypeOptions, row.WARNING_OBJECT_CATEGORY);
+      },
+      // 任务类型字典翻译
+      taskTypeMatter(row, column) {
+        return this.selectDictLabel(this.taskTypeOptions, row.TASK_TYPE);
+      },
+      // 任务状态字典翻译
+      taskStatusMatter(row, column) {
+        return this.selectDictLabel(this.taskStatusOptions, row.TASK_STATUS);
+      },
+      // 所属分行字典翻译
+      adBraMatter(row, column) {
+        return this.selectDictLabel(this.adBraOptions, row.AD_BRA);
+      },
+      // 所属支行字典翻译
+      adSubBraMatter(row, column) {
+        return this.selectDictLabel(this.adSubBraOptions, row.AD_SUB_BRA);
+      },
       /** 搜索按钮操作 */
       handleQuery() {
         this.queryParams.pageNum = 1;
         this.getList();
+      },
+      /** 重置按钮操作 */
+      resetQuery() {
+        this.resetForm("queryForm");
+        this.handleQuery();
       },
     }
   }
@@ -829,4 +945,41 @@
     vertical-align: top;
   }
 
+  .messager-icon {
+    float: left;
+    width: 32px;
+    height: 32px;
+    margin: 0 10px 10px 0;
+  }
+
+  .messager-question {
+    background: url(../../../../public/messager_icons.png) no-repeat scroll -32px 0;
+  }
+</style>
+
+<style>
+  .el-dialog{
+    display: flex;
+    flex-direction: column;
+    margin:0 !important;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    /*height:600px;*/
+    max-height:calc(100% - 30px);
+    max-width:calc(100% - 30px);
+  }
+  .el-dialog .el-dialog__body{
+    flex:1;
+    overflow: auto;
+  }
+  .el-dialog__title {
+    line-height: 20px;
+    font-size: 16px;
+    color: #0E2D5F;
+    float: left;
+    height: 20px;
+    font-weight: bold;
+  }
 </style>
