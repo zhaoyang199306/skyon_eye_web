@@ -1,110 +1,108 @@
 <template>
   <div style="padding: 0 1%;margin: 6px 0 0 0px">
-    <div class="title">
-      <span class="fz_icon"/>
-      <div class="title_text">
-        <p>预警任务列表</p>
+    <!--        搜索框-->
+    <div v-show="taskListShow" class="seaContainer">
+      <div class="title">
+        <span class="fz_icon"/>
+        <div class="title_text">
+          <p>预警任务列表</p>
+        </div>
       </div>
-
-      <!--        搜索框-->
-      <div v-show="detailListShow" class="seaContainer">
-        <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="0px">
-          <el-form-item prop="taskNo">
-            <el-input
-              v-model="queryParams.taskNo"
-              placeholder="任务编号"
-              clearable
-              size="small"
-              @keyup.enter.native="handleQuery"
+      <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="0px">
+        <el-form-item prop="taskNo">
+          <el-input
+            v-model="queryParams.taskNo"
+            placeholder="任务编号"
+            clearable
+            size="small"
+            @keyup.enter.native="handleQuery"
+          />
+        </el-form-item>
+        <el-form-item prop="warningObjectName">
+          <el-input
+            v-model="queryParams.warningObjectName"
+            placeholder="客户名称"
+            clearable
+            size="small"
+            @keyup.enter.native="handleQuery"
+          />
+        </el-form-item>
+        <el-form-item prop="adBra">
+          <el-select
+            v-model="queryParams.adBra"
+            placeholder="所属分行"
+            clearable
+            size="small"
+          >
+            <el-option
+              v-for="dictSource in adBraOptions"
+              :key="dictSource.dictValue"
+              :label="dictSource.dictLabel"
+              :value="dictSource.dictValue"
             />
-          </el-form-item>
-          <el-form-item prop="warningObjectName">
-            <el-input
-              v-model="queryParams.warningObjectName"
-              placeholder="客户名称"
-              clearable
-              size="small"
-              @keyup.enter.native="handleQuery"
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="adSubBra">
+          <el-select
+            v-model="queryParams.adSubBra"
+            placeholder="所属支行"
+            clearable
+            size="small"
+          >
+            <el-option
+              v-for="dictSource in adSubBraOptions"
+              :key="dictSource.dictValue"
+              :label="dictSource.dictLabel"
+              :value="dictSource.dictValue"
             />
-          </el-form-item>
-          <el-form-item prop="adBra">
-            <el-select
-              v-model="queryParams.adBra"
-              placeholder="所属分行"
-              clearable
-              size="small"
-            >
-              <el-option
-                v-for="dictSource in adBraOptions"
-                :key="dictSource.dictValue"
-                :label="dictSource.dictLabel"
-                :value="dictSource.dictValue"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item prop="adSubBra">
-            <el-select
-              v-model="queryParams.adSubBra"
-              placeholder="所属支行"
-              clearable
-              size="small"
-            >
-              <el-option
-                v-for="dictSource in adSubBraOptions"
-                :key="dictSource.dictValue"
-                :label="dictSource.dictLabel"
-                :value="dictSource.dictValue"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item prop="description">
-            <el-select placeholder="审批权限" :disabled="!isManager">
-            </el-select>
-          </el-form-item>
-          <el-form-item prop="taskType">
-            <el-select
-              v-model="queryParams.taskType"
-              placeholder="任务类型"
-              clearable
-              size="small"
-            >
-              <el-option
-                v-for="dictSource in taskTypeOptions"
-                :key="dictSource.dictValue"
-                :label="dictSource.dictLabel"
-                :value="dictSource.dictValue"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item prop="taskStatus">
-            <el-select
-              v-model="queryParams.taskStatus"
-              placeholder="任务状态"
-              clearable
-              size="small"
-            >
-              <el-option
-                v-for="dictSource in taskStatusOptions"
-                :key="dictSource.dictValue"
-                :label="dictSource.dictLabel"
-                :value="dictSource.dictValue"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item style="padding-left: 12px">
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button type="primary" icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="description">
+          <el-select placeholder="审批权限" :disabled="!isManager">
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="taskType">
+          <el-select
+            v-model="queryParams.taskType"
+            placeholder="任务类型"
+            clearable
+            size="small"
+          >
+            <el-option
+              v-for="dictSource in taskTypeOptions"
+              :key="dictSource.dictValue"
+              :label="dictSource.dictLabel"
+              :value="dictSource.dictValue"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="taskStatus">
+          <el-select
+            v-model="queryParams.taskStatus"
+            placeholder="任务状态"
+            clearable
+            size="small"
+          >
+            <el-option
+              v-for="dictSource in taskStatusOptions"
+              :key="dictSource.dictValue"
+              :label="dictSource.dictLabel"
+              :value="dictSource.dictValue"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item style="padding-left: 12px">
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+          <el-button type="primary" icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        </el-form-item>
+      </el-form>
     </div>
-    <div></div>
 
     <!--    展示列表  -->
-    <div v-show="detailListShow">
+    <div v-show="taskListShow">
       <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
                 header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                :cell-style="{padding:'0px'}" :data="taskInfoList" >
+                :cell-style="{padding:'0px'}" :data="taskInfoList">
         <el-table-column label="任务编号" width="220px" align="center" prop="TASK_NO"/>
         <el-table-column label="客户名称" align="center" prop="WARNING_OBJECT_NAME"/>
         <el-table-column label="客户类型" align="center" prop="WARNING_OBJECT_CATEGORY" :formatter="custTypeMatter"/>
@@ -144,8 +142,8 @@
               <div class="messager-icon messager-question"></div>
               <span style="font-size: 15px">确定处理该任务吗？</span>
               <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
-    <el-button @click="centerDialogVisible = false" >取 消</el-button>
+    <el-button type="primary" @click="taskDetail(scope.row)">确 定</el-button>
+    <el-button @click="centerDialogVisible = false">取 消</el-button>
   </span>
             </el-dialog>
           </template>
@@ -163,10 +161,10 @@
 
 
     <!--附件上传dialog-->
-    <el-dialog :visible.sync="openRiskIntroduce" width="1100px" >
+    <el-dialog :visible.sync="openRiskIntroduce" width="1100px">
       <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
                 header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                :cell-style="{padding:'0px'}" :data="enclosureList" >
+                :cell-style="{padding:'0px'}" :data="enclosureList">
         <el-table-column label="任务编号" align="center" prop="custNo"/>
         <el-table-column label="流程节点" align="center" prop="custName"/>
         <el-table-column label="上传人" align="center" prop="testSubType"/>
@@ -187,50 +185,45 @@
       </el-table>
     </el-dialog>
 
-
-    <!--在途任务dialog-->
-    <el-dialog :visible.sync="onWayTaskDialog" width="1100px" title="多任务审批信息展示-风险检查反馈">
-      <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-                header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                :cell-style="{padding:'0px'}" :data="enclosureList" >
-        <el-table-column label="任务编号" align="center" prop="custNo"/>
-        <el-table-column label="当前流程节点" align="center" prop="custName"/>
-        <el-table-column label="客户风险等级" align="center" prop="testSubType"/>
-        <el-table-column label="检查结论" align="center" prop="oneNum"/>
-        <el-table-column label="管控措施" align="center" prop="twoNum"/>
-        <el-table-column label="认定完成重新产生任务跟踪" align="center"/>
-        <el-table-column label="跟踪时间" align="center" />
-        <el-table-column label="审批时间" align="center" />
-
-      </el-table>
-    </el-dialog>
-
     <!--      详情-->
 
-    <div v-show="detailShow">
+    <div v-show="taskDetailShow">
+      <div class="title">
+        <span class="fz_icon"/>
+        <div class="title_text">
+          <p>预警任务管理 > 预警任务</p>
+        </div>
+      </div>
       <div class="cl_title" style="margin-bottom:5px;">
         <div class="radioball lt"></div>
-        <p class="lt" style="margin: 0 0">客户信息</p>
+        <p class="lt" style="margin: 0 0">原信息</p>
       </div>
       <div style="margin-top: 10px" class="el-col-24">
         <!--    详情基本信息    -->
-        <el-form ref="detailInfo" :model="taskInfoDetail.dpApCustInfo" label-width="120px" class="el-col-24">
-          <el-form-item label="客户编号：" class="el-col-5">
-            <el-input v-model="taskInfoDetail.dpApCustInfo.custNo" readonly="readonly"/>
+        <el-form ref="detailInfo" :model="seWfTaskInfo" class="el-col-24">
+          <el-form-item label="客户编号：" label-width="100px" class="el-col-4">
+            <div class="pull-left">{{ seWfTaskInfo.warningObjectNo }}</div>
           </el-form-item>
-          <el-form-item label="客户名称:" class="el-col-5">
-            <el-input v-model="taskInfoDetail.dpApCustInfo.custName" readonly="readonly"/>
+          <el-form-item label="客户名称:" label-width="100px" class="el-col-3">
+            <div class="pull-left">{{ seWfTaskInfo.seWfWarningObject.warningObjectName}}</div>
           </el-form-item>
-          <el-form-item label="证件号码:" class="el-col-5">
-            <el-input v-model="taskInfoDetail.dpApCustInfo.certNo" readonly="readonly"/>
+          <el-form-item label="预计完成日期:" label-width="100px" class="el-col-4">
+            <div class="pull-left">{{ seWfTaskInfo.taskDeadline }}</div>
           </el-form-item>
-          <el-form-item label="手机号码:" class="el-col-5">
-            <el-input v-model="taskInfoDetail.dpApCustInfo.phone" readonly="readonly"/>
+          <el-form-item label="系统认定客户风险等级:" label-width="190px" class="el-col-4">
+            <template slot-scope="scope">
+              <div class="pull-left">{{ selectDictLabel(riskLevelOptions,seWfTaskInfo.sysRiskLevel)}}</div>
+            </template>
+          </el-form-item>
+          <el-form-item label="信号来源:" label-width="120px" class="el-col-4">
+            <template slot-scope="scope">
+              <div class="pull-left">{{ selectDictLabel(signalSourceOptions,seWfTaskInfo.signalSource)}}</div>
+            </template>
           </el-form-item>
         </el-form>
       </div>
 
-      <!--    详情 - 改派任务清单    -->
+      <!--    预警信号列表    -->
       <div class="el-col-24" style="margin-top: 15px">
         <div class="cl_title" style="margin-bottom:5px;">
           <div class="radioball lt"></div>
@@ -238,17 +231,23 @@
         </div>
         <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
                   header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                  :cell-style="{padding:'0px'}" :data="taskInfoDetail.warnSignals">
-          <el-table-column label="任务编号" align="center" prop="taskNum"/>
+                  :cell-style="{padding:'0px'}" :data="seWfTaskInfo.seWfWarningSigns">
+          <el-table-column label="任务信息" width="260px" align="center">
+            <div>{{ seWfTaskInfo.taskNo}}</div>
+          </el-table-column>
           <el-table-column label="当前处理岗" align="center" prop="nowDealRole"/>
-          <el-table-column label="信号名称" align="center" prop="singleName"/>
-          <el-table-column label="信号等级" align="center" prop="singleLevel"/>
-          <el-table-column label="预警原因" width="400px" align="center" prop="warmResson"/>
-          <el-table-column label="触发日期" align="center" prop="touchDate"/>
-          <el-table-column label="下放时间" align="center" prop="devolutionDate"/>
+          <el-table-column label="信号名称" width="300px" align="center" prop="signalName"/>
+          <el-table-column label="信号等级" align="center" prop="warningLevel">
+            <template slot-scope="scope">
+              <div>{{ selectDictLabel(signalLevelOptions,scope.row.warningLevel)}}</div>
+            </template>
+          </el-table-column>
+          <el-table-column label="预警原因" width="300px" align="center" prop="warnDsc"/>
+          <el-table-column label="触发日期" align="center" prop="signalTriggerTime"/>
+          <el-table-column label="下放时间" align="center" prop="distributeTime"/>
           <el-table-column label="认定状态" align="center">
             <template slot-scope="scope">
-              <el-select v-model="scope.row.comfStatus" :disabled="!isManager" style="width: 90px">
+              <el-select v-model="scope.row.confirmStatus" :disabled="!isManager" style="width: 90px">
                 <el-option label="属实" value="01">属实</el-option>
                 <el-option label="不属实" value="02">不属实</el-option>
               </el-select>
@@ -256,134 +255,107 @@
           </el-table-column>
         </el-table>
 
-
-
-
+        <!--      客户当前授信业务    -->
+        <div class="el-col-24" style="margin-top: 15px">
+          <div class="cl_title" style="margin-bottom:5px;margin-top: 15px">
+            <div class="radioball lt"></div>
+            <p class="lt" style="margin: 0 0">客户当前授信业务</p>
+          </div>
+          <el-table width="1000" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
+                    header-cell-style="font-size:12px" :row-style="{height:'32px'}"
+                    :cell-style="{padding:'0px'}" :data="tableData" style="width: 100%">
+            <el-table-column label="产品类型" align="center" prop="taskId"/>
+            <el-table-column label="贷款发放日期" align="center" prop="nowDealRole"/>
+            <el-table-column label="贷款到期日期" align="center" prop="signalName"/>
+            <el-table-column label="贷款利率" align="center" prop="warningLevel"/>
+            <el-table-column label="额度金额" align="center" prop="warnDsc"/>
+            <el-table-column label="五级分类" align="center" prop="signalTriggerTime"/>
+            <el-table-column label="贷款余额" align="center" prop="distributeTime"/>
+            <el-table-column label="主要担保方式" align="center" prop="distributeTime"/>
+          </el-table>
+        </div>
+        <!--      预警任务历史记录    -->
+        <div class="el-col-24" style="margin-top: 15px">
+          <div class="cl_title" style="margin-bottom:5px;margin-top: 15px">
+            <div class="radioball lt"></div>
+            <p class="lt" style="margin: 0 0">预警任务历史记录</p>
+          </div>
+          <el-table width="1000" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
+                    header-cell-style="font-size:12px" :row-style="{height:'32px'}"
+                    :cell-style="{padding:'0px'}" :data="seWfTaskInfoHis" style="width: 100%">
+            <el-table-column label="任务编号" align="center" prop="taskNo"/>
+            <el-table-column label="任务完成日期" align="center" prop="taskEndTime"/>
+            <el-table-column label="风险等级" align="center" prop="riskLevel">
+              <template slot-scope="scope">
+                <div>{{ selectDictLabel(riskLevelOptions,scope.row.riskLevel)}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="一户一策计划" align="center" prop="oneFamilyOnePolicy"/>
+            <el-table-column label="认定方式" align="center" prop="warningConfirmModel">
+              <template slot-scope="scope">
+                <div>{{ selectDictLabel(confirmModelOptions,scope.row.warningConfirmModel)}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="详情" align="center"><a href="#">查看</a></el-table-column>
+          </el-table>
+        </div>
       </div>
-      <!--      风险检查反馈    -->
+
+      <!--      风险判断        -->
       <div class="el-col-24" style="margin-top: 15px">
         <div class="cl_title" style="margin-bottom:5px;margin-top: 15px">
           <div class="radioball lt"></div>
-          <p class="lt" style="margin: 0 0">风险检查反馈</p>
-          <div class="btnTask rt showMoreone" style="float: right" @click="onWayTaskShow">在途任务展示</div>
+          <p class="lt" style="margin: 0 0">风险判断</p>
+        </div>
+        <div style="background-color: #e5e5e5;height: 40px;margin: auto 0">
+          <div class="tipText" style="float: left">?</div>
+          <span style="font-size: 12px;margin: auto 0; padding-top: 15px;padding-left: 5px;float: left">客户风险等级</span>
+
+          <el-form-item label="系统认定客户风险等级:" label-width="190px" class="el-col-4">
+            <template slot-scope="scope">
+              <div class="pull-left">{{ selectDictLabel(riskLevelOptions,seWfTaskInfo.sysRiskLevel)}}</div>
+            </template>
+          </el-form-item>
+
+          <div style="margin: auto 0; padding-top: 4px;padding-left: 10px;float: left">
+            <el-select v-model="seWfTaskInfo.riskLevel" placeholder="客户风险等级" style="width: 250px"
+                       :disabled="detailViem">
+              <el-option
+                v-for="dict in riskLevelOptions"
+                :key="dict.dictValue"
+                :label="dict.dictLabel"
+                :value="dict.dictValue"
+              ></el-option>
+            </el-select>
+          </div>
         </div>
 
-
-
-
-        <table class="table" style="font-size: 14px;margin-top: 10px" v-model="taskInfoDetail">
-          <tbody>
-          <tr style="background: #f9f9f9;">
-            <td rowspan="4" style="width: 120px;border-right: 1px solid #FFF3F3;">
-              <p class="title_table_p">{{taskInfoNo}}</p>
-            </td>
-          </tr>
-          <tr>
-            <td class="tdfir">
-              <span style="color: red">*</span>
-              系统认定风险等级
-              <el-tooltip  effect="dark" placement="right-start">
-                <div slot="content">
-                  　<span>客户风险等级：</span><br/><br/>
-                  　<span>红色：授信主体出现经营危机；</span><br/><br/>
-                  　<span>橙色：授信主体出现经营下滑或出现下滑的苗头；</span><br/><br/>
-                  　<span>橙色：授信主体出现风险较评审准入时有较大迹象；</span><br/><br/>
-                  　<span>蓝色：授信主体存在影响授信安全的不利因素（内部，外部）；</span><br/><br/>
-                  　<span>蓝色：授信主体正常运营，没有理由怀疑贷款可能出现风险；</span>
-                </div>
-                <el-button class="tipText">?</el-button>
-              </el-tooltip>
-            </td>
-            <td style="width:10%">
-              <div class="dropdown">
-                <el-input v-model="sysRiskLevel" disabled="disabled"/>
-              </div>
-
-            </td>
-            <td class="tdfir">
-              <span style="color: red">*</span>
-              个人认定风险等级
-              <el-tooltip  effect="dark" placement="right-start">
-                <div slot="content">
-                  　<span>客户风险等级：</span><br/><br/>
-                  　<span>红色：授信主体出现经营危机；</span><br/><br/>
-                  　<span>橙色：授信主体出现经营下滑或出现下滑的苗头；</span><br/><br/>
-                  　<span>橙色：授信主体出现风险较评审准入时有较大迹象；</span><br/><br/>
-                  　<span>蓝色：授信主体存在影响授信安全的不利因素（内部，外部）；</span><br/><br/>
-                  　<span>蓝色：授信主体正常运营，没有理由怀疑贷款可能出现风险；</span>
-                </div>
-                <el-button class="tipText">?</el-button>
-              </el-tooltip>
-            </td>
-            <td width="10%">
-              <div class="dropdown">
-                <el-select v-model="taskInfoDetail.personalRiskLevel" :disabled="!isManager"  @change="riskLevelChange">
-                  <el-option label="红色" value="红色">
-                    <span><img :src="redImg" style="display: inline-block;float: left;margin: 0px 5px;">红色</span>
-                  </el-option>
-                  <el-option label="橙色" value="橙色">
-                    <img :src="orangeImg" style="display: inline-block;float: left;margin: 0px 5px;">
-                    <span>橙色</span>
-                  </el-option>
-                  <el-option label="黄色" value="黄色">
-                    <img :src="yellowImg" style="display: inline-block;float: left;margin: 0px 5px;">
-                    <span>黄色</span></el-option>
-                  <el-option label="蓝色" value="蓝色">
-                    <img :src="blueImg" style="display: inline-block;float: left;margin: 0px 5px;">
-                    <span>蓝色</span>
-                  </el-option>
-                  <el-option label="绿色" value="绿色">
-                    <img :src="greenImg" style="display: inline-block;float: left;margin: 0px 5px;">
-                    <span>绿色</span>
-                  </el-option>
-                </el-select>
-              </div>
-
-            </td>
-            <td>
-              <ul style="list-style: none;">
-                <li>
-                  <el-checkbox>认定完成重新产生跟踪任务</el-checkbox>
-                </li>
-                <li>
-                  <span style="color: red">*</span>
-                  跟踪完成日期
-                  <el-input style="height: 35px;width: 110px;font-size: 12px" :disabled="!isManager"
-                            v-model="taskInfoDetail.trackTime"/>
-                </li>
-                <li style="color:red">
-                  注：将原在途跟踪任务归档，并产生新的跟踪任务
-                </li>
-              </ul>
-
-            </td>
-          </tr>
-          <tr  style="background: #f9f9f9;">
-            <td class="tdfir" style="line-height:30px">附件：</td>
-            <td colspan="5" style="line-height:5px">
-              <a style="color:#0062bd;position:relative" @click="updateA">
-                <i style="font-size:20px" title="附件下载" class="fa fa-cloud-download"/>
-                <span style="color: red;padding-top: -5px">
-                    0
-                  </span>
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td class="tdfir" style="height:223px">
-              <span style="color: red">*</span>
-              检查结论
-              <p style="color: red">(限制1000字)</p>
-            </td>
-            <td colspan="5" class="tdsec" style="height:223px">
-
-              <el-input type="textarea" :disabled="!isManager" v-model="taskInfoDetail.checkResult"
-                        :autosize="{ minRows: 7, maxRows: 7}" />
-            </td>
-          </tr>
-
-          </tbody>
-        </table>
+        <div class="titleTable">
+          <div class="title_table_div">
+            <p class="title_table_p" style="padding-top: 30px;padding-left: 40px">
+              认定理由:
+            </p>
+            <p class="title_table_p_color">
+              (限制1000字)
+            </p>
+          </div>
+          <div class="title_table_textarea">
+            <el-input type="textarea" v-model="seWfTaskInfo.seWfTaskExecuteFeedback.currentConclusions" :autosize="{ minRows: 3.5, maxRows: 3.5}"
+                      placeholder="请填写无风险理由"/>
+          </div>
+        </div>
+        <div class="titleTable1">
+          <div class="title_table_div">
+            <p class="title_table_p" style="padding-top: 20px;padding-left: 40px ;">
+              附件
+            </p>
+          </div>
+          <div class="title_table_div">
+            <a style="color:#0062bd;padding-top: 20px;padding-left: 40px ;" @click="updateA">
+              <i style="font-size:20px" title="附件" class="fa fa-cloud-upload"/>
+            </a>
+          </div>
+        </div>
       </div>
 
       <!--      风险管控措施    -->
@@ -394,172 +366,188 @@
         </div>
 
         <div class="titleTable_check">
-          <div class="title_table_div" style="background-color: #f9f9f9">
-            <p class="title_table_p">
-              {{taskInfoNo}}
-            </p>
-          </div>
-          <div class="title_table_div">
-            <p class="title_table_p" style="padding-left: 25px">
-              风险管控措施:
-            </p>
-          </div>
-          <div class="title_table_textarea" style="padding-left: 25px">
-            <el-checkbox-group v-model="taskInfoDetail.riskControlMeasures == null?(taskInfoDetail.riskControlMeasures=[])
-            :taskInfoDetail.riskControlMeasures" :disabled="!isManager" style="line-height: 20px">
-              <div style="float: left">
-                <div style="width: 300px;float: left">
-                  <el-checkbox label="a">继续加大力度支持</el-checkbox>
-                  <el-checkbox label="b">按常规实施授信后管理和检查</el-checkbox>
-                  <el-checkbox label="c">列为重点关注对象，加大对客户的监控力度</el-checkbox>
-                  <el-checkbox label="d">增加风险缓释措施</el-checkbox>
-                  <el-checkbox label="e">收回授信后不再给予续贷</el-checkbox>
-                  <el-checkbox label="f">“三定原则”落实清收</el-checkbox>
-                  <el-checkbox label="g">依法处置授信抵/质押物</el-checkbox>
-                </div>
-                <div style="width: 280px;float: left;margin-left: 40px">
-                  <el-checkbox label="h">逐步退出</el-checkbox>
-                  <el-checkbox label="i">要求借款人提出更详细的还款计划</el-checkbox>
-                  <el-checkbox label="j">停止发放新授信</el-checkbox>
-                  <el-checkbox label="k">提前收回该客户未使用的授信</el-checkbox>
-                  <el-checkbox label="l">追索保证人连带责任</el-checkbox>
-                  <el-checkbox label="m">与客户协商以物抵贷</el-checkbox>
-                  <el-checkbox label="n">依法提起诉讼</el-checkbox>
-                </div>
-                <div>
-                  <el-checkbox label="其他"/>
-                  <el-input v-model="otherCheck" style="width: 200px;height: 30px;margin-left: 20px"/>
-                </div>
+          <!--          <div class="title_table_div" style="background-color: #f9f9f9">-->
+          <!--            <p class="title_table_p">-->
+          <!--              {{taskNo}}-->
+          <!--            </p>-->
+          <!--          </div>-->
+          <div class="titleTable1">
+            <div class="title_table_div">
+              <p class="title_table_p" style="padding-left: 25px">
+                风险管控措施:
+              </p>
+            </div>
+            <div class="title_table_div">
+              <div class="title_table_textarea" style="padding-left: 25px">
+                <el-checkbox-group v-model="seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures ==
+                null?(seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures=[])
+                :seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures" style="line-height: 20px">
+                  <div style="float: left">
+                    <div style="width: 1000px;float: left">
+                      <el-checkbox label="1">提前催收</el-checkbox>
+                      <el-checkbox label="2">日常持续关注</el-checkbox>
+                      <el-checkbox label="3">立即实地走访</el-checkbox>
+                      <el-checkbox label="4">加强贷后走访</el-checkbox>
+                      <el-checkbox label="5">冻额</el-checkbox>
+                      <el-checkbox label="6">加强关注</el-checkbox>
+                      <el-checkbox label="7">其他</el-checkbox>
+<!--                      <el-input v-model="seWfTaskInfo.seWfTaskExecuteFeedback.otherControlMeasures"-->
+<!--                                style="width: 200px;height: 30px;margin-left: 20px"/>-->
+                    </div>
+                  </div>
+                </el-checkbox-group>
               </div>
-            </el-checkbox-group>
+            </div>
           </div>
-        </div>
-      </div>
-
-      <!--      审核意见    -->
-      <div v-show="!isManager" class="el-col-24" style="margin-top: 15px">
-        <div class="cl_title" style="margin-bottom:5px;">
-          <div class="radioball lt"></div>
-          <p class="lt" style="margin: 0 0">审核意见</p>
-        </div>
-
-        <div style="background-color: #e5e5e5;height: 40px;margin: auto 0">
-          <span style="font-size: 12px;margin: auto 0; padding-top: 15px;padding-left: 20px;float: left">是否同意</span>
-          <div style="float: left;padding-top: 12px;padding-left: 20px;">
-            <el-radio v-model="radio" label="1">是</el-radio>
-            <el-radio v-model="radio" label="2">否</el-radio>
+          <div class="titleTable">
+            <div class="title_table_div">
+              <p class="title_table_p" style="padding-top: 30px;padding-left: 20px">
+                一户一策计划:
+              </p>
+              <p class="title_table_p_color">
+                (限制1000字)
+              </p>
+            </div>
+            <div class="title_table_textarea">
+              <el-input type="textarea" v-model="seWfTaskInfo.seWfTaskExecuteFeedback.oneFamilyOnePolicy" :autosize="{ minRows: 3.5, maxRows: 3.5}"
+                        aria-placeholder=""/>
+            </div>
           </div>
         </div>
 
-        <div class="titleTable">
-          <div class="title_table_div">
-            <p class="title_table_p" style="padding-top: 30px;padding-left: 40px">
-              审核意见:
-            </p>
-            <p class="title_table_p_color">
-              (限制1000字)
-            </p>
-          </div>
-          <div class="title_table_textarea">
-            <el-input type="textarea" v-model="examinValue" :autosize="{ minRows: 3, maxRows: 3}"/>
-          </div>
-        </div>
+
+        <!--      审核意见    -->
+<!--        <div v-show="isManager" class="el-col-24" style="margin-top: 15px">-->
+<!--          <div class="cl_title" style="margin-bottom:5px;">-->
+<!--            <div class="radioball lt"></div>-->
+<!--            <p class="lt" style="margin: 0 0">审核意见</p>-->
+<!--          </div>-->
+
+<!--          <div style="background-color: #e5e5e5;height: 40px;margin: auto 0">-->
+<!--            <span style="font-size: 12px;margin: auto 0; padding-top: 15px;padding-left: 20px;float: left">是否同意</span>-->
+<!--            <div style="float: left;padding-top: 12px;padding-left: 20px;">-->
+<!--              <el-radio v-model="radio" label="1">是</el-radio>-->
+<!--              <el-radio v-model="radio" label="2">否</el-radio>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="titleTable">-->
+<!--          <div class="title_table_div">-->
+<!--            <p class="title_table_p" style="padding-top: 30px;padding-left: 40px">-->
+<!--              审核意见:-->
+<!--            </p>-->
+<!--            <p class="title_table_p_color">-->
+<!--              (限制1000字)-->
+<!--            </p>-->
+<!--          </div>-->
+<!--          <div class="title_table_textarea">-->
+<!--            <el-input type="textarea" v-model="examinValue" :autosize="{ minRows: 3.5, maxRows: 3.5}"/>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
 
       <!--      流程信息    -->
       <div>
         <template>
-          <el-dialog title="流程信息"  :visible.sync="open" customClass="customWidth" :close-on-click-modal="false"
+          <el-dialog title="流程信息" :visible.sync="open" customClass="customWidth" :close-on-click-modal="false"
                      width="700px">
-            <link-log v-bind:taskInfoNo="taskInfoNo"/>
+            <link-log v-bind:taskNo="taskNo"/>
           </el-dialog>
         </template>
       </div>
 
-
-
-      <div slot="footer" class="el-col-24" style="margin: 20px 40% 0 40%;padding-bottom: 30px" >
+      <div slot="footer" class="el-col-24" style="margin: 20px 40% 0 40%;padding-bottom: 30px">
         <el-button type="primary" class="btn" style="width: 80px" @click="linkClick">流程信息</el-button>
-        <el-button type="primary" class="btn">暂 存</el-button>
-        <el-button type="primary" v-show="!isManager" class="btn">退 回</el-button>
         <el-button type="primary" class="btn" @click="submit">提 交</el-button>
         <el-button type="primary" class="btn" @click="cancel">取 消</el-button>
       </div>
+
     </div>
   </div>
 </template>
 
 <script>
-  import {listTaskInfo, getTaskInfoDetail, submitTaskInfo} from "@/api/workBenchDetail/taskInfo.js";
-  import LinkLog from "../linkLog/index";
-  import redimgpng from "@/assets/png/redcircle.png"
-  import orangeimgpng from "@/assets/png/orangecircle.png"
-  import blueimgpng from "@/assets/png/bluecircle.png"
-  import greenimgpng from "@/assets/png/greencircle.png"
-  import yellowimgpng from "@/assets/png/yellowcircle.png"
-  import {mapGetters} from "vuex";
+  import { listTaskInfo, getTaskDetail, getHistoryTask, submitTaskInfo } from '@/api/workBenchDetail/taskInfo.js'
+  import LinkLog from '../linkLog/index'
+  import redimgpng from '@/assets/png/redcircle.png'
+  import orangeimgpng from '@/assets/png/orangecircle.png'
+  import blueimgpng from '@/assets/png/bluecircle.png'
+  import greenimgpng from '@/assets/png/greencircle.png'
+  import yellowimgpng from '@/assets/png/yellowcircle.png'
+  import { mapGetters } from 'vuex'
+
   export default {
-    name: "taskInfo",
-    components: {LinkLog},
+    name: 'taskInfo',
+    components: { LinkLog },
     data() {
       return {
         // 条数
-        total:0,
-        isManager:true,
+        total: 0,
+        isManager: true,
         // 系统认定风险等级
-        sysRiskLevel:undefined,
-        trackTime:"2021-08-01",
+        sysRiskLevel: undefined,
+        trackTime: '2021-08-01',
         //  true 标志
         trueFlag: true,
-        tableHeader:false,
-        redImg:redimgpng,
-        orangeImg:orangeimgpng,
-        blueImg:blueimgpng,
-        greenImg:greenimgpng,
-        yellowImg:yellowimgpng,
+        tableHeader: false,
+        redImg: redimgpng,
+        orangeImg: orangeimgpng,
+        blueImg: blueimgpng,
+        greenImg: greenimgpng,
+        yellowImg: yellowimgpng,
         //  预警认定集合
         taskInfoList: [],
         enclosureList: [],
         // 流程信息
         processList: [],
         // 风险等级
-        riskLevelOptions:[],
+        riskLevelOptions: [],
         // 客户类型
-        custTypeOptions:[],
+        custTypeOptions: [],
         // 任务类型
-        taskTypeOptions:[],
+        taskTypeOptions: [],
         // 任务状态
-        taskStatusOptions:[],
+        taskStatusOptions: [],
         // 所属分行
-        adBraOptions:[],
+        adBraOptions: [],
         // 所属支行
-        adSubBraOptions:[],
+        adSubBraOptions: [],
+        checkList: ['2','4'],
+        // 信号来源
+        signalSourceOptions: [],
+        //信号等级
+        signalLevelOptions: [],
+        //认定方式
+        confirmModelOptions: [],
         // 任务详情
-        taskInfoDetail:{
-          dpApCustInfo:{},
-          warnSignals:[],
-          riskControlMeasures:[],
+        seWfTaskInfo: {
+          seWfWarningObject: {},
+          seWfTaskExecuteFeedback:{currentControlMeasures:[]},
+          seWfWarningSigns: [],
         },
+
+        seWfTaskInfoHis: [],
         //  详情展示控制
-        detailShow: false,
+        taskDetailShow: false,
         open: false,
         openRiskIntroduce: false,
         onWayTaskDialog: false,
         logShow: false,
-        detailListShow: true,
-        radio: "",
+        taskListShow: true,
+        radio: '',
         radioExamine: undefined,
         otherCheck: undefined,
         //
-        detailInfo:{},
-        examinValue: "",
-        taskInfoNo: "",
+        detailInfo: {},
+        examinValue: '',
+        taskNo: '',
+        warningObjectName: '',
         // 查询参数
         queryParams: {
           pageNum: 1,
           pageSize: 10,
           taskNo: undefined,
-          warningObjectName:undefined,
+          warningObjectName: undefined,
           adBra: undefined,
           adSubBra: undefined,
           taskType: undefined,
@@ -569,58 +557,67 @@
       }
     },
     created() {
-      this.getList();
-      this.managerDetail();
-      this.getDicts("sys_risk_level").then(response => {
-        this.riskLevelOptions = response.data;
-      });
-      this.getDicts("sys_cust_type").then(response => {
-        this.custTypeOptions = response.data;
-      });
-      this.getDicts("sys_task_type").then(response => {
-        this.taskTypeOptions = response.data;
-      });
-      this.getDicts("sys_task_status").then(response => {
-        this.taskStatusOptions = response.data;
-      });
-      this.getDicts("sys_sub_branch").then(response => {
-        this.adSubBraOptions = response.data;
-      });
-      this.getDicts("sys_branch_org").then(response => {
-        this.adBraOptions = response.data;
-      });
+      this.getList()
+      this.managerDetail()
+      this.getDicts('sys_risk_level').then(response => {
+        this.riskLevelOptions = response.data
+      })
+      this.getDicts('sys_cust_type').then(response => {
+        this.custTypeOptions = response.data
+      })
+      this.getDicts('sys_task_type').then(response => {
+        this.taskTypeOptions = response.data
+      })
+      this.getDicts('sys_task_status').then(response => {
+        this.taskStatusOptions = response.data
+      })
+      this.getDicts('sys_sub_branch').then(response => {
+        this.adSubBraOptions = response.data
+      })
+      this.getDicts('sys_branch_org').then(response => {
+        this.adBraOptions = response.data
+      })
+      this.getDicts('sys_signal_source').then(response => {
+        this.signalSourceOptions = response.data
+      })
+      this.getDicts('sys_signal_level').then(response => {
+        this.signalLevelOptions = response.data
+      })
+      this.getDicts('sys_confirm_model').then(response => {
+        this.confirmModelOptions = response.data
+      })
 
     },
-    computed:{
+    computed: {
       ...mapGetters([
-        'roles',
-      ]),
+        'roles'
+      ])
     },
     methods: {
       // 针对客户经理，不显示审核意见
-      managerDetail(){
-        if (this.roles.indexOf("客户经理")>-1)
-          this.isManager = true;
-        else
-          this.isManager = false;
+      managerDetail() {
+        if (this.roles.indexOf('客户经理') > -1) {
+          this.isManager = true
+        } else {
+          this.isManager = false
+        }
       },
 
-
-      onWayTaskShow(){
-        this.onWayTaskDialog = true;
+      onWayTaskShow() {
+        this.onWayTaskDialog = true
       },
-      riskLevelChange(value){
-        console.log("----riskLevelChange");
-        console.log(value);
-        console.log(this);
+      riskLevelChange(value) {
+        console.log('----riskLevelChange')
+        console.log(value)
+        console.log(this)
       },
       // 附件上传
-      updateA(){
-        this.openRiskIntroduce = true;
+      updateA() {
+        this.openRiskIntroduce = true
       },
       // 流程按钮
       linkClick() {
-        this.open = true;
+        this.open = true
       },
       //  提交
       submit() {
@@ -630,61 +627,109 @@
           // text: '.......',
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.2)'
-        });
-        submitTaskInfo(this.taskInfoNo, this.taskInfoDetail.riskControlMeasures,
-          this.radio, this.examinValue,this.taskInfoDetail.personalRiskLevel,
-          this.taskInfoDetail.checkResult,this.taskInfoDetail.warnSignals).then(res => {
-          console.log("---submitTaskInfo");
-          console.log(res);
-          if (res.code === 200) {
-            this.msgSuccess("提交成功");
-            this.getList();
-            this.detailShow = false;
-            this.detailListShow = true;
-          }
-          this.restParam();
-          loading.close();
-        }).catch(res=>{
-          this.restParam();
-          loading.close();
         })
+        // submitTaskInfo(this.taskNo, this.taskInfoDetail.riskControlMeasures,
+        //   this.radio, this.examinValue, this.taskInfoDetail.personalRiskLevel,
+        //   this.taskInfoDetail.checkResult, this.taskInfoDetail.warnSignals).then(res => {
+        //   console.log('---submitTaskInfo')
+        //   console.log(res)
+        //   if (res.code === 200) {
+        //     this.msgSuccess('提交成功')
+        //     this.getList()
+        //     this.taskDetailShow = false
+        //     this.taskListShow = true
+        //   }
+        //   this.restParam()
+        //   loading.close()
+        // }).catch(res => {
+        //   this.restParam()
+        //   loading.close()
+        // })
+        console.log('---1231231231')
+        console.log(this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures)
+        submitTaskInfo(this.seWfTaskInfo).then(res => {
+          console.log('---submitTaskInfo')
+          console.log(res)
+          if (res.code === 200) {
+            this.msgSuccess('提交成功')
+            this.getList()
+            this.taskDetailShow = false
+            this.taskListShow = true
+          }
+          this.restParam()
+          loading.close()
+        }).catch(res => {
+          this.restParam()
+          loading.close()
+        })
+
       },
       cancel() {
-        this.detailShow = false;
-        this.detailListShow = true;
-        this.restParam();
+        this.taskDetailShow = false
+        this.taskListShow = true
+        this.restParam()
       },
       // 重置参数
       restParam() {
-        this.taskInfoNo = "";
-        this.radio = "";
-        this.checkList = [];
+        this.taskNo = ''
+        this.radio = ''
+        this.checkList = []
       },
-      //  详情
-      handleDetail(scope) {
-        console.log("wwwwwwwww");
-        console.log(scope);
-        this.detailShow = true;
-        this.detailListShow = false;
-        this.taskInfoNo = scope.TASKINFONO;
-        // checkBox返显
-        // this.checkList = scope.riskValue === null?[]:scope.riskValue.split(";");
-        // 个人认定风险等级返显
-        // this.personalRiskLevel = scope.personalRiskLevel
-        // 检查结论返显
-        // this.checkResult = scope.checkResult
+      // 任务详情
+      taskDetail(scope) {
+        this.centerDialogVisible = false
+        this.taskDetailShow = true
+        this.taskListShow = false
+        this.taskNo = scope.TASK_NO
+        this.warningObjectId = scope.WARNING_OBJECT_ID
 
         // 赋值
-        getTaskInfoDetail(this.taskInfoNo).then(res => {
-          console.log("---res==============");
-          console.log(res);
+        getTaskDetail(this.taskNo).then(res => {
+          console.log('---res==============')
+          console.log(res)
           if (200 === res.code) {
-            this.taskInfoDetail = res.data;
-            this.sysRiskLevel = this.taskInfoDetail.sysRiskLevel;
-            this.taskInfoDetail.riskControlMeasures = JSON.parse(this.taskInfoDetail.riskControlMeasures);
-          }
+            this.seWfTaskInfo = res.data
+            // this.seWfWarningObject = this.seWfTaskInfo.seWfWarningObject
+            // this.seWfWarningSigns = this.seWfTaskInfo.seWfWarningSigns
+            // this.seWfTaskExecuteFeedback = this.seWfTaskInfo.seWfTaskExecuteFeedback
+            console.log('this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures:'+this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures)
+            this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures = this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures.split(',')
+            ;}
+          // 获取客户历史任务记录
+          getHistoryTask(this.warningObjectId).then(res => {
+            console.log('---res==============')
+            console.log(res)
+            if (200 === res.code) {
+              this.seWfTaskInfoHis = res.data
+            }
+          })
         })
       },
+      //  详情
+      // handleDetail(scope) {
+      //   console.log("wwwwwwwww");
+      //   console.log(scope);
+      //   this.taskDetailShow = true;
+      //   this.taskListShow = false;
+      //   this.taskNo = scope.taskNo;
+      //   // checkBox返显
+      //   // this.checkList = scope.riskValue === null?[]:scope.riskValue.split(";");
+      //   // 个人认定风险等级返显
+      //   // this.personalRiskLevel = scope.personalRiskLevel
+      //   // 检查结论返显
+      //   // this.checkResult = scope.checkResult
+      //
+      //   // 赋值
+      //   getTaskDetail(this.taskNo).then(res => {
+      //     console.log("---res==============");
+      //     console.log(res);
+      //     if (200 === res.code) {
+      //       this.taskInfoDetail = res.data;
+      //       this.sysRiskLevel = this.taskInfoDetail.sysRiskLevel;
+      //       this.taskInfoDetail.riskControlMeasures = JSON.parse(this.taskInfoDetail.riskControlMeasures);
+      //     }
+      //   })
+      // },
       // 查询所有的值
       getList() {
         // 没出结果，一直等待
@@ -693,54 +738,71 @@
           text: '.......',
           spinner: 'el-icon-loading',
           background: 'rgba(0, 0, 0, 0.2)'
-        });
+        })
         listTaskInfo(this.queryParams).then(res => {
           if (res.code === 200) {
-            this.taskInfoList = res.data;
-            this.total= res.data.length;
+            this.taskInfoList = res.data
+            this.total = res.data.length
           }
-          console.log("---res");
-          console.log(res);
-          loading.close();
+          console.log('---res')
+          console.log(res)
+          loading.close()
         }).catch(() => {
-            loading.close();
+            loading.close()
           }
         )
       },
       // 风险等级字典翻译
       riskLevelMatter(row, column) {
-        return this.selectDictLabel(this.riskLevelOptions, row.SYS_RISK_LEVEL);
+        return this.selectDictLabel(this.riskLevelOptions, row.SYS_RISK_LEVEL)
       },
       // 客户类型字典翻译
       custTypeMatter(row, column) {
-        return this.selectDictLabel(this.custTypeOptions, row.WARNING_OBJECT_CATEGORY);
+        return this.selectDictLabel(this.custTypeOptions, row.WARNING_OBJECT_CATEGORY)
       },
       // 任务类型字典翻译
       taskTypeMatter(row, column) {
-        return this.selectDictLabel(this.taskTypeOptions, row.TASK_TYPE);
+        return this.selectDictLabel(this.taskTypeOptions, row.TASK_TYPE)
       },
       // 任务状态字典翻译
       taskStatusMatter(row, column) {
-        return this.selectDictLabel(this.taskStatusOptions, row.TASK_STATUS);
+        return this.selectDictLabel(this.taskStatusOptions, row.TASK_STATUS)
       },
       // 所属分行字典翻译
       adBraMatter(row, column) {
-        return this.selectDictLabel(this.adBraOptions, row.AD_BRA);
+        return this.selectDictLabel(this.adBraOptions, row.AD_BRA)
       },
       // 所属支行字典翻译
       adSubBraMatter(row, column) {
-        return this.selectDictLabel(this.adSubBraOptions, row.AD_SUB_BRA);
+        return this.selectDictLabel(this.adSubBraOptions, row.AD_SUB_BRA)
       },
+      // 信号来源字典翻译
+      signalSourceMatter(row, column) {
+        return this.selectDictLabel(this.signalSourceOptions, row.SIGNAL_SOURCE)
+      },
+      //信号等级字典翻译
+      signalLevelMatter(row, column) {
+        return this.selectDictLabel(this.signalLevelOptions, row.WARNING_LEVEL)
+      },
+      //认定方式字典翻译
+      confirmModelMatter(row, column) {
+        return this.selectDictLabel(this.confirmModelOptions, row.CONFIRM_STATUS)
+      },
+
+      currentControlMeasures(column){
+        alert(column)
+      },
+
       /** 搜索按钮操作 */
       handleQuery() {
-        this.queryParams.pageNum = 1;
-        this.getList();
+        this.queryParams.pageNum = 1
+        this.getList()
       },
       /** 重置按钮操作 */
       resetQuery() {
-        this.resetForm("queryForm");
-        this.handleQuery();
-      },
+        this.resetForm('queryForm')
+        this.handleQuery()
+      }
     }
   }
 </script>
@@ -748,19 +810,17 @@
 
 <style scoped>
 
-  .title_table_textarea >>>.el-checkbox{
+  .title_table_textarea >>> .el-checkbox {
     padding-top: 5px
   }
 
-  .title_table_textarea >>>.el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after{
+  .title_table_textarea >>> .el-checkbox__input.is-disabled .el-checkbox__inner::after {
     border-color: black;
   }
 
-  .title_table_textarea >>>.el-checkbox__input.is-disabled+span.el-checkbox__label{
+  .title_table_textarea >>> .el-checkbox__input.is-disabled + span.el-checkbox__label {
     color: black;
   }
-
-
 
   .btnTask {
     padding: 0px 10px;
@@ -787,22 +847,27 @@
     box-sizing: border-box;
     cursor: pointer;
   }
+
   .left .el-tooltip__popper,
   .right .el-tooltip__popper {
     padding: 8px 10px;
   }
+
   .table tr {
     border-bottom: 1px solid #E0E0E0;
   }
+
   .table .tdsec {
     width: 88%;
     text-align: left;
   }
+
   .dropdown {
     position: relative;
     font-size: 12px;
     margin-right: 16px;
   }
+
   .tipText {
     display: inline-block;
     border-radius: 50%;
@@ -813,17 +878,22 @@
     font-size: 12px;
     font-weight: bold;
     cursor: pointer;
-    padding: 5px 5px;
+    padding: 0px 0px;
+    margin-top: 12px;
+    margin-left: 10px;
   }
+
   .table {
     border-collapse: collapse;
     border: none;
     width: 100%;
   }
+
   .table .tdfir {
     width: 12%;
     text-align: center;
   }
+
   .title_table_textarea {
     height: 100%;
     float: left;
@@ -842,7 +912,7 @@
   .title_table_p {
     font-size: 14px;
     margin: auto 0;
-    padding-top: 100px;
+    padding-top: 17px;
     padding-left: 5px;
   }
 
@@ -859,8 +929,14 @@
     margin: auto 0;
   }
 
+  .titleTable1 {
+    background-color: #f9f9f9;
+    height: 50px;
+    margin: auto 0;
+  }
+
   .titleTable_check {
-    height: 230px;
+    height: 100px;
     margin: auto 0;
   }
 
@@ -958,22 +1034,24 @@
 </style>
 
 <style>
-  .el-dialog{
+  .el-dialog {
     display: flex;
     flex-direction: column;
-    margin:0 !important;
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
+    margin: 0 !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     /*height:600px;*/
-    max-height:calc(100% - 30px);
-    max-width:calc(100% - 30px);
+    max-height: calc(100% - 30px);
+    max-width: calc(100% - 30px);
   }
-  .el-dialog .el-dialog__body{
-    flex:1;
+
+  .el-dialog .el-dialog__body {
+    flex: 1;
     overflow: auto;
   }
+
   .el-dialog__title {
     line-height: 20px;
     font-size: 16px;
@@ -981,5 +1059,19 @@
     float: left;
     height: 20px;
     font-weight: bold;
+  }
+
+  .tipText {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 16px;
+    color: #fff;
+    background: #0092DC;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
   }
 </style>

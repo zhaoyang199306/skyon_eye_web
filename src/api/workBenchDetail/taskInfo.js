@@ -10,32 +10,26 @@ export function listTaskInfo(query) {
 }
 
 // 查询单个数据详细信息
-export function getTaskInfoDetail(taskInfoNo) {
+export function getTaskDetail(taskNo) {
   return request({
-    url: "/taskInfo/getDetail/" + taskInfoNo,
+    url: "/taskInfo/getTaskDetail/" + taskNo,
+    method: 'get'
+  })
+}
+
+// 查询客户历史预警任务信息
+export function getHistoryTask(warningObjectId) {
+  return request({
+    url: "/taskInfo/getHistoryTask/" + warningObjectId,
     method: 'get'
   })
 }
 
 // 提交预警单
-export function submitTaskInfo(taskInfoNo, riskControlMeasures, radio,
-                               examinValue,personalRiskLevel,checkResult,warnSignalList) {
-
-  var pojo = {
-    taskInfoNo: taskInfoNo,
-    riskControlMeasures: riskControlMeasures,
-    radio: radio,
-    examinValue: examinValue,
-    personalRiskLevel: personalRiskLevel,
-    checkResult: checkResult,
-    warnSignalList: warnSignalList,
-  }
-
-  console.log(pojo);
-
+export function submitTaskInfo(seWfTaskInfo) {
   return request({
     url: "/taskInfo/submitTask",
     method: 'post',
-    data: pojo
+    data: seWfTaskInfo
   })
 }
