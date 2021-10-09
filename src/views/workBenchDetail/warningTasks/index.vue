@@ -340,7 +340,8 @@
             </p>
           </div>
           <div class="title_table_textarea">
-            <el-input type="textarea" v-model="seWfTaskInfo.seWfTaskExecuteFeedback.currentConclusions" :autosize="{ minRows: 3.5, maxRows: 3.5}"
+            <el-input type="textarea" v-model="seWfTaskInfo.seWfTaskExecuteFeedback.currentConclusions"
+                      :autosize="{ minRows: 3.5, maxRows: 3.5}"
                       placeholder="请填写无风险理由"/>
           </div>
         </div>
@@ -391,8 +392,8 @@
                       <el-checkbox label="5">冻额</el-checkbox>
                       <el-checkbox label="6">加强关注</el-checkbox>
                       <el-checkbox label="7">其他</el-checkbox>
-<!--                      <el-input v-model="seWfTaskInfo.seWfTaskExecuteFeedback.otherControlMeasures"-->
-<!--                                style="width: 200px;height: 30px;margin-left: 20px"/>-->
+                      <!--                      <el-input v-model="seWfTaskInfo.seWfTaskExecuteFeedback.otherControlMeasures"-->
+                      <!--                                style="width: 200px;height: 30px;margin-left: 20px"/>-->
                     </div>
                   </div>
                 </el-checkbox-group>
@@ -409,7 +410,8 @@
               </p>
             </div>
             <div class="title_table_textarea">
-              <el-input type="textarea" v-model="seWfTaskInfo.seWfTaskExecuteFeedback.oneFamilyOnePolicy" :autosize="{ minRows: 3.5, maxRows: 3.5}"
+              <el-input type="textarea" v-model="seWfTaskInfo.seWfTaskExecuteFeedback.oneFamilyOnePolicy"
+                        :autosize="{ minRows: 3.5, maxRows: 3.5}"
                         aria-placeholder=""/>
             </div>
           </div>
@@ -417,33 +419,33 @@
 
 
         <!--      审核意见    -->
-<!--        <div v-show="isManager" class="el-col-24" style="margin-top: 15px">-->
-<!--          <div class="cl_title" style="margin-bottom:5px;">-->
-<!--            <div class="radioball lt"></div>-->
-<!--            <p class="lt" style="margin: 0 0">审核意见</p>-->
-<!--          </div>-->
+        <!--        <div v-show="isManager" class="el-col-24" style="margin-top: 15px">-->
+        <!--          <div class="cl_title" style="margin-bottom:5px;">-->
+        <!--            <div class="radioball lt"></div>-->
+        <!--            <p class="lt" style="margin: 0 0">审核意见</p>-->
+        <!--          </div>-->
 
-<!--          <div style="background-color: #e5e5e5;height: 40px;margin: auto 0">-->
-<!--            <span style="font-size: 12px;margin: auto 0; padding-top: 15px;padding-left: 20px;float: left">是否同意</span>-->
-<!--            <div style="float: left;padding-top: 12px;padding-left: 20px;">-->
-<!--              <el-radio v-model="radio" label="1">是</el-radio>-->
-<!--              <el-radio v-model="radio" label="2">否</el-radio>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="titleTable">-->
-<!--          <div class="title_table_div">-->
-<!--            <p class="title_table_p" style="padding-top: 30px;padding-left: 40px">-->
-<!--              审核意见:-->
-<!--            </p>-->
-<!--            <p class="title_table_p_color">-->
-<!--              (限制1000字)-->
-<!--            </p>-->
-<!--          </div>-->
-<!--          <div class="title_table_textarea">-->
-<!--            <el-input type="textarea" v-model="examinValue" :autosize="{ minRows: 3.5, maxRows: 3.5}"/>-->
-<!--          </div>-->
-<!--        </div>-->
+        <!--          <div style="background-color: #e5e5e5;height: 40px;margin: auto 0">-->
+        <!--            <span style="font-size: 12px;margin: auto 0; padding-top: 15px;padding-left: 20px;float: left">是否同意</span>-->
+        <!--            <div style="float: left;padding-top: 12px;padding-left: 20px;">-->
+        <!--              <el-radio v-model="radio" label="1">是</el-radio>-->
+        <!--              <el-radio v-model="radio" label="2">否</el-radio>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
+        <!--        <div class="titleTable">-->
+        <!--          <div class="title_table_div">-->
+        <!--            <p class="title_table_p" style="padding-top: 30px;padding-left: 40px">-->
+        <!--              审核意见:-->
+        <!--            </p>-->
+        <!--            <p class="title_table_p_color">-->
+        <!--              (限制1000字)-->
+        <!--            </p>-->
+        <!--          </div>-->
+        <!--          <div class="title_table_textarea">-->
+        <!--            <el-input type="textarea" v-model="examinValue" :autosize="{ minRows: 3.5, maxRows: 3.5}"/>-->
+        <!--          </div>-->
+        <!--        </div>-->
       </div>
 
       <!--      流程信息    -->
@@ -512,7 +514,7 @@
         adBraOptions: [],
         // 所属支行
         adSubBraOptions: [],
-        checkList: ['2','4'],
+        checkList: ['2', '4'],
         // 信号来源
         signalSourceOptions: [],
         //信号等级
@@ -522,8 +524,8 @@
         // 任务详情
         seWfTaskInfo: {
           seWfWarningObject: {},
-          seWfTaskExecuteFeedback:{currentControlMeasures:[]},
-          seWfWarningSigns: [],
+          seWfTaskExecuteFeedback: { currentControlMeasures: [] },
+          seWfWarningSigns: []
         },
 
         seWfTaskInfoHis: [],
@@ -646,9 +648,10 @@
         //   loading.close()
         // })
         console.log('---1231231231')
+        console.log(this.seWfTaskInfo)
+        this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures = this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures.join(',')
         console.log(this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures)
         submitTaskInfo(this.seWfTaskInfo).then(res => {
-          console.log('---submitTaskInfo')
           console.log(res)
           if (res.code === 200) {
             this.msgSuccess('提交成功')
@@ -692,9 +695,10 @@
             // this.seWfWarningObject = this.seWfTaskInfo.seWfWarningObject
             // this.seWfWarningSigns = this.seWfTaskInfo.seWfWarningSigns
             // this.seWfTaskExecuteFeedback = this.seWfTaskInfo.seWfTaskExecuteFeedback
-            console.log('this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures:'+this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures)
+            console.log('this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures:' + this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures)
             this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures = this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures.split(',')
-            ;}
+
+          }
           // 获取客户历史任务记录
           getHistoryTask(this.warningObjectId).then(res => {
             console.log('---res==============')
@@ -789,7 +793,7 @@
         return this.selectDictLabel(this.confirmModelOptions, row.CONFIRM_STATUS)
       },
 
-      currentControlMeasures(column){
+      currentControlMeasures(column) {
         alert(column)
       },
 
