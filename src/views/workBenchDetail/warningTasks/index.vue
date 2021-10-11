@@ -131,7 +131,7 @@
               size="mini"
               type="text"
               icon="el-icon-view"
-              @click="centerDialogVisible = true"
+              @click="handle(scope.row)"
             >处理
             </el-button>
             <el-dialog
@@ -142,7 +142,7 @@
               <div class="messager-icon messager-question"></div>
               <span style="font-size: 15px">确定处理该任务吗？</span>
               <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="taskDetail(scope.row)">确 定</el-button>
+    <el-button type="primary" @click="taskDetail(handleValue)">确 定</el-button>
     <el-button @click="centerDialogVisible = false">取 消</el-button>
   </span>
             </el-dialog>
@@ -555,7 +555,8 @@
           taskType: undefined,
           taskStatus: undefined
         },
-        centerDialogVisible: false
+        centerDialogVisible: false,
+        handleValue:undefined
       }
     },
     created() {
@@ -621,6 +622,10 @@
       linkClick() {
         this.open = true
       },
+      handle(scope){
+        this.centerDialogVisible = true
+        this.handleValue = scope
+      },
       //  提交
       submit() {
         // 没出结果，一直等待
@@ -680,15 +685,15 @@
       },
       // 任务详情
       taskDetail(scope) {
+        console.log(scope)
         this.centerDialogVisible = false
         this.taskDetailShow = true
         this.taskListShow = false
         this.taskNo = scope.TASK_NO
         this.warningObjectId = scope.WARNING_OBJECT_ID
-
+        console.log('---res=============='+this.taskNo)
         // 赋值
         getTaskDetail(this.taskNo).then(res => {
-          console.log('---res==============')
           console.log(res)
           if (200 === res.code) {
             this.seWfTaskInfo = res.data
