@@ -130,20 +130,20 @@ export const constantRoutes = [
       }
     ]
   },
-  // 预警任务路由
-  {
-    path: '',
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: 'workBenchDetail/warningTasks',
-        component: () => import('@/views/workBenchDetail/warningTasks'),
-        name: 'warningTasks',
-        meta: { title: 'log', icon: '' }
-      }
-    ]
-  },
+    // 预警任务路由
+    {
+      path: '',
+      component: Layout,
+      hidden: true,
+      children: [
+        {
+          path: 'workBenchDetail/warningTasks',
+          component: () => import('@/views/workBenchDetail/warningTasks'),
+          name: 'warningTasks',
+          meta: { title: 'log', icon: '' }
+        }
+      ]
+    },
   // 预警认定路由
   {
     path: '',
@@ -152,7 +152,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'workBenchDetail/taskInfo',
-        component: () => import('@/views/workBenchDetail/taskInfo'),
+        component: () => import('@/views/workBenchDetail/peersTaskInfo'),
         name: 'taskInfo',
         meta: { title: 'log', icon: '' }
       }
@@ -194,7 +194,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'workBenchDetail/signalManual',
-        component: () => import('@/views/workBenchDetail/signalManual'),
+        component: () => import('@/views/workBenchDetail/SignalManual'),
         name: 'signalManual',
         meta: { title: 'log', icon: '' }
       }
