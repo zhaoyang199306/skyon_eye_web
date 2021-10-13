@@ -194,7 +194,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'workBenchDetail/signalManual',
-        component: () => import('@/views/workBenchDetail/SignalManual'),
+        component: () => import('@/views/workBenchDetail/signalManual'),
         name: 'signalManual',
         meta: { title: 'log', icon: '' }
       }
