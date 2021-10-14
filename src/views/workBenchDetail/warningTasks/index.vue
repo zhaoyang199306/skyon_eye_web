@@ -435,7 +435,7 @@
 
 
         <!--      审核意见    -->
-        <div v-show="isManager" class="el-col-24" style="margin-top: 5px">
+        <div v-show="!isManager" class="el-col-24" style="margin-top: 5px">
           <div style="margin-bottom:20px;">
             <p class="lt" style="margin:0px 0px 9px 0px;font-size: 14px;font-family: 黑体;font-weight:bolder">审核意见</p>
           </div>
@@ -463,22 +463,18 @@
         </div>
 
         <!--    过程意见    -->
-        <div v-show="isManager" class="el-col-24" style="margin-top: 10px">
+        <div v-show="!isManager" class="el-col-24" style="margin-top: 10px">
           <div style="margin-bottom:20px;">
             <p class="lt" style="margin:0px 0px 9px 0px;font-size: 14px;font-family: 黑体;font-weight:bolder">过程意见</p>
           </div>
           <el-table width="600" header-cell-style="font-size:12px;color: #1A6BBC"  :row-style="{height:'32px'}"
-                    :cell-style="{padding:'0px'}" :data="seWfTaskInfo.seWfWarningSigns">
-            <el-table-column label="流程步骤" width="300px" align="center" prop="signalName"/>
-            <el-table-column label="上一流程步骤" align="center" prop="warningLevel">
-              <template slot-scope="scope">
-                <div>{{ selectDictLabel(signalLevelOptions,scope.row.warningLevel)}}</div>
-              </template>
-            </el-table-column>
-            <el-table-column label="执行人" width="300px" align="center" prop="warnDsc"/>
-            <el-table-column label="意见结论" align="center" prop="signalTriggerTime"/>
-            <el-table-column label="审核意见描述" align="center" prop="distributeTime"/>
-            <el-table-column label="执行时间" align="center" prop=""/>
+                    :cell-style="{padding:'0px'}" :data="seWfTaskInfo.seWfTaskExecuteFeedbacks">
+            <el-table-column label="流程步骤" width="300px" align="center" prop="processName"/>
+            <el-table-column label="上一流程步骤" align="center" prop="lastProcessName"/>
+            <el-table-column label="执行人" width="300px" align="center" prop="taskHandler"/>
+            <el-table-column label="意见结论" align="center" prop="currentFeedback"/>
+            <el-table-column label="审核意见描述" align="center" prop="currentFeedback"/>
+            <el-table-column label="执行时间" align="center" prop="createTime"/>
           </el-table>
 
           <!--      客户当前授信业务    -->
@@ -594,7 +590,8 @@
         seWfTaskInfo: {
           seWfWarningObject: {},
           seWfTaskExecuteFeedback: { currentControlMeasures: [],oneFamilyOnePolicy:undefined,currentConclusions:undefined},
-          seWfWarningSigns: []
+          seWfWarningSigns: [],
+          seWfTaskExecuteFeedbacks: []
         },
 
         seWfTaskInfoHis: [],
