@@ -222,8 +222,8 @@
         <div style="background-color: #BDD3EB;height: 40px;margin: auto 0;color: #1A6BBC ">
           <el-form ref="detailInfo" :model="seWfTaskInfo" class="el-col-24">
             <el-form-item class="el-col-6">
-              <div style="font-size: 8px;font-weight:bolder" class="pull-left ">任务编号：</div>
-              <div style="font-size: 8px;font-weight:bolder" class="pull-left ">{{ seWfTaskInfo.taskNo}}</div>
+              <div style="font-size: 10px;font-weight:bolder" class="pull-left ">任务编号：</div>
+              <div style="font-size: 10px;font-weight:bolder" class="pull-left ">{{ seWfTaskInfo.taskNo}}</div>
             </el-form-item>
             <el-form-item class="el-col-6">
             <div style="font-size: 8px;font-weight:bolder" class="pull-left ">信号来源：</div>
@@ -406,7 +406,7 @@
                 </el-date-picker>
               </el-form-item>
               <el-form-item class="el-col-6">
-                <div style="font-size: 8px;font-weight:bolder" class="pull-left ">附件：</div>
+                <div style="font-size: 14px;" class="pull-left ">附件：</div>
                 <div class="title_table_div">
                   <a style="color:#0062bd;padding-top: 2px;padding-left: 40px;" @click="updateA">
                     <i style="font-size:20px" title="附件" class="fa fa-cloud-upload"/>
@@ -435,14 +435,14 @@
 
 
         <!--      审核意见    -->
-        <div v-show="isManager" class="el-col-24" style="margin-top: 15px">
+        <div v-show="isManager" class="el-col-24" style="margin-top: 5px">
           <div style="margin-bottom:20px;">
             <p class="lt" style="margin:0px 0px 9px 0px;font-size: 14px;font-family: 黑体;font-weight:bolder">审核意见</p>
           </div>
 
           <div style="background-color: #e5e5e5;height: 40px;margin: auto 0">
-            <span style="font-size: 12px;margin: auto 0; padding-top: 15px;padding-left: 20px;float: left">意见结论</span>
-            <div style="float: left;padding-top: 12px;padding-left: 20px;">
+            <span style="font-size: 14px;margin: auto 0; padding-top: 12px;padding-left: 20px;float: left">意见结论</span>
+            <div style="float: left;padding-top: 12px;padding-left: 20px;font-size: 12px;">
               <el-radio v-model="radio" label="1">通过</el-radio>
               <el-radio v-model="radio" label="2">不通过</el-radio>
             </div>
@@ -461,20 +461,74 @@
             </div>
           </div>
         </div>
+
+        <!--    过程意见    -->
+        <div v-show="isManager" class="el-col-24" style="margin-top: 10px">
+          <div style="margin-bottom:20px;">
+            <p class="lt" style="margin:0px 0px 9px 0px;font-size: 14px;font-family: 黑体;font-weight:bolder">过程意见</p>
+          </div>
+          <el-table width="600" header-cell-style="font-size:12px;color: #1A6BBC"  :row-style="{height:'32px'}"
+                    :cell-style="{padding:'0px'}" :data="seWfTaskInfo.seWfWarningSigns">
+            <el-table-column label="流程步骤" width="300px" align="center" prop="signalName"/>
+            <el-table-column label="上一流程步骤" align="center" prop="warningLevel">
+              <template slot-scope="scope">
+                <div>{{ selectDictLabel(signalLevelOptions,scope.row.warningLevel)}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column label="执行人" width="300px" align="center" prop="warnDsc"/>
+            <el-table-column label="意见结论" align="center" prop="signalTriggerTime"/>
+            <el-table-column label="审核意见描述" align="center" prop="distributeTime"/>
+            <el-table-column label="执行时间" align="center" prop=""/>
+          </el-table>
+
+          <!--      客户当前授信业务    -->
+          <!--        <div class="el-col-24" style="margin-top: 15px">-->
+          <!--          <div class="cl_title" style="margin-bottom:5px;margin-top: 15px">-->
+          <!--            <div class="radioball lt"></div>-->
+          <!--            <p class="lt" style="margin: 0 0">客户当前授信业务</p>-->
+          <!--          </div>-->
+          <!--          <el-table width="1000" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"-->
+          <!--                    header-cell-style="font-size:12px" :row-style="{height:'32px'}"-->
+          <!--                    :cell-style="{padding:'0px'}" :data="tableData" style="width: 100%">-->
+          <!--            <el-table-column label="产品类型" align="center" prop="taskId"/>-->
+          <!--            <el-table-column label="贷款发放日期" align="center" prop="nowDealRole"/>-->
+          <!--            <el-table-column label="贷款到期日期" align="center" prop="signalName"/>-->
+          <!--            <el-table-column label="贷款利率" align="center" prop="warningLevel"/>-->
+          <!--            <el-table-column label="额度金额" align="center" prop="warnDsc"/>-->
+          <!--            <el-table-column label="五级分类" align="center" prop="signalTriggerTime"/>-->
+          <!--            <el-table-column label="贷款余额" align="center" prop="distributeTime"/>-->
+          <!--            <el-table-column label="主要担保方式" align="center" prop="distributeTime"/>-->
+          <!--          </el-table>-->
+          <!--        </div>-->
+          <!--      预警任务历史记录    -->
+          <!--        <div class="el-col-24" style="margin-top: 15px">-->
+          <!--          <div class="cl_title" style="margin-bottom:5px;margin-top: 15px">-->
+          <!--            <div class="radioball lt"></div>-->
+          <!--            <p class="lt" style="margin: 0 0">预警任务历史记录</p>-->
+          <!--          </div>-->
+          <!--          <el-table width="1000" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"-->
+          <!--                    header-cell-style="font-size:12px" :row-style="{height:'32px'}"-->
+          <!--                    :cell-style="{padding:'0px'}" :data="seWfTaskInfoHis" style="width: 100%">-->
+          <!--            <el-table-column label="任务编号" align="center" prop="taskNo"/>-->
+          <!--            <el-table-column label="任务完成日期" align="center" prop="taskEndTime"/>-->
+          <!--            <el-table-column label="风险等级" align="center" prop="riskLevel">-->
+          <!--              <template slot-scope="scope">-->
+          <!--                <div>{{ selectDictLabel(riskLevelOptions,scope.row.riskLevel)}}</div>-->
+          <!--              </template>-->
+          <!--            </el-table-column>-->
+          <!--            <el-table-column label="一户一策计划" align="center" prop="oneFamilyOnePolicy"/>-->
+          <!--            <el-table-column label="认定方式" align="center" prop="warningConfirmModel">-->
+          <!--              <template slot-scope="scope">-->
+          <!--                <div>{{ selectDictLabel(confirmModelOptions,scope.row.warningConfirmModel)}}</div>-->
+          <!--              </template>-->
+          <!--            </el-table-column>-->
+          <!--            <el-table-column label="详情" align="center"><a href="#">查看</a></el-table-column>-->
+          <!--          </el-table>-->
+          <!--        </div>-->
+        </div>
       </div>
 
-      <!--      流程信息    -->
-      <div>
-        <template>
-          <el-dialog title="流程信息" :visible.sync="open" customClass="customWidth" :close-on-click-modal="false"
-                     width="700px">
-            <link-log v-bind:taskNo="taskNo"/>
-          </el-dialog>
-        </template>
-      </div>
-
-      <div slot="footer" class="el-col-24" style="margin: 20px 40% 0 40%;padding-bottom: 30px">
-        <el-button type="primary" class="btn" style="width: 80px" @click="linkClick">流程信息</el-button>
+      <div slot="footer" class="el-col-24" style="margin: 20px 45% 0 45%;padding-bottom: 30px">
         <el-button type="primary" class="btn" @click="submit">提 交</el-button>
         <el-button type="primary" class="btn" @click="cancel">取 消</el-button>
       </div>
@@ -921,7 +975,7 @@
   .title_table_textarea {
     height: 100%;
     float: left;
-    width: 1400px;
+    width: 80%;
     padding-top: 2px
   }
 
