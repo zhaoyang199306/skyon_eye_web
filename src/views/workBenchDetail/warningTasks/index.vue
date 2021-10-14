@@ -188,54 +188,55 @@
     <!--      详情-->
 
     <div v-show="taskDetailShow">
-      <div class="title">
-        <span class="fz_icon"/>
-        <div class="title_text">
-          <p>预警任务管理 > 预警任务</p>
-        </div>
-      </div>
-      <div class="cl_title" style="margin-bottom:5px;">
-        <div class="radioball lt"></div>
-        <p class="lt" style="margin: 0 0">原信息</p>
-      </div>
       <div style="margin-top: 10px" class="el-col-24">
         <!--    详情基本信息    -->
         <el-form ref="detailInfo" :model="seWfTaskInfo" class="el-col-24">
-          <el-form-item label="客户编号：" label-width="100px" class="el-col-4">
-            <div class="pull-left">{{ seWfTaskInfo.warningObjectNo }}</div>
+          <el-form-item class="el-col-4">
+            <div class="pull-left custName">客户名称：</div>
+            <div class="pull-left custName">{{ seWfTaskInfo.seWfWarningObject.warningObjectName}}</div>
           </el-form-item>
-          <el-form-item label="客户名称:" label-width="100px" class="el-col-3">
-            <div class="pull-left">{{ seWfTaskInfo.seWfWarningObject.warningObjectName}}</div>
-          </el-form-item>
-          <el-form-item label="预计完成日期:" label-width="100px" class="el-col-4">
-            <div class="pull-left">{{ seWfTaskInfo.taskDeadline }}</div>
-          </el-form-item>
-          <el-form-item label="系统认定客户风险等级:" label-width="190px" class="el-col-4">
+          <el-form-item label="当前风险等级:" label-width="100px" class="el-col-4">
             <template slot-scope="scope">
               <div class="pull-left">{{ selectDictLabel(riskLevelOptions,seWfTaskInfo.sysRiskLevel)}}</div>
             </template>
           </el-form-item>
-          <el-form-item label="信号来源:" label-width="120px" class="el-col-4">
-            <template slot-scope="scope">
-              <div class="pull-left">{{ selectDictLabel(signalSourceOptions,seWfTaskInfo.signalSource)}}</div>
-            </template>
+          <el-form-item label="名单管理:" label-width="100px" class="el-col-4">
+            <div class="pull-left">灰名单/黑名单</div>
+          </el-form-item>
+          <el-form-item label="贷款余额:" label-width="100px" class="el-col-4">
+            <div class="pull-left">300万元</div>
+          </el-form-item>
+          <el-form-item class="el-col-6">
+            <div class="pull-right" style="margin-left: 20px"><el-button type="primary" size="mini" round>历史预警任务记录</el-button></div>
+            <div class="pull-right"><el-button type="primary" size="mini" round>&nbsp&nbsp&nbsp&nbsp&nbsp360°全景视图&nbsp&nbsp&nbsp&nbsp&nbsp</el-button></div>
+
           </el-form-item>
         </el-form>
       </div>
 
       <!--    预警信号列表    -->
-      <div class="el-col-24" style="margin-top: 15px">
-        <div class="cl_title" style="margin-bottom:5px;">
-          <div class="radioball lt"></div>
-          <p class="lt" style="margin: 0 0">预警信号列表</p>
+      <div class="el-col-24" style="margin-top: 10px">
+        <div style="margin-bottom:20px;">
+          <p class="lt" style="margin:0px 0px 9px 0px;font-size: 12px;font-family: 黑体;font-weight:bolder">预警信号列表</p>
         </div>
-        <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-                  header-cell-style="font-size:12px" :row-style="{height:'32px'}"
+        <div style="background-color: #BDD3EB;height: 40px;margin: auto 0;color: #1A6BBC ">
+          <el-form ref="detailInfo" :model="seWfTaskInfo" class="el-col-24">
+            <el-form-item class="el-col-6">
+              <div style="font-size: 8px;font-weight:bolder" class="pull-left ">任务编号：</div>
+              <div style="font-size: 8px;font-weight:bolder" class="pull-left ">{{ seWfTaskInfo.taskNo}}</div>
+            </el-form-item>
+            <el-form-item class="el-col-6">
+            <div style="font-size: 8px;font-weight:bolder" class="pull-left ">信号来源：</div>
+            <div style="font-size: 8px;font-weight:bolder" class="pull-left ">{{ seWfTaskInfo.taskNo}}</div>
+          </el-form-item>
+          </el-form>
+        </div>
+        <el-table width="600" header-cell-style="font-size:12px;color: #1A6BBC"  :row-style="{height:'32px'}"
                   :cell-style="{padding:'0px'}" :data="seWfTaskInfo.seWfWarningSigns">
-          <el-table-column label="任务信息" width="260px" align="center">
-            <div>{{ seWfTaskInfo.taskNo}}</div>
-          </el-table-column>
-          <el-table-column label="当前处理岗" align="center" prop="nowDealRole"/>
+<!--          <el-table-column label="任务信息" width="260px" align="center">-->
+<!--            <div>{{ seWfTaskInfo.taskNo}}</div>-->
+<!--          </el-table-column>-->
+<!--          <el-table-column label="当前处理岗" align="center" prop="nowDealRole"/>-->
           <el-table-column label="信号名称" width="300px" align="center" prop="signalName"/>
           <el-table-column label="信号等级" align="center" prop="warningLevel">
             <template slot-scope="scope">
@@ -253,72 +254,70 @@
               </el-select>
             </template>
           </el-table-column>
+          <el-table-column label="操作" align="center" prop="">
+            信号核实
+          </el-table-column>
         </el-table>
 
         <!--      客户当前授信业务    -->
-        <div class="el-col-24" style="margin-top: 15px">
-          <div class="cl_title" style="margin-bottom:5px;margin-top: 15px">
-            <div class="radioball lt"></div>
-            <p class="lt" style="margin: 0 0">客户当前授信业务</p>
-          </div>
-          <el-table width="1000" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-                    header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                    :cell-style="{padding:'0px'}" :data="tableData" style="width: 100%">
-            <el-table-column label="产品类型" align="center" prop="taskId"/>
-            <el-table-column label="贷款发放日期" align="center" prop="nowDealRole"/>
-            <el-table-column label="贷款到期日期" align="center" prop="signalName"/>
-            <el-table-column label="贷款利率" align="center" prop="warningLevel"/>
-            <el-table-column label="额度金额" align="center" prop="warnDsc"/>
-            <el-table-column label="五级分类" align="center" prop="signalTriggerTime"/>
-            <el-table-column label="贷款余额" align="center" prop="distributeTime"/>
-            <el-table-column label="主要担保方式" align="center" prop="distributeTime"/>
-          </el-table>
-        </div>
+<!--        <div class="el-col-24" style="margin-top: 15px">-->
+<!--          <div class="cl_title" style="margin-bottom:5px;margin-top: 15px">-->
+<!--            <div class="radioball lt"></div>-->
+<!--            <p class="lt" style="margin: 0 0">客户当前授信业务</p>-->
+<!--          </div>-->
+<!--          <el-table width="1000" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"-->
+<!--                    header-cell-style="font-size:12px" :row-style="{height:'32px'}"-->
+<!--                    :cell-style="{padding:'0px'}" :data="tableData" style="width: 100%">-->
+<!--            <el-table-column label="产品类型" align="center" prop="taskId"/>-->
+<!--            <el-table-column label="贷款发放日期" align="center" prop="nowDealRole"/>-->
+<!--            <el-table-column label="贷款到期日期" align="center" prop="signalName"/>-->
+<!--            <el-table-column label="贷款利率" align="center" prop="warningLevel"/>-->
+<!--            <el-table-column label="额度金额" align="center" prop="warnDsc"/>-->
+<!--            <el-table-column label="五级分类" align="center" prop="signalTriggerTime"/>-->
+<!--            <el-table-column label="贷款余额" align="center" prop="distributeTime"/>-->
+<!--            <el-table-column label="主要担保方式" align="center" prop="distributeTime"/>-->
+<!--          </el-table>-->
+<!--        </div>-->
         <!--      预警任务历史记录    -->
-        <div class="el-col-24" style="margin-top: 15px">
-          <div class="cl_title" style="margin-bottom:5px;margin-top: 15px">
-            <div class="radioball lt"></div>
-            <p class="lt" style="margin: 0 0">预警任务历史记录</p>
-          </div>
-          <el-table width="1000" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-                    header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                    :cell-style="{padding:'0px'}" :data="seWfTaskInfoHis" style="width: 100%">
-            <el-table-column label="任务编号" align="center" prop="taskNo"/>
-            <el-table-column label="任务完成日期" align="center" prop="taskEndTime"/>
-            <el-table-column label="风险等级" align="center" prop="riskLevel">
-              <template slot-scope="scope">
-                <div>{{ selectDictLabel(riskLevelOptions,scope.row.riskLevel)}}</div>
-              </template>
-            </el-table-column>
-            <el-table-column label="一户一策计划" align="center" prop="oneFamilyOnePolicy"/>
-            <el-table-column label="认定方式" align="center" prop="warningConfirmModel">
-              <template slot-scope="scope">
-                <div>{{ selectDictLabel(confirmModelOptions,scope.row.warningConfirmModel)}}</div>
-              </template>
-            </el-table-column>
-            <el-table-column label="详情" align="center"><a href="#">查看</a></el-table-column>
-          </el-table>
-        </div>
+<!--        <div class="el-col-24" style="margin-top: 15px">-->
+<!--          <div class="cl_title" style="margin-bottom:5px;margin-top: 15px">-->
+<!--            <div class="radioball lt"></div>-->
+<!--            <p class="lt" style="margin: 0 0">预警任务历史记录</p>-->
+<!--          </div>-->
+<!--          <el-table width="1000" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"-->
+<!--                    header-cell-style="font-size:12px" :row-style="{height:'32px'}"-->
+<!--                    :cell-style="{padding:'0px'}" :data="seWfTaskInfoHis" style="width: 100%">-->
+<!--            <el-table-column label="任务编号" align="center" prop="taskNo"/>-->
+<!--            <el-table-column label="任务完成日期" align="center" prop="taskEndTime"/>-->
+<!--            <el-table-column label="风险等级" align="center" prop="riskLevel">-->
+<!--              <template slot-scope="scope">-->
+<!--                <div>{{ selectDictLabel(riskLevelOptions,scope.row.riskLevel)}}</div>-->
+<!--              </template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column label="一户一策计划" align="center" prop="oneFamilyOnePolicy"/>-->
+<!--            <el-table-column label="认定方式" align="center" prop="warningConfirmModel">-->
+<!--              <template slot-scope="scope">-->
+<!--                <div>{{ selectDictLabel(confirmModelOptions,scope.row.warningConfirmModel)}}</div>-->
+<!--              </template>-->
+<!--            </el-table-column>-->
+<!--            <el-table-column label="详情" align="center"><a href="#">查看</a></el-table-column>-->
+<!--          </el-table>-->
+<!--        </div>-->
       </div>
 
       <!--      风险判断        -->
       <div class="el-col-24" style="margin-top: 15px">
-        <div class="cl_title" style="margin-bottom:5px;margin-top: 15px">
-          <div class="radioball lt"></div>
-          <p class="lt" style="margin: 0 0">风险判断</p>
+        <div style="margin-bottom:20px;">
+          <p class="lt" style="margin:0px 0px 9px 0px;font-size: 12px;font-family: 黑体;font-weight:bolder">风险判断</p>
         </div>
         <div style="background-color: #e5e5e5;height: 40px;margin: auto 0">
-          <div class="tipText" style="float: left">?</div>
-          <span style="font-size: 12px;margin: auto 0; padding-top: 15px;padding-left: 5px;float: left">客户风险等级</span>
-
-          <el-form-item label="系统认定客户风险等级:" label-width="190px" class="el-col-4">
-            <template slot-scope="scope">
-              <div class="pull-left">{{ selectDictLabel(riskLevelOptions,seWfTaskInfo.sysRiskLevel)}}</div>
-            </template>
-          </el-form-item>
-
+          <span style="font-size: 13px;margin: auto 0; padding-top: 15px;float: left">系统认定客户风险等级：</span>
+          <div style="margin: auto 0; padding-top: 4px;float: left">
+            <div class="pull-left" style="margin-top: 11px;font-size: 13px">{{ selectDictLabel(riskLevelOptions,seWfTaskInfo.sysRiskLevel)}}</div>
+          </div>
+          <span style="font-size: 13px;margin: auto 0; padding-top: 15px;padding-left: 100px;float: left">认定客户风险等级：</span>
           <div style="margin: auto 0; padding-top: 4px;padding-left: 10px;float: left">
-            <el-select v-model="seWfTaskInfo.riskLevel" placeholder="客户风险等级" style="width: 250px"
+            <el-select v-model="seWfTaskInfo.riskLevel" placeholder="认定客户风险等级" style="width: 250px"
                        :disabled="detailViem">
               <el-option
                 v-for="dict in riskLevelOptions"
@@ -340,7 +339,9 @@
             </p>
           </div>
           <div class="title_table_textarea">
-            <el-input type="textarea" v-model="seWfTaskInfo.seWfTaskExecuteFeedback.currentConclusions"
+            <el-input type="textarea" v-model="seWfTaskInfo.seWfTaskExecuteFeedback ==
+            null?(seWfTaskInfo.seWfTaskExecuteFeedback = {})
+            :seWfTaskInfo.seWfTaskExecuteFeedback.currentConclusions"
                       :autosize="{ minRows: 3.5, maxRows: 3.5}"
                       placeholder="请填写无风险理由"/>
           </div>
@@ -361,17 +362,10 @@
 
       <!--      风险管控措施    -->
       <div class="el-col-24" style="margin-top: 15px">
-        <div class="cl_title" style="margin-bottom:5px;">
-          <div class="radioball lt"></div>
-          <p class="lt" style="margin: 0 0">风险管控措施</p>
+        <div style="margin-bottom:20px;">
+          <p class="lt" style="margin:0px 0px 9px 0px;font-size: 12px;font-family: 黑体;font-weight:bolder">风险管控措施</p>
         </div>
-
         <div class="titleTable_check">
-          <!--          <div class="title_table_div" style="background-color: #f9f9f9">-->
-          <!--            <p class="title_table_p">-->
-          <!--              {{taskNo}}-->
-          <!--            </p>-->
-          <!--          </div>-->
           <div class="titleTable1">
             <div class="title_table_div">
               <p class="title_table_p" style="padding-left: 25px">
@@ -380,8 +374,8 @@
             </div>
             <div class="title_table_div">
               <div class="title_table_textarea" style="padding-left: 25px">
-                <el-checkbox-group v-model="seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures ==
-                null?(seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures=[])
+                <el-checkbox-group v-model="seWfTaskInfo.seWfTaskExecuteFeedback ==
+                null?(seWfTaskInfo.seWfTaskExecuteFeedback = {})
                 :seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures" style="line-height: 20px">
                   <div style="float: left">
                     <div style="width: 1000px;float: left">
@@ -400,10 +394,32 @@
               </div>
             </div>
           </div>
+
+          <div style="background-color: #f9f9f9;height: 40px;margin: auto 0;">
+            <el-form ref="detailInfo" :model="seWfTaskInfo" class="el-col-24">
+              <el-form-item class="el-col-6">
+                <div style="font-size: 14px;" class="pull-left ">要求任务跟踪完成日期：</div>
+                <el-date-picker
+                  v-model="value1"
+                  type="date"
+                  placeholder="选择日期">
+                </el-date-picker>
+              </el-form-item>
+              <el-form-item class="el-col-6">
+                <div style="font-size: 8px;font-weight:bolder" class="pull-left ">附件：</div>
+                <div class="title_table_div">
+                  <a style="color:#0062bd;padding-top: 2px;padding-left: 40px ;" @click="updateA">
+                    <i style="font-size:20px" title="附件" class="fa fa-cloud-upload"/>
+                  </a>
+                </div>
+              </el-form-item>
+            </el-form>
+          </div>
+
           <div class="titleTable">
             <div class="title_table_div">
               <p class="title_table_p" style="padding-top: 30px;padding-left: 20px">
-                一户一策计划:
+                一户一策计划：
               </p>
               <p class="title_table_p_color">
                 (限制1000字)
@@ -524,7 +540,7 @@
         // 任务详情
         seWfTaskInfo: {
           seWfWarningObject: {},
-          seWfTaskExecuteFeedback: { currentControlMeasures: [] },
+          seWfTaskExecuteFeedback: { currentControlMeasures: [],oneFamilyOnePolicy:undefined,currentConclusions:undefined},
           seWfWarningSigns: []
         },
 
@@ -654,8 +670,9 @@
         // })
         console.log('---1231231231')
         console.log(this.seWfTaskInfo)
-        this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures = this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures.join(',')
-        console.log(this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures)
+        if(null!=this.seWfTaskInfo.seWfTaskExecuteFeedback){
+          this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures = this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures.join(',')
+        }
         submitTaskInfo(this.seWfTaskInfo).then(res => {
           console.log(res)
           if (res.code === 200) {
@@ -696,13 +713,16 @@
         getTaskDetail(this.taskNo).then(res => {
           console.log(res)
           if (200 === res.code) {
-            this.seWfTaskInfo = res.data
             // this.seWfWarningObject = this.seWfTaskInfo.seWfWarningObject
             // this.seWfWarningSigns = this.seWfTaskInfo.seWfWarningSigns
             // this.seWfTaskExecuteFeedback = this.seWfTaskInfo.seWfTaskExecuteFeedback
-            console.log('this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures:' + this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures)
-            this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures = this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures.split(',')
-
+            if(res.data.seWfTaskExecuteFeedback==null){
+              res.data.seWfTaskExecuteFeedback = this.seWfTaskInfo.seWfTaskExecuteFeedback
+            }
+            this.seWfTaskInfo = res.data
+            if(null!=this.seWfTaskInfo.seWfTaskExecuteFeedback) {
+              this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures = this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures.split(',')
+            }
           }
           // 获取客户历史任务记录
           getHistoryTask(this.warningObjectId).then(res => {
@@ -796,10 +816,6 @@
       //认定方式字典翻译
       confirmModelMatter(row, column) {
         return this.selectDictLabel(this.confirmModelOptions, row.CONFIRM_STATUS)
-      },
-
-      currentControlMeasures(column) {
-        alert(column)
       },
 
       /** 搜索按钮操作 */
@@ -1082,5 +1098,15 @@
     font-size: 12px;
     font-weight: bold;
     cursor: pointer;
+  }
+  .custName{
+    white-space: nowrap;
+    text-align: left;
+    font-size: 20px;
+    font-weight: 400;
+    font-style: normal;
+    text-decoration: none;
+    font-family: 黑体;
+    color: rgb(26, 107, 188);
   }
 </style>
