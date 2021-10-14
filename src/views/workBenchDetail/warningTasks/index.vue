@@ -449,8 +449,8 @@
           </div>
           <div class="titleTable">
             <div class="title_table_div">
-              <p class="title_table_p" style="padding-top: 30px;padding-left: 40px">
-                审核意见描述:
+              <p class="title_table_p" style="padding-top: 30px;padding-left: 20px">
+                审核意见描述：
               </p>
               <p class="title_table_p_color">
                 (限制1000字)
