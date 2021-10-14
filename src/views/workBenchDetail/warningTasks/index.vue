@@ -254,7 +254,7 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center" prop="">
+          <el-table-column label="操作" align="center">
             信号核实
           </el-table-column>
         </el-table>
