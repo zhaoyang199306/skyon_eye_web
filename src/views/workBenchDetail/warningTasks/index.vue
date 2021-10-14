@@ -408,7 +408,7 @@
               <el-form-item class="el-col-6">
                 <div style="font-size: 8px;font-weight:bolder" class="pull-left ">附件：</div>
                 <div class="title_table_div">
-                  <a style="color:#0062bd;padding-top: 2px;padding-left: 40px ;" @click="updateA">
+                  <a style="color:#0062bd;padding-top: 2px;padding-left: 40px;" @click="updateA">
                     <i style="font-size:20px" title="附件" class="fa fa-cloud-upload"/>
                   </a>
                 </div>
@@ -435,23 +435,22 @@
 
 
         <!--      审核意见    -->
-        <div v-show="!isManager" class="el-col-24" style="margin-top: 15px">
-          <div class="cl_title" style="margin-bottom:5px;">
-            <div class="radioball lt"></div>
-            <p class="lt" style="margin: 0 0">审核意见</p>
+        <div v-show="isManager" class="el-col-24" style="margin-top: 15px">
+          <div style="margin-bottom:20px;">
+            <p class="lt" style="margin:0px 0px 9px 0px;font-size: 14px;font-family: 黑体;font-weight:bolder">审核意见</p>
           </div>
 
           <div style="background-color: #e5e5e5;height: 40px;margin: auto 0">
-            <span style="font-size: 12px;margin: auto 0; padding-top: 15px;padding-left: 20px;float: left">是否同意</span>
+            <span style="font-size: 12px;margin: auto 0; padding-top: 15px;padding-left: 20px;float: left">意见结论</span>
             <div style="float: left;padding-top: 12px;padding-left: 20px;">
-              <el-radio v-model="radio" label="1">是</el-radio>
-              <el-radio v-model="radio" label="2">否</el-radio>
+              <el-radio v-model="radio" label="1">通过</el-radio>
+              <el-radio v-model="radio" label="2">不通过</el-radio>
             </div>
           </div>
           <div class="titleTable">
             <div class="title_table_div">
               <p class="title_table_p" style="padding-top: 30px;padding-left: 40px">
-                审核意见:
+                审核意见描述:
               </p>
               <p class="title_table_p_color">
                 (限制1000字)
@@ -922,8 +921,8 @@
   .title_table_textarea {
     height: 100%;
     float: left;
-    width: 1000px;
-    padding-top: 10px
+    width: 1400px;
+    padding-top: 2px
   }
 
   .title_table_p_color {
@@ -937,7 +936,7 @@
   .title_table_p {
     font-size: 14px;
     margin: auto 0;
-    padding-top: 17px;
+    padding-top: 10px;
     padding-left: 5px;
   }
 
