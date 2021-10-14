@@ -7,7 +7,7 @@
 <!--    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />-->
 
     <div>
-      <logo/>
+      <logo :collapse="isCollapse"/>
       <div class="headline lt"/>
       <div class="breadcrumb-container">
         <el-scrollbar wrap-class="scrollbar-wrapper" style="font-weight: bold">

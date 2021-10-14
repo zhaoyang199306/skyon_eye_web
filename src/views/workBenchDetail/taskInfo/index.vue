@@ -57,7 +57,7 @@
     <!--    展示列表  -->
     <div v-show="detailListShow">
       <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-                header-cell-style="font-size:12px" :row-style="{height:'32px'}"
+                :header-cell-style="{fontSize:'12px'}" :row-style="{height:'32px'}"
                 :cell-style="{padding:'0px'}" :data="taskInfoList" >
         <el-table-column label="任务编号" align="center" prop="TASKINFONO"/>
         <el-table-column label="客户编号" align="center" prop="CUSTNO"/>

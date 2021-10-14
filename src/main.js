@@ -19,7 +19,7 @@ import './permission' // permission control
 import { getDicts } from "@/api/system/dict/data";
 import { getConfigKey } from "@/api/system/config";
 import { parseTime, resetForm, addDateRange, selectDictLabel, download, handleTree } from "@/utils/ruoyi";
-import Pagination from "@/components/Pagination";
+import Components from "@/components";
 import "@/assets/fontAwesome/css/font-awesome.min.css"
 import echarts from 'echarts'
 // import * as d3 from 'd3'
@@ -49,7 +49,7 @@ Vue.prototype.msgInfo = function (msg) {
 }
 
 // 全局组件挂载
-Vue.component('Pagination', Pagination)
+Vue.use(Components)
 
 Vue.use(permission)
 

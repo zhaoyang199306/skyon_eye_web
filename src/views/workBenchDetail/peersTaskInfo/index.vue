@@ -1,48 +1,53 @@
 <template>
-  <div style="padding: 0 1%;margin: 6px 0 0 0px">
+  <div>
     <div class="title">
       <span class="fz_icon"/>
       <div class="title_text">
-        <p>预警认定管理</p>
+        <p>预警任务管理</p>
       </div>
-
       <!--        搜索框-->
-      <div v-show="detailListShow" class="seaContainer">
-        <el-form :model="queryParams" ref="queryForm" :inline="true" label-width="200px" >
-          <el-form-item prop="dataSourceName" class="selInput">
+      <div v-show="detailListShow">
+        <el-form :model="queryParams" ref="queryForm" :inline="true">
+          <el-form-item prop="taskNoOrCusnameLike">
               <el-input
                 class="sel-input"
                 v-model="queryParams.taskNoOrCusnameLike"
                 placeholder="模糊查询编号名称"
                 clearable
-                size="small"
                 @keyup.enter.native="handleQuery"
               />
           </el-form-item>
-          <el-form-item prop="description" class="selInput">
+          <el-form-item prop="taskNo">
             <el-input
               v-model="queryParams.taskNo"
               placeholder="预警任务编号"
               clearable
-              size="small"
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
          <el-form-item prop="description">
-            <el-select v-model="queryParams.typevalue" clearable placeholder="预警主体类别"  style="padding: 1px 0;margin-top: 2px;">
-              <el-option
-              v-for="item in typeoptions"
-              size="large"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-              </el-option>
-            </el-select>
+            <dictionary-select code="WarningObjectCateoryCode" v-model="queryParams.typevalue" clearable placeholder="预警对象类别">
+            </dictionary-select>
+          </el-form-item>
+          <el-form-item prop="description">
+            <dictionary-select code="TaskTypeCode" v-model="queryParams.typevalue" clearable placeholder="任务类别">
+            </dictionary-select>
+          </el-form-item>
+          <el-form-item prop="description">
+            <dictionary-select code="" v-model="queryParams.typevalue" clearable placeholder="所属分行">
+            </dictionary-select>
+          </el-form-item>
+          <el-form-item prop="description">
+            <dictionary-select code="" v-model="queryParams.typevalue" clearable placeholder="所属支行">
+            </dictionary-select>
+          </el-form-item>
+          <el-form-item prop="description">
+            <dictionary-select code="WorkingStatusCode" v-model="queryParams.typevalue" clearable placeholder="工作状态">
+            </dictionary-select>
           </el-form-item>
           <el-form-item style="padding-left: 12px ; float: right;">
             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
             <el-button type="primary" icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-            <el-button type="primary" icon="el-icon-refresh" size="mini" @click="resetQuery">导出</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -50,23 +55,42 @@
 
     <!--    展示列表  -->
     <div v-show="detailListShow">
-      <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-                header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                :cell-style="{padding:'0px'}" :data="taskInfoList" >
-        <el-table-column label="预警任务编号" width="220px" align="center" prop="TASK_NO"/>
-        <el-table-column label="预警对象类别" width="100px" align="center" prop="WARNING_OBJECT_CATEGORY"/>
-        <el-table-column label="预警对象编号" width="220px" align="center" prop="WARNING_OBJECT_ID"/>
-        <el-table-column label="预警对象名称" width="110px" align="center" prop="WARNING_OBJECT_NAME"/>
-        <el-table-column label="监测主体类型" width="100px" align="center" prop="TASK_TYPE"/>
-        <el-table-column label="一级预警信号数量" width="80px" align="center" prop="ONELEVELCOUNT"/>
-        <el-table-column label="二级预警信号数量" width="80px" align="center" prop="TWOLEVELCOUNT"/>
-        <el-table-column label="三级预警信号数量" width="80px" align="center" prop="THREELEVELCOUNT"/>
-        <el-table-column label="任务生成时间" width="165px" align="center" prop="TASK_START_TIME"/>
-        <el-table-column label="任务阶段" width="60px" align="center" prop="TASK_STATUS"/>
-        <el-table-column label="当前任务工作" width="80px" align="center" prop="TASK_DEADLINE"/>
-        <el-table-column label="当前工作状态" width="80px" align="center" prop="TASK_DEADLINE"/>
-        <el-table-column label="当前步骤" width="70px" align="center" prop="TASK_HANDLE_POST"/>
-        <el-table-column label="操作" width="60px" align="center">
+      <el-table style="width:100%"  border highlight-current-row
+                 :data="taskInfoList">
+        <el-table-column label="任务类别" min-width="100px" align="center" prop="TASK_STATUS">
+          <template slot-scope="scope">
+            <dictionary-transform code="TaskTypeCode" :value="scope.row['TASK_STATUS']"></dictionary-transform>
+          </template>
+        </el-table-column>
+        <el-table-column label="预警任务编号" min-width="220px" align="center" prop="TASK_NO"/>
+        <el-table-column label="预警对象类别" min-width="100px" align="center" prop="WARNING_OBJECT_CATEGORY">
+          <template slot-scope="scope">
+            <dictionary-transform code="WarningObjectCateoryCode" :value="scope.row['WARNING_OBJECT_CATEGORY']"></dictionary-transform>
+          </template>
+        </el-table-column>
+        <el-table-column label="预警对象编号" min-width="220px" align="center" prop="WARNING_OBJECT_NO"/>
+        <el-table-column label="预警对象名称" min-width="110px" align="center" prop="WARNING_OBJECT_NAME"/>
+        <el-table-column label="监测主体类型" min-width="100px" align="center" prop="TASK_TYPE"/>
+        <el-table-column label="一级预警信号数量" min-width="120px" align="center" prop="ONELEVELCOUNT"/>
+        <el-table-column label="二级预警信号数量" min-width="120px" align="center" prop="TWOLEVELCOUNT"/>
+        <el-table-column label="三级预警信号数量" min-width="120px" align="center" prop="THREELEVELCOUNT"/>
+        <el-table-column label="任务生成时间" min-width="170px" align="center" prop="TASK_START_TIME"/>
+        <el-table-column label="当前任务工作" min-width="100px" align="center" prop="TASK_DEADLINE">
+         <template slot-scope="scope">
+            <dictionary-transform code="TaskWorkingCode" :value="scope.row['TASK_DEADLINE']"></dictionary-transform>
+          </template>
+        </el-table-column>
+        <el-table-column label="当前工作状态" min-width="100px" align="center" prop="TASK_DEADLINE">
+           <template slot-scope="scope">
+            <dictionary-transform code="WorkingStatusCode" :value="scope.row['TASK_DEADLINE']"></dictionary-transform>
+          </template>
+        </el-table-column>
+        <el-table-column label="当前步骤" min-width="100px" align="center" prop="TASK_HANDLE_POST">
+          <template slot-scope="scope">
+            <dictionary-transform code="WorkingStatusCode" :value="scope.row['TASK_DEADLINE']"></dictionary-transform>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" min-width="80px" align="center">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -96,9 +120,8 @@
           <div class="radioball lt"></div>
           <p class="lt" style="margin: 0 0">预警信号列表</p>
         </div>
-        <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-                  header-cell-style="font-size:12px" :row-style="{height:'32px'}"
-                  :cell-style="{padding:'0px'}" :data="taskInfoDetail.seWfWarningSigns">
+        <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag" :row-style="{height:'32px'}"
+         :cell-style="{padding:'0px'}" :data="taskInfoDetail.seWfWarningSigns">
           <el-table-column label="任务编号" align="center" prop="taskId"/>
           <el-table-column label="当前处理岗" align="center" prop="nowDealRole"/>
           <el-table-column label="信号名称" align="center" prop="signalName"/>
@@ -181,7 +204,7 @@
             </tr>
             <tr  style="background: #f9f9f9;" align="left">
               <td width="10%"></td>
-              <td class="tdfir" style="line-height:30px"colspan="2">附件：</td>
+              <td class="tdfir" style="line-height:30px" colspan="2">附件：</td>
               <td colspan="5" style="line-height:5px">
                 <a style="color:#0062bd;position:relative" @click="updateA">
                   <i style="font-size:20px" title="附件下载" class="fa fa-cloud-download"/>
@@ -371,10 +394,7 @@
         // 查询参数
         queryParams: {
           pageNum: 1,
-          pageSize: 10,
-          dataSourceId: undefined,
-          queueName: undefined,
-          ducCreateDepartment: undefined,
+          pageSize: 10
         },
         typeoptions: [{label:'非同业主体',value:'1'},
         {label:'同业主体',value:'2'},
@@ -520,6 +540,7 @@
         this.queryParams.pageNum = 1;
         this.getList();
       },
+      resetQuery() {}
     }
   }
 </script>

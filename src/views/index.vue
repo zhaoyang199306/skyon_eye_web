@@ -6,7 +6,8 @@
 <!--  </div>-->
 
   <div class="radarbg">
-    <div style="width:100%;position:absolute;top:0; left:0;overflow:auto;height:100%">
+    <!-- <div style="width:100%;position:absolute;top:68; left:0;overflow:auto;height:100%"> -->
+      <div>
       <div class="radar">
         <div class="radarleft">
 <!--          <div class="radarleftbox">-->
@@ -84,7 +85,7 @@
             <div class="task_list">
               <ul class="ul_this">
                 <li>
-                  <router-link to="/workBenchDetail/warningTasks">
+                  <router-link to="/workBenchDetail/taskInfo">
                     <div>
                       <p>预警任务</p>
                       <p class="tasknum">{{taskInfoSelfCount}}</p>
@@ -155,7 +156,7 @@
                     <p>预警认定分行统计</p>
 
                     <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-                              header-cell-style="font-size:12px" :row-style="{height:'32px'}"
+                              :header-cell-style="{fontSize:'12px'}" :row-style="{height:'32px'}"
                               :cell-style="{padding:'0px'}" :data="taskInfoList">
                       <el-table-column label="排名" width="50px"  align="center" type="index"/>
                       <el-table-column label="机构名称" align="center" prop="q"/>
@@ -172,7 +173,7 @@
                     <p>处置跟踪分行统计</p>
 
                     <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
-                              header-cell-style="font-size:12px" :row-style="{height:'32px'}"
+                              :header-cell-style="{fontSize:'12px'}" :row-style="{height:'32px'}"
                               :cell-style="{padding:'0px'}"  :data="disposalTrackList">
                       <el-table-column label="排名" width="50px"  align="center" type="index"/>
                       <el-table-column label="机构名称" align="center" prop="q"/>
