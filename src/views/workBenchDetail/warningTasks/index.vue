@@ -195,15 +195,15 @@
             <div class="pull-left custName">客户名称：</div>
             <div class="pull-left custName">{{ seWfTaskInfo.seWfWarningObject.warningObjectName}}</div>
           </el-form-item>
-          <el-form-item label="当前风险等级:" label-width="100px" class="el-col-4">
+          <el-form-item label="当前风险等级:" label-width="140px" class="el-col-4">
             <template slot-scope="scope">
               <div class="pull-left">{{ selectDictLabel(riskLevelOptions,seWfTaskInfo.sysRiskLevel)}}</div>
             </template>
           </el-form-item>
-          <el-form-item label="名单管理:" label-width="100px" class="el-col-4">
+          <el-form-item label="名单管理:" label-width="140px" class="el-col-4">
             <div class="pull-left">灰名单/黑名单</div>
           </el-form-item>
-          <el-form-item label="贷款余额:" label-width="100px" class="el-col-4">
+          <el-form-item label="贷款余额:" label-width="140px" class="el-col-4">
             <div class="pull-left">300万元</div>
           </el-form-item>
           <el-form-item class="el-col-6">
@@ -217,7 +217,7 @@
       <!--    预警信号列表    -->
       <div class="el-col-24" style="margin-top: 10px">
         <div style="margin-bottom:20px;">
-          <p class="lt" style="margin:0px 0px 9px 0px;font-size: 12px;font-family: 黑体;font-weight:bolder">预警信号列表</p>
+          <p class="lt" style="margin:0px 0px 9px 0px;font-size: 14px;font-family: 黑体;font-weight:bolder">预警信号列表</p>
         </div>
         <div style="background-color: #BDD3EB;height: 40px;margin: auto 0;color: #1A6BBC ">
           <el-form ref="detailInfo" :model="seWfTaskInfo" class="el-col-24">
@@ -308,7 +308,7 @@
       <!--      风险判断        -->
       <div class="el-col-24" style="margin-top: 15px">
         <div style="margin-bottom:20px;">
-          <p class="lt" style="margin:0px 0px 9px 0px;font-size: 12px;font-family: 黑体;font-weight:bolder">风险判断</p>
+          <p class="lt" style="margin:0px 0px 9px 0px;font-size: 14px;font-family: 黑体;font-weight:bolder">风险判断</p>
         </div>
         <div style="background-color: #e5e5e5;height: 40px;margin: auto 0">
           <span style="font-size: 13px;margin: auto 0; padding-top: 15px;float: left">系统认定客户风险等级：</span>
@@ -363,7 +363,7 @@
       <!--      风险管控措施    -->
       <div class="el-col-24" style="margin-top: 15px">
         <div style="margin-bottom:20px;">
-          <p class="lt" style="margin:0px 0px 9px 0px;font-size: 12px;font-family: 黑体;font-weight:bolder">风险管控措施</p>
+          <p class="lt" style="margin:0px 0px 9px 0px;font-size: 14px;font-family: 黑体;font-weight:bolder">风险管控措施</p>
         </div>
         <div class="titleTable_check">
           <div class="titleTable1">
@@ -397,7 +397,7 @@
 
           <div style="background-color: #f9f9f9;height: 40px;margin: auto 0;">
             <el-form ref="detailInfo" :model="seWfTaskInfo" class="el-col-24">
-              <el-form-item class="el-col-6">
+              <el-form-item class="el-col-8">
                 <div style="font-size: 14px;" class="pull-left ">要求任务跟踪完成日期：</div>
                 <el-date-picker
                   v-model="value1"
