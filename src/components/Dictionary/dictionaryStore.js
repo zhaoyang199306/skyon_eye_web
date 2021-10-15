@@ -1,4 +1,4 @@
-import {getDicts} from '@/api/system/dict/data.js'
+import { getDicts } from '@/api/system/dict/data.js'
 
 /**
  * 缓存请求结果
@@ -19,7 +19,7 @@ export default {
     }
     DictionaryMap[dictCode] = {}
     DictionaryMap[dictCode].loading = true
-    DictionaryMap[dictCode].promise = DictService.getDicts(dictCode).then(res => {
+    DictionaryMap[dictCode].promise = getDicts(dictCode).then(res => {
       DictionaryMap[dictCode].data = res.data
       return res.data
     })
@@ -31,7 +31,7 @@ export default {
       let results = value
       items.forEach(data => {
         // eslint-disable-next-line
-        if (data.dictCode === value) {
+        if (data.dictValue === value) {
           results = data.dictLabel
         }
       })

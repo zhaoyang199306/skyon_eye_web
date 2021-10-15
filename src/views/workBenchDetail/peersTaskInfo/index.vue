@@ -34,11 +34,11 @@
             </dictionary-select>
           </el-form-item>
           <el-form-item prop="description">
-            <dictionary-select code="" v-model="queryParams.typevalue" clearable placeholder="所属分行">
+            <dictionary-select code="a" v-model="queryParams.typevalue" clearable placeholder="所属分行">
             </dictionary-select>
           </el-form-item>
           <el-form-item prop="description">
-            <dictionary-select code="" v-model="queryParams.typevalue" clearable placeholder="所属支行">
+            <dictionary-select code="a" v-model="queryParams.typevalue" clearable placeholder="所属支行">
             </dictionary-select>
           </el-form-item>
           <el-form-item prop="description">
