@@ -1,7 +1,7 @@
 <template>
   <div style="padding: 0 1%;margin: 6px 0 0 0px">
     <!--        搜索框-->
-    <div v-show="taskListShow" class="seaContainer">
+    <div v-show="false" class="seaContainer">
       <div class="title">
         <span class="fz_icon"/>
         <div class="title_text">
@@ -99,7 +99,7 @@
     </div>
 
     <!--    展示列表  -->
-    <div v-show="taskListShow">
+    <div v-show="false">
       <el-table width="600" :stripe="trueFlag" :border="trueFlag" :highlight-current-row="trueFlag"
                 header-cell-style="font-size:12px" :row-style="{height:'32px'}"
                 :cell-style="{padding:'0px'}" :data="taskInfoList">
@@ -374,8 +374,8 @@
             </div>
             <div class="title_table_div">
               <div class="title_table_textarea" style="padding-left: 25px">
-                <el-checkbox-group v-model="seWfTaskInfo.seWfTaskExecuteFeedback ==
-                null?(seWfTaskInfo.seWfTaskExecuteFeedback = {})
+                <el-checkbox-group v-model="seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures ==
+                null?(seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures = [])
                 :seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures" style="line-height: 20px">
                   <div style="float: left">
                     <div style="width: 1000px;float: left">
@@ -443,8 +443,8 @@
           <div style="background-color: #e5e5e5;height: 40px;margin: auto 0">
             <span style="font-size: 14px;margin: auto 0; padding-top: 12px;padding-left: 20px;float: left">意见结论</span>
             <div style="float: left;padding-top: 12px;padding-left: 20px;font-size: 12px;">
-              <el-radio v-model="radio" label="1">通过</el-radio>
-              <el-radio v-model="radio" label="2">不通过</el-radio>
+              <el-radio v-model="checkConclusion" label="01">通过</el-radio>
+              <el-radio v-model="checkConclusion" label="02">不通过</el-radio>
             </div>
           </div>
           <div class="titleTable">
@@ -457,7 +457,7 @@
               </p>
             </div>
             <div class="title_table_textarea">
-              <el-input type="textarea" v-model="seWfTaskInfo.seWfTaskExecuteFeedback.currentFeedback" :autosize="{ minRows: 3.5, maxRows: 3.5}"/>
+              <el-input type="textarea" v-model="currentFeedback" :autosize="{ minRows: 3.5, maxRows: 3.5}"/>
             </div>
           </div>
         </div>
@@ -589,7 +589,7 @@
         // 任务详情
         seWfTaskInfo: {
           seWfWarningObject: {},
-          seWfTaskExecuteFeedback: { currentControlMeasures: [],oneFamilyOnePolicy:undefined,currentConclusions:undefined},
+          seWfTaskExecuteFeedback: { currentControlMeasures: [],oneFamilyOnePolicy:undefined,currentConclusions:undefined,checkConclusion:undefined,currentFeedback:undefined},
           seWfWarningSigns: [],
           seWfTaskExecuteFeedbacks: []
         },
@@ -622,11 +622,15 @@
           taskStatus: undefined
         },
         centerDialogVisible: false,
-        handleValue:undefined
+        handleValue:undefined,
+        checkConclusion:'01',
+        currentFeedback:undefined,
+
       }
     },
     created() {
-      this.getList()
+      // this.getList()
+      this.taskDetail(this.$route.params.taskNo)
       this.managerDetail()
       this.getDicts('sys_risk_level').then(response => {
         this.riskLevelOptions = response.data
@@ -723,6 +727,8 @@
         if(null!=this.seWfTaskInfo.seWfTaskExecuteFeedback){
           this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures = this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures.join(',')
         }
+        this.seWfTaskInfo.seWfTaskExecuteFeedback.checkConclusion = this.checkConclusion
+        this.seWfTaskInfo.seWfTaskExecuteFeedback.currentFeedback = this.currentFeedback
         submitTaskInfo(this.seWfTaskInfo).then(res => {
           console.log(res)
           if (res.code === 200) {
@@ -730,6 +736,7 @@
             this.getList()
             this.taskDetailShow = false
             this.taskListShow = true
+            this.$router.push('/workBenchDetail/taskInfo');
           }
           this.restParam()
           loading.close()
@@ -743,6 +750,7 @@
         this.taskDetailShow = false
         this.taskListShow = true
         this.restParam()
+        this.$router.push('/workBenchDetail/taskInfo');
       },
       // 重置参数
       restParam() {
@@ -751,21 +759,19 @@
         this.checkList = []
       },
       // 任务详情
-      taskDetail(scope) {
-        console.log(scope)
+      taskDetail(taskNo) {
         this.centerDialogVisible = false
         this.taskDetailShow = true
         this.taskListShow = false
-        this.taskNo = scope.TASK_NO
-        this.warningObjectId = scope.WARNING_OBJECT_ID
-        console.log('---res=============='+this.taskNo)
+        // this.taskNo = scope.TASK_NO
+        // this.warningObjectId = scope.WARNING_OBJECT_ID
         // 赋值
-        getTaskDetail(this.taskNo).then(res => {
-          console.log(res)
+        getTaskDetail(taskNo).then(res => {
           if (200 === res.code) {
             // this.seWfWarningObject = this.seWfTaskInfo.seWfWarningObject
             // this.seWfWarningSigns = this.seWfTaskInfo.seWfWarningSigns
             // this.seWfTaskExecuteFeedback = this.seWfTaskInfo.seWfTaskExecuteFeedback
+            console.log(res.data)
             if(res.data.seWfTaskExecuteFeedback==null){
               res.data.seWfTaskExecuteFeedback = this.seWfTaskInfo.seWfTaskExecuteFeedback
             }
@@ -774,14 +780,6 @@
               this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures = this.seWfTaskInfo.seWfTaskExecuteFeedback.currentControlMeasures.split(',')
             }
           }
-          // 获取客户历史任务记录
-          getHistoryTask(this.warningObjectId).then(res => {
-            console.log('---res==============')
-            console.log(res)
-            if (200 === res.code) {
-              this.seWfTaskInfoHis = res.data
-            }
-          })
         })
       },
       //  详情

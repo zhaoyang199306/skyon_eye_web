@@ -137,7 +137,7 @@ export const constantRoutes = [
       hidden: true,
       children: [
         {
-          path: 'workBenchDetail/warningTasks',
+          path: 'workBenchDetail/warningTasks/:taskNo',
           component: () => import('@/views/workBenchDetail/warningTasks'),
           name: 'warningTasks',
           meta: { title: 'log', icon: '' }
