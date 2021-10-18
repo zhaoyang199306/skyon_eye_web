@@ -148,6 +148,12 @@
         <el-form-item label="角色名称" prop="roleName">
           <el-input v-model="form.roleName" placeholder="请输入角色名称" :disabled="detailViem"/>
         </el-form-item>
+        <el-form-item label="权限字符" prop="roleKey">
+          <el-input v-model="form.roleKey" placeholder="请输入权限字符" />
+        </el-form-item>		
+        <el-form-item label="角色顺序" prop="roleSort">
+          <el-input-number v-model="form.roleSort" controls-position="right" :min="0" />
+        </el-form-item>		
 <!--        <el-form-item label="状态">-->
 <!--          <el-radio-group v-model="form.status" :disabled="detailViem">-->
 <!--            <el-radio-->
