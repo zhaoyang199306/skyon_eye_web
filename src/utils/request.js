@@ -9,7 +9,7 @@ const service = axios.create({
   // axios中请求配置有baseURL选项，表示请求URL公共部分
   baseURL: process.env.VUE_APP_BASE_API,
   // 超时 300000
-  timeout: 300000
+  timeout: 30000
 })
 // request拦截器
 service.interceptors.request.use(
@@ -29,6 +29,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(res => {
     const code = res.data.code
     if (code === 401) {
+      console.log(res)
       MessageBox.confirm(
         '登录状态已过期，您可以继续留在该页面，或者重新登录',
         '系统提示',

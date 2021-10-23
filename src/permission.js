@@ -7,13 +7,13 @@ import { getToken } from '@/utils/auth'
 
 NProgress.configure({ showSpinner: false })
 
-const whiteList = ['/login','/sso/login','/auth-redirect', '/bind', '/register']
+const whiteList = ['/login','/sso/login','/session/login','/auth-redirect', '/bind', '/register']
 
 router.beforeEach((to, from, next) => {
   NProgress.start()
   if (getToken()) {
     /* has token*/
-    if (to.path === '/login') {
+    if (to.path === '/login' || to.path === '/session/login') {
       next({ path: '/' })
       NProgress.done()
     } else {

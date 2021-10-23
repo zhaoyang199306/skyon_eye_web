@@ -38,6 +38,12 @@ export const constantRoutes = [
     component: ()=>import('@/views/ssologin'),
     hidden: true,
   },
+  // 从一期session登录
+  {
+    path: '/session/login',
+    component: ()=>import('@/views/sessionlogin'),
+    hidden: true,
+  },
   {
     path: '/redirect',
     component: Layout,
@@ -286,7 +292,9 @@ export const constantRoutes = [
 ]
 
 export default new Router({
-  mode: 'history', // 去掉url中的#
+  //mode: 'history', // 去掉url中的#
+  mode: 'hash',
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
+  routes: constantRoutes,
+  base: '/rews2f'
 })

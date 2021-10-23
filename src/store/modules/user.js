@@ -1,4 +1,4 @@
-import { ssologin,login, logout, getInfo } from '@/api/login'
+import { ssologin,login, sessionlogin, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import {isPromise} from "@riophae/vue-treeselect/src/utils";
 
@@ -59,7 +59,19 @@ const user = {
         })
       })
     },
-
+    // 从一期session登录
+    SessionLogin({ commit },callback) {
+      return new Promise((resolve, reject) => {
+        sessionlogin(callback).then(res =>{
+            setToken(res.token);
+            commit('SET_TOKEN',res.token);
+            resolve(res)
+          }
+        ).catch(error => {
+          reject(error)
+        })
+      })
+    },
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {

@@ -27,7 +27,17 @@ export function ssologin(userAccount,loginToken) {
     params: data
   })
 }
-
+// 从一期session登录方法
+export function sessionlogin(callback) {
+  const data = {
+    callback
+  }
+  return request({
+    url: '/session/login',
+    method: 'get',
+    params: data
+  })
+}
 // 获取用户详细信息
 export function getInfo() {
   return request({
